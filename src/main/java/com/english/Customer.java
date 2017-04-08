@@ -7,17 +7,17 @@ import java.util.Date;
 public class Customer implements Serializable, Cloneable {
 
 	private Long id;
-	private String firstName;
-	private String lastName;
+	private String firstName="";
+	private String lastName="";
 	private Date birthDate;
 	//private CustomerStatus status;
-	private String country;
-	private String city;
-	private int englishLevel;
-	private String skype;
-	private boolean sex;
-	private String email;
-	private String password;
+	private String country="";
+	private String city="";
+	private int englishLevel=0;
+	private String skype="";
+	private boolean sex=true;
+	private String email="";
+	private String password="";
 	
 	public Long getId() {
 		return id;
