@@ -29,7 +29,8 @@ import java.util.List;
 @Theme("mytheme")
 public class MyUI extends UI {
 
-	private CustomerForm customerForm = new CustomerForm(this);
+	private CustomerForm customerForm = new CustomerForm();
+	private RegistrationForm registrationForm = new RegistrationForm(this);
 	private TextField filteredText = new TextField();
 	private TextField filteredTextByFirstName = new TextField();
 	private TextField filteredTextByLastName = new TextField();
@@ -154,9 +155,13 @@ public class MyUI extends UI {
         						clearFilterEmailButton);
         
         Button addCustomerButton = new Button("Register");
-        addCustomerButton.addClickListener(e->{
+        /*addCustomerButton.addClickListener(e->{
         	grid.select(null);
         	customerForm.setCustomer(new Customer());
+        });*/
+        addCustomerButton.addClickListener(e->{
+        	grid.select(null);
+        	registrationForm.setCustomer(new Customer());
         });
         
         VerticalLayout toolbar = new VerticalLayout(filtering, addCustomerButton);
@@ -164,7 +169,7 @@ public class MyUI extends UI {
         
         grid.setColumns("firstName", "lastName", "country", "englishLevel", "skype", "sex", "email");
         
-        HorizontalLayout main = new HorizontalLayout(grid, customerForm);
+        HorizontalLayout main = new HorizontalLayout(grid, customerForm, registrationForm);
         main.setSpacing(true);
         main.setSizeFull();
         grid.setSizeFull();
@@ -178,10 +183,11 @@ public class MyUI extends UI {
         layout.setSpacing(true);
         setContent(layout);
         
-        customerForm.setVisible(true);
+        customerForm.setVisible(false);
+        registrationForm.setVisible(false);
         
         grid.addSelectionListener(event->{
-        	if(event.getSelected().isEmpty()) {
+        	if(event.getSelected().isEmpty() || registrationForm.isVisible()) {
         		customerForm.setVisible(false);
         	} else {
         		Customer customer = (Customer) event.getSelected().iterator().next();

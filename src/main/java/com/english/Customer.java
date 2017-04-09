@@ -17,6 +17,7 @@ public class Customer implements Serializable, Cloneable {
 	private String skype="";
 	private boolean sex=true;
 	private String email="";
+	private String description="";
 	private String password="";
 	
 	public Long getId() {
@@ -105,6 +106,14 @@ public class Customer implements Serializable, Cloneable {
 	
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	public String getpassword() {
