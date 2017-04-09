@@ -153,13 +153,13 @@ public class MyUI extends UI {
         						filteredTextByEmail,
         						clearFilterEmailButton);
         
-        Button addCustomerButton = new Button("Add new customer");
+        Button addCustomerButton = new Button("Register");
         addCustomerButton.addClickListener(e->{
         	grid.select(null);
         	customerForm.setCustomer(new Customer());
         });
         
-        HorizontalLayout toolbar = new HorizontalLayout(filtering, addCustomerButton);
+        VerticalLayout toolbar = new VerticalLayout(filtering, addCustomerButton);
         toolbar.setSpacing(true);
         
         grid.setColumns("firstName", "lastName", "country", "englishLevel", "skype", "sex", "email");
