@@ -147,6 +147,6 @@ public class Customer implements Serializable, Cloneable {
 	
 	@Override
 	public String toString() {
-		return firstName + " " + lastName;
+		return firstName + " " + lastName + " " + country + " " + englishLevel + " " + skype + " " + sex + " " + email;
 	}
 }
