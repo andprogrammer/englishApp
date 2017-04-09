@@ -14,6 +14,10 @@ public class CustomerForm extends FormLayout {
 	
 	private TextField firstName = new TextField("First name");
 	private TextField lastName = new TextField("Last name");
+	private TextField country = new TextField("Coutry");
+	private TextField englishLevel = new TextField("English level");
+	private TextField skype = new TextField("Skype");
+	private TextField sex = new TextField("Sex");
 	private TextField email = new TextField("Email");
 	
 	private Button save = new Button("Save");
@@ -35,7 +39,7 @@ public class CustomerForm extends FormLayout {
 		setSizeUndefined();
 		HorizontalLayout buttonsHorizontalLayouts = new HorizontalLayout(save, delete);
 		buttonsHorizontalLayouts.setSpacing(true);
-		addComponents(firstName, lastName, email, buttonsHorizontalLayouts);
+		addComponents(firstName, lastName, country, englishLevel, skype, sex, email, buttonsHorizontalLayouts);
 	}
 	
 	public void setCustomer(Customer customer) {
