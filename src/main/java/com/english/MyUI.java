@@ -17,6 +17,8 @@ import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.data.util.BeanItemContainer;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,173 +31,58 @@ import java.util.List;
 @Theme("mytheme")
 public class MyUI extends UI {
 
+	private static final long serialVersionUID = 1L;
+	
 	private CustomerForm customerForm = new CustomerForm();
 	private RegistrationForm registrationForm = new RegistrationForm(this);
-	private LogInForm logInForm = new LogInForm();
-	private TextField filteredText = new TextField();
-	private TextField filteredTextByFirstName = new TextField();
-	private TextField filteredTextByLastName = new TextField();
-	private TextField filteredTextByCountry = new TextField();
-	private TextField filteredTextByEnglishLevel = new TextField();
-	private TextField filteredTextBySkype = new TextField();
-	private TextField filteredTextBySex = new TextField();
-	private TextField filteredTextByEmail = new TextField();
+	private LogInForm logInForm = new LogInForm(this);
+	
+	private TextField firstNameTextField = new TextField();
+	private TextField lastNameTextField = new TextField();
+	private TextField countryTextField = new TextField();
+	private TextField englishLevelTextField = new TextField();
+	private TextField skypeTextField = new TextField();
+	private TextField sexTextField = new TextField();
+	private TextField emailTextField = new TextField();
+	private Label loginStatusLabel = new Label();
+	private Button registerButton = new Button("Register me");
+	private Button logInButton = new Button("Log me");
+	private Button logOutButton = new Button("Log out me");
+	
+	private Grid mainGrid = new Grid();
+	CssLayout filteringLayout = new CssLayout();
+	
 	private CustomerService customerService = CustomerService.getInstance();
-	private Grid grid = new Grid();
-	CssLayout filtering = new CssLayout();
 	
-	
-	private void prepareFiltering() {
-        filteredText.setInputPrompt("filtered by name");
-        filteredText.addTextChangeListener(e->{
-        	grid.setContainerDataSource(new BeanItemContainer<>(Customer.class,
-        			customerService.findAll(e.getText())));
-        });
-        
-        filteredTextByFirstName.setInputPrompt("filtered by first name");
-        filteredTextByFirstName.addTextChangeListener(e->{
-        	grid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findAll(e.getText())));
-        });
-        
-        filteredTextByLastName.setInputPrompt("filtered by last name");
-        filteredTextByLastName.addTextChangeListener(e->{
-        	grid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findAll(e.getText())));
-        });
-        
-        filteredTextByCountry.setInputPrompt("filtered by country");
-        filteredTextByCountry.addTextChangeListener(e->{
-        	grid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findAll(e.getText())));
-        });
-        
-        filteredTextByEnglishLevel.setInputPrompt("filtered by english level");
-        filteredTextByEnglishLevel.addTextChangeListener(e->{
-        	grid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findAll(e.getText())));
-        });
-        
-        filteredTextBySkype.setInputPrompt("filtered by skype");
-        filteredTextBySkype.addTextChangeListener(e->{
-        	grid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findAll(e.getText())));
-        });
-        
-        filteredTextBySex.setInputPrompt("filtered by sex");
-        filteredTextBySex.addTextChangeListener(e->{
-        	grid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findAll(e.getText())));
-        });
-        
-        filteredTextByEmail.setInputPrompt("filtered by email");
-        filteredTextByEmail.addTextChangeListener(e->{
-        	grid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findAll(e.getText())));
-        });
-        
-        Button clearFilterTextButton = new Button(FontAwesome.TIMES);
-        clearFilterTextButton.addClickListener(e->{
-        	filteredText.clear();
-        	updateList();
-        });
-        
-        Button clearFilterFirstNameButton = new Button(FontAwesome.TIMES);
-        clearFilterFirstNameButton.addClickListener(e->{
-        	filteredTextByFirstName.clear();
-        	updateList();
-        });
-        
-        Button clearFilterLastNameButton = new Button(FontAwesome.TIMES);
-        clearFilterLastNameButton.addClickListener(e->{
-        	filteredTextByLastName.clear();
-        	updateList();
-        });
-        
-        Button clearFilterCountryButton = new Button(FontAwesome.TIMES);
-        clearFilterCountryButton.addClickListener(e->{
-        	filteredTextByCountry.clear();
-        	updateList();
-        });
-        
-        Button clearFilterEnglishLevelButton = new Button(FontAwesome.TIMES);
-        clearFilterEnglishLevelButton.addClickListener(e->{
-        	filteredTextByEnglishLevel.clear();
-        	updateList();
-        });
-        
-        Button clearFilterSkypeButton = new Button(FontAwesome.TIMES);
-        clearFilterSkypeButton.addClickListener(e->{
-        	filteredTextBySkype.clear();
-        	updateList();
-        });
-        
-        Button clearFilterSexButton = new Button(FontAwesome.TIMES);
-        clearFilterSexButton.addClickListener(e->{
-        	filteredTextBySex.clear();
-        	updateList();
-        });
-        
-        Button clearFilterEmailButton = new Button(FontAwesome.TIMES);
-        clearFilterEmailButton.addClickListener(e->{
-        	filteredTextByEmail.clear();
-        	updateList();
-        });
-
-        filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-        filtering.addComponents(filteredText, 
-        						clearFilterTextButton, 
-        						filteredTextByFirstName, 
-        						clearFilterFirstNameButton, 
-        						filteredTextByLastName, 
-        						clearFilterLastNameButton,
-        						filteredTextByCountry,
-        						clearFilterCountryButton,
-        						filteredTextByEnglishLevel,
-        						clearFilterEnglishLevelButton,
-        						filteredTextBySkype,
-        						clearFilterSkypeButton,
-        						filteredTextBySex,
-        						clearFilterSexButton,
-        						filteredTextByEmail,
-        						clearFilterEmailButton);
-	}
 	
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-        final VerticalLayout layout = new VerticalLayout();
+        initComponents();
+        handleTextFieldsFiltering();
+        handleButtons();
         
-        prepareFiltering();
+        final VerticalLayout pageLayout = new VerticalLayout();
         
-        Button addCustomerButton = new Button("Register");
-        addCustomerButton.addClickListener(e->{
-        	grid.select(null);
-        	registrationForm.setCustomer(new Customer());
-        });
+        VerticalLayout toolbarLayout = new VerticalLayout(filteringLayout, registerButton, logInButton, logOutButton, loginStatusLabel);
+        toolbarLayout.setSpacing(true);
         
-        Button logInButton = new Button("Log me");
-        logInButton.addClickListener(e->{
-        	grid.select(null);
-        	logInForm.logIn();
-        });
+        mainGrid.setColumns("firstName", "lastName", "country", "englishLevel", "skype", "sex", "email");
         
-        VerticalLayout toolbar = new VerticalLayout(filtering, addCustomerButton, logInButton);
-        toolbar.setSpacing(true);
+        HorizontalLayout mainLayout = new HorizontalLayout(mainGrid, customerForm, registrationForm, logInForm);
+        mainLayout.setSpacing(true);
+        mainLayout.setSizeFull();
+        mainGrid.setSizeFull();
+        mainLayout.setExpandRatio(mainGrid, 1);
         
-        grid.setColumns("firstName", "lastName", "country", "englishLevel", "skype", "sex", "email");
-        
-        HorizontalLayout main = new HorizontalLayout(grid, customerForm, registrationForm, logInForm);
-        main.setSpacing(true);
-        main.setSizeFull();
-        grid.setSizeFull();
-        main.setExpandRatio(grid, 1);
-        
-        layout.addComponents(toolbar, main);
+        pageLayout.addComponents(toolbarLayout, mainLayout);
         
         updateList();
         
-        layout.setMargin(true);
-        layout.setSpacing(true);
-        setContent(layout);
+        pageLayout.setMargin(true);
+        pageLayout.setSpacing(true);
+        setContent(pageLayout);
         
-        customerForm.setVisible(false);
-        registrationForm.setVisible(false);
-        logInForm.setVisible(false);
-        
-        grid.addSelectionListener(event->{
+        mainGrid.addSelectionListener(event->{
         	if(event.getSelected().isEmpty() || registrationForm.isVisible() || logInForm.isVisible()) {
         		customerForm.setVisible(false);
         	} else {
@@ -205,16 +92,170 @@ public class MyUI extends UI {
         });
     }
 
+    private void initComponents() {
+    	loginStatusLabel.setValue("ENGLISH_APP");
+        customerForm.setVisible(false);
+        registrationForm.setVisible(false);
+        logInForm.setVisible(false);    	
+    }
+    
+	public void setLoginStatus(String status) {
+		loginStatusLabel.setValue(status);
+	}
+	
+	public String getLoginStatus() {
+		return loginStatusLabel.getValue();
+	}
+	
+	public void setVisibleReigsterButton(boolean visible) {
+		registerButton.setVisible(visible);
+	}
+	
+	public void setVisibleLogInButton(boolean visible) {
+		logInButton.setVisible(visible);
+	}
+	
+	public void setVisibleLogOutButton(boolean visible) {
+		logOutButton.setVisible(visible);
+	}
+	
+	private void handleTextFieldsFiltering() {
+        firstNameTextField.setInputPrompt("filtered by first name");
+        firstNameTextField.addTextChangeListener(e->{
+        	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findAll(e.getText())));
+        });
+        
+        lastNameTextField.setInputPrompt("filtered by last name");
+        lastNameTextField.addTextChangeListener(e->{
+        	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findAll(e.getText())));
+        });
+        
+        countryTextField.setInputPrompt("filtered by country");
+        countryTextField.addTextChangeListener(e->{
+        	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findAll(e.getText())));
+        });
+        
+        englishLevelTextField.setInputPrompt("filtered by english level");
+        englishLevelTextField.addTextChangeListener(e->{
+        	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findAll(e.getText())));
+        });
+        
+        skypeTextField.setInputPrompt("filtered by skype");
+        skypeTextField.addTextChangeListener(e->{
+        	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findAll(e.getText())));
+        });
+        
+        sexTextField.setInputPrompt("filtered by sex");
+        sexTextField.addTextChangeListener(e->{
+        	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findAll(e.getText())));
+        });
+        
+        emailTextField.setInputPrompt("filtered by email");
+        emailTextField.addTextChangeListener(e->{
+        	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findAll(e.getText())));
+        });
+        
+        Button clearFilterFirstNameButton = new Button(FontAwesome.TIMES);
+        clearFilterFirstNameButton.addClickListener(e->{
+        	firstNameTextField.clear();
+        	updateList();
+        });
+        
+        Button clearFilterLastNameButton = new Button(FontAwesome.TIMES);
+        clearFilterLastNameButton.addClickListener(e->{
+        	lastNameTextField.clear();
+        	updateList();
+        });
+        
+        Button clearFilterCountryButton = new Button(FontAwesome.TIMES);
+        clearFilterCountryButton.addClickListener(e->{
+        	countryTextField.clear();
+        	updateList();
+        });
+        
+        Button clearFilterEnglishLevelButton = new Button(FontAwesome.TIMES);
+        clearFilterEnglishLevelButton.addClickListener(e->{
+        	englishLevelTextField.clear();
+        	updateList();
+        });
+        
+        Button clearFilterSkypeButton = new Button(FontAwesome.TIMES);
+        clearFilterSkypeButton.addClickListener(e->{
+        	skypeTextField.clear();
+        	updateList();
+        });
+        
+        Button clearFilterSexButton = new Button(FontAwesome.TIMES);
+        clearFilterSexButton.addClickListener(e->{
+        	sexTextField.clear();
+        	updateList();
+        });
+        
+        Button clearFilterEmailButton = new Button(FontAwesome.TIMES);
+        clearFilterEmailButton.addClickListener(e->{
+        	emailTextField.clear();
+        	updateList();
+        });
+
+        filteringLayout.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+        filteringLayout.addComponents(firstNameTextField, 
+        						clearFilterFirstNameButton, 
+        						lastNameTextField, 
+        						clearFilterLastNameButton,
+        						countryTextField,
+        						clearFilterCountryButton,
+        						englishLevelTextField,
+        						clearFilterEnglishLevelButton,
+        						skypeTextField,
+        						clearFilterSkypeButton,
+        						sexTextField,
+        						clearFilterSexButton,
+        						emailTextField,
+        						clearFilterEmailButton);
+	}
+	
+	private void handleRegisterButton() {
+		registerButton.addClickListener(e->{
+        	mainGrid.select(null);
+        	registrationForm.setCustomer(new Customer());
+        });		
+	}
+	
+	private void handleLogInButton() {
+        logInButton.addClickListener(e->{
+        	mainGrid.select(null);
+        	logInForm.showLogInFormOnButtonClick();
+        });		
+	}
+
+	private void handleLogOutButton() {
+        logOutButton.addClickListener(e->{
+        	mainGrid.select(null);
+        	getSession().setAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE, null);
+        	registerButton.setVisible(true);
+        	logInButton.setVisible(true);
+        	logOutButton.setVisible(false);
+        	loginStatusLabel.setValue("ENGLISH_APP");
+        });
+        logOutButton.setVisible(false);		
+	}
+	
+	protected void handleButtons() {
+		handleRegisterButton();
+		handleLogInButton();
+		handleLogOutButton();
+	}
+    
 	public void updateList() {
-		List<Customer> customers = customerService.findAll(filteredText.getValue());
+		List<Customer> customers = new ArrayList<Customer>();
 		
-		List<Customer> customersFilteredByFirstName = customerService.findAll(filteredTextByFirstName.getValue());
-		List<Customer> customersFilteredByLastName = customerService.findAll(filteredTextByLastName.getValue());
-		List<Customer> customersFilteredByCountry = customerService.findAll(filteredTextByCountry.getValue());
-		List<Customer> customersFilteredByEnglishLevel = customerService.findAll(filteredTextByEnglishLevel.getValue());
-		List<Customer> customersFilteredBySkype = customerService.findAll(filteredTextBySkype.getValue());
-		List<Customer> customersFilteredBySex = customerService.findAll(filteredTextBySex.getValue());
-		List<Customer> customersFilteredByEmail = customerService.findAll(filteredTextByEmail.getValue());
+		List<Customer> customersFilteredByFirstName = customerService.findAll(firstNameTextField.getValue());
+		List<Customer> customersFilteredByLastName = customerService.findAll(lastNameTextField.getValue());
+		List<Customer> customersFilteredByCountry = customerService.findAll(countryTextField.getValue());
+		List<Customer> customersFilteredByEnglishLevel = customerService.findAll(englishLevelTextField.getValue());
+		List<Customer> customersFilteredBySkype = customerService.findAll(skypeTextField.getValue());
+		List<Customer> customersFilteredBySex = customerService.findAll(sexTextField.getValue());
+		List<Customer> customersFilteredByEmail = customerService.findAll(emailTextField.getValue());
 		
 		customers.addAll(customersFilteredByFirstName);
 		customers.addAll(customersFilteredByLastName);
@@ -223,11 +264,14 @@ public class MyUI extends UI {
 		customers.addAll(customersFilteredBySkype);
 		customers.addAll(customersFilteredBySex);
 		customers.addAll(customersFilteredByEmail);
-		grid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customers));
+		
+		mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customers));
 	}
 	
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
     @VaadinServletConfiguration(ui = MyUI.class, productionMode = false)
     public static class MyUIServlet extends VaadinServlet {
+    	
+		private static final long serialVersionUID = 1L;
     }
 }

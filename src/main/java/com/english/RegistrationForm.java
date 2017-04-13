@@ -9,40 +9,43 @@ import com.vaadin.ui.themes.ValoTheme;
 @SuppressWarnings("serial")
 public class RegistrationForm extends CustomerForm {
 	
-	private PasswordField password = new PasswordField("password");
-	private PasswordField passwordConfirmation = new PasswordField("passwordConfirmation");
+	private PasswordField passwordPasswordField = new PasswordField("password");
+	private PasswordField passwordConfirmationPasswordField = new PasswordField("passwordConfirmation");
 	
-	private Button save = new Button("Save me");
-	private Button close = new Button("Close me");
+	private Button saveButton = new Button("Save me");
+	private Button closeButton = new Button("Close me");
 	
 	private CustomerService customerService = CustomerService.getInstance();
-	//private Customer customer;
 	private MyUI myUI;
+	
 	
 	public RegistrationForm(MyUI myUI) {
 		this.myUI = myUI;
 		
-		save.setStyleName(ValoTheme.BUTTON_PRIMARY);
-		//save.setClickShortcut(KeyCode.ENTER);	//Consider to uncomment
-		close.setStyleName(ValoTheme.BUTTON_PRIMARY);
-		
-		save.addClickListener(e->save());
-		close.addClickListener(e->close());
-		
+		initComponents();
 		setSizeUndefined();
-		HorizontalLayout buttonsHorizontalLayouts = new HorizontalLayout(save, close);
+		HorizontalLayout buttonsHorizontalLayouts = new HorizontalLayout(saveButton, closeButton);
 		buttonsHorizontalLayouts.setSpacing(true);
-		addComponents(password, passwordConfirmation, buttonsHorizontalLayouts);
+		addComponents(passwordPasswordField, passwordConfirmationPasswordField, buttonsHorizontalLayouts);
 	}
 
-	private void save() {
-		passwordConfirmation.setValue("");//This field is not store in Customer and it is not refreshing value
+	private void initComponents() {
+		saveButton.setStyleName(ValoTheme.BUTTON_PRIMARY);
+		//saveButton.setClickShortcut(KeyCode.ENTER);	//Consider to uncomment
+		closeButton.setStyleName(ValoTheme.BUTTON_PRIMARY);
+		
+		saveButton.addClickListener(e->saveButtonClick());
+		closeButton.addClickListener(e->closeButtonClick());
+	}
+	
+	private void saveButtonClick() {
+		passwordConfirmationPasswordField.setValue("");//This field is not store in Customer and it is not refreshing value
 		customerService.save(customer);
 		myUI.updateList();
 		setVisible(false);
 	}
 	
-	private void close() {
+	private void closeButtonClick() {
 		setVisible(false);
 	}
 }
