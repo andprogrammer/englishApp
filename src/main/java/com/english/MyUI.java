@@ -42,11 +42,10 @@ public class MyUI extends UI {
 	private TextField filteredTextByEmail = new TextField();
 	private CustomerService customerService = CustomerService.getInstance();
 	private Grid grid = new Grid();
+	CssLayout filtering = new CssLayout();
 	
-    @Override
-    protected void init(VaadinRequest vaadinRequest) {
-        final VerticalLayout layout = new VerticalLayout();
-        
+	
+	private void prepareFiltering() {
         filteredText.setInputPrompt("filtered by name");
         filteredText.addTextChangeListener(e->{
         	grid.setContainerDataSource(new BeanItemContainer<>(Customer.class,
@@ -135,8 +134,7 @@ public class MyUI extends UI {
         	filteredTextByEmail.clear();
         	updateList();
         });
-        
-        CssLayout filtering = new CssLayout();
+
         filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
         filtering.addComponents(filteredText, 
         						clearFilterTextButton, 
@@ -154,6 +152,13 @@ public class MyUI extends UI {
         						clearFilterSexButton,
         						filteredTextByEmail,
         						clearFilterEmailButton);
+	}
+	
+    @Override
+    protected void init(VaadinRequest vaadinRequest) {
+        final VerticalLayout layout = new VerticalLayout();
+        
+        prepareFiltering();
         
         Button addCustomerButton = new Button("Register");
         addCustomerButton.addClickListener(e->{
