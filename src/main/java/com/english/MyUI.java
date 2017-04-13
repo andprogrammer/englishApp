@@ -31,6 +31,7 @@ public class MyUI extends UI {
 
 	private CustomerForm customerForm = new CustomerForm();
 	private RegistrationForm registrationForm = new RegistrationForm(this);
+	private LogInForm logInForm = new LogInForm();
 	private TextField filteredText = new TextField();
 	private TextField filteredTextByFirstName = new TextField();
 	private TextField filteredTextByLastName = new TextField();
@@ -155,21 +156,23 @@ public class MyUI extends UI {
         						clearFilterEmailButton);
         
         Button addCustomerButton = new Button("Register");
-        /*addCustomerButton.addClickListener(e->{
-        	grid.select(null);
-        	customerForm.setCustomer(new Customer());
-        });*/
         addCustomerButton.addClickListener(e->{
         	grid.select(null);
         	registrationForm.setCustomer(new Customer());
         });
         
-        VerticalLayout toolbar = new VerticalLayout(filtering, addCustomerButton);
+        Button logInButton = new Button("Log me");
+        logInButton.addClickListener(e->{
+        	grid.select(null);
+        	logInForm.logIn();
+        });
+        
+        VerticalLayout toolbar = new VerticalLayout(filtering, addCustomerButton, logInButton);
         toolbar.setSpacing(true);
         
         grid.setColumns("firstName", "lastName", "country", "englishLevel", "skype", "sex", "email");
         
-        HorizontalLayout main = new HorizontalLayout(grid, customerForm, registrationForm);
+        HorizontalLayout main = new HorizontalLayout(grid, customerForm, registrationForm, logInForm);
         main.setSpacing(true);
         main.setSizeFull();
         grid.setSizeFull();
@@ -185,9 +188,10 @@ public class MyUI extends UI {
         
         customerForm.setVisible(false);
         registrationForm.setVisible(false);
+        logInForm.setVisible(false);
         
         grid.addSelectionListener(event->{
-        	if(event.getSelected().isEmpty() || registrationForm.isVisible()) {
+        	if(event.getSelected().isEmpty() || registrationForm.isVisible() || logInForm.isVisible()) {
         		customerForm.setVisible(false);
         	} else {
         		Customer customer = (Customer) event.getSelected().iterator().next();
