@@ -70,6 +70,17 @@ public class CustomerForm extends FormLayout {
 		setVisible(true);
 		//firstName.selectAll();
 	}
+
+	protected void clearRegistrationFields() {
+		firstName.clear();
+		lastName.clear();
+		country.clear();
+		englishLevel.clear();
+		skype.clear();
+		sex.clear();
+		email.clear();
+		description.clear();
+	}
 	
 	/*private void save() {
 		customerService.save(customer);

@@ -48,6 +48,7 @@ public class MyUI extends UI {
 	private Button registerButton = new Button("Register me");
 	private Button logInButton = new Button("Log me");
 	private Button logOutButton = new Button("Log out me");
+	private Button clearFilterButton = new Button("Clear filteres");
 	
 	private Grid mainGrid = new Grid();
 	CssLayout filteringLayout = new CssLayout();
@@ -63,7 +64,7 @@ public class MyUI extends UI {
         
         final VerticalLayout pageLayout = new VerticalLayout();
         
-        VerticalLayout toolbarLayout = new VerticalLayout(filteringLayout, registerButton, logInButton, logOutButton, loginStatusLabel);
+        VerticalLayout toolbarLayout = new VerticalLayout(filteringLayout, loginStatusLabel, registerButton, logInButton, logOutButton, clearFilterButton);
         toolbarLayout.setSpacing(true);
         
         mainGrid.setColumns("firstName", "lastName", "country", "englishLevel", "skype", "sex", "email");
@@ -93,7 +94,7 @@ public class MyUI extends UI {
     }
 
     private void initComponents() {
-    	loginStatusLabel.setValue("ENGLISH_APP");
+    	loginStatusLabel.setValue("NOT LOGGED");
         customerForm.setVisible(false);
         registrationForm.setVisible(false);
         logInForm.setVisible(false);    	
@@ -240,12 +241,27 @@ public class MyUI extends UI {
         logOutButton.setVisible(false);		
 	}
 	
+	private void handleClearFilterButton() {
+		clearFilterButton.addClickListener(e->clearFilteringTextFields());
+	}
+	
 	protected void handleButtons() {
 		handleRegisterButton();
 		handleLogInButton();
 		handleLogOutButton();
+		handleClearFilterButton();
 	}
     
+	protected void clearFilteringTextFields() {
+		firstNameTextField.clear();
+		lastNameTextField.clear();
+		countryTextField.clear();
+		englishLevelTextField.clear();
+		skypeTextField.clear();
+		sexTextField.clear();
+		emailTextField.clear();
+	}
+	
 	public void updateList() {
 		List<Customer> customers = new ArrayList<Customer>();
 		

@@ -24,14 +24,17 @@ public class RegistrationForm extends CustomerForm {
 		
 		initComponents();
 		setSizeUndefined();
+		
 		HorizontalLayout buttonsHorizontalLayouts = new HorizontalLayout(saveButton, closeButton);
 		buttonsHorizontalLayouts.setSpacing(true);
+		
 		addComponents(passwordPasswordField, passwordConfirmationPasswordField, buttonsHorizontalLayouts);
 	}
 
 	private void initComponents() {
+		clearRegistrationFields();
+		
 		saveButton.setStyleName(ValoTheme.BUTTON_PRIMARY);
-		//saveButton.setClickShortcut(KeyCode.ENTER);	//Consider to uncomment
 		closeButton.setStyleName(ValoTheme.BUTTON_PRIMARY);
 		
 		saveButton.addClickListener(e->saveButtonClick());
@@ -39,13 +42,19 @@ public class RegistrationForm extends CustomerForm {
 	}
 	
 	private void saveButtonClick() {
-		passwordConfirmationPasswordField.setValue("");//This field is not store in Customer and it is not refreshing value
 		customerService.save(customer);
 		myUI.updateList();
 		setVisible(false);
+		clearRegistrationFields();
 	}
 	
 	private void closeButtonClick() {
 		setVisible(false);
+	}
+	
+	protected void clearRegistrationFields() {
+		super.clearRegistrationFields();
+		passwordPasswordField.clear();
+		passwordConfirmationPasswordField.clear();//This field is not store in Customer and it is not refreshing value
 	}
 }
