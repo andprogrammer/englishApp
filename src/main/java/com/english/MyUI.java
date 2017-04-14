@@ -33,6 +33,7 @@ public class MyUI extends UI {
 
 	private static final long serialVersionUID = 1L;
 	
+	private final String LOGIN_STATUS = "NOT LOGGED";
 	private CustomerForm customerForm = new CustomerForm();
 	private RegistrationForm registrationForm = new RegistrationForm(this);
 	private LogInForm logInForm = new LogInForm(this);
@@ -94,7 +95,7 @@ public class MyUI extends UI {
     }
 
     private void initComponents() {
-    	loginStatusLabel.setValue("NOT LOGGED");
+    	loginStatusLabel.setValue(LOGIN_STATUS);
         customerForm.setVisible(false);
         registrationForm.setVisible(false);
         logInForm.setVisible(false);    	
@@ -236,7 +237,7 @@ public class MyUI extends UI {
         	registerButton.setVisible(true);
         	logInButton.setVisible(true);
         	logOutButton.setVisible(false);
-        	loginStatusLabel.setValue("ENGLISH_APP");
+        	loginStatusLabel.setValue(LOGIN_STATUS);
         });
         logOutButton.setVisible(false);		
 	}
