@@ -261,6 +261,7 @@ public class MyUI extends UI {
 		skypeTextField.clear();
 		sexTextField.clear();
 		emailTextField.clear();
+		updateList();
 	}
 	
 	public void updateList() {
