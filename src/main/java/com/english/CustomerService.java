@@ -4,10 +4,12 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import com.english.GlobalFunctions;
 
 
 public class CustomerService {
@@ -123,6 +125,8 @@ public class CustomerService {
 				newCustomer.setLastName(split[1]);
 				newCustomer.setEmail(split[0].toLowerCase() + "@" + split[1].toLowerCase());
 				newCustomer.setBirthDate(new Date());
+				newCustomer.setEnglishLevel(ThreadLocalRandom.current().nextInt(1,6));
+				newCustomer.setSex(GlobalFunctions.convertBooleanToSex(ThreadLocalRandom.current().nextBoolean()));
 				save(newCustomer);
 			}
 		}

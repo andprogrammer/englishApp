@@ -64,13 +64,21 @@ public class CustomerForm extends FormLayout {
 	
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
-		BeanFieldGroup.bindFieldsUnbuffered(customer, this);
-		
-		//delete.setVisible(customer.isPersisted());
+		initializeGUIelements(customer);
 		setVisible(true);
-		//firstName.selectAll();
 	}
 
+	protected void initializeGUIelements(Customer customer) {
+		firstName.setValue(customer.getFirstName());
+		lastName.setValue(customer.getLastName());
+		country.setValue(customer.getCountry());
+		englishLevel.setValue(customer.getEnglishLevel());
+		skype.setValue(customer.getSkype());
+		sex.setValue(GlobalFunctions.convertSexToBoolean(customer.getSex()));
+		email.setValue(customer.getEmail());
+		description.setValue(customer.getDescription());
+	}
+	
 	protected void clearRegistrationFields() {
 		firstName.clear();
 		lastName.clear();

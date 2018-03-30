@@ -6,6 +6,11 @@ import java.util.Date;
 @SuppressWarnings("serial")
 public class Customer implements Serializable, Cloneable {
 
+	public enum Sex {
+		FEMALE,
+		MALE
+	}
+	
 	private Long id;
 	private String firstName="";
 	private String lastName="";
@@ -15,7 +20,7 @@ public class Customer implements Serializable, Cloneable {
 	private String city="";
 	private int englishLevel=0;
 	private String skype="";
-	private boolean sex=true;
+	private Sex sex=Sex.FEMALE;
 	private String email="";
 	private String description="";
 	private String password="";
@@ -92,11 +97,11 @@ public class Customer implements Serializable, Cloneable {
 		this.skype = skype;
 	}
 	
-	public boolean getSex() {
+	public Sex getSex() {
 		return sex;
 	}
 	
-	public void setSex(boolean sex) {
+	public void setSex(Sex sex) {
 		this.sex = sex;
 	}
 	

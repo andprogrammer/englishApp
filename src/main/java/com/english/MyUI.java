@@ -219,7 +219,8 @@ public class MyUI extends UI {
 	private void handleRegisterButton() {
 		registerButton.addClickListener(e->{
         	mainGrid.select(null);
-        	registrationForm.setCustomer(new Customer());
+        	//registrationForm.setFormVisible(true);
+        	registrationForm.setCustomer(new Customer()); //this is handled in saveButtonClick()
         });		
 	}
 	
@@ -239,7 +240,7 @@ public class MyUI extends UI {
         	logOutButton.setVisible(false);
         	loginStatusLabel.setValue(LOGIN_STATUS);
         });
-        logOutButton.setVisible(false);		
+        logOutButton.setVisible(false);
 	}
 	
 	private void handleClearFilterButton() {

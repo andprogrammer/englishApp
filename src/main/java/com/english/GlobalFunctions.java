@@ -1,5 +1,7 @@
 package com.english;
 
+import com.english.Customer.Sex;
+
 public class GlobalFunctions {
 
 	public static boolean isValidEmailAddress(String email) {
@@ -7,5 +9,13 @@ public class GlobalFunctions {
 		java.util.regex.Pattern regexPattern = java.util.regex.Pattern.compile(regularExpression);
 		java.util.regex.Matcher emailMatcher = regexPattern.matcher(email);
 		return emailMatcher.matches();
+	}
+	
+	public static Sex convertBooleanToSex(boolean entry) {
+		return entry ? Sex.MALE : Sex.FEMALE;
+	}
+	
+	public static boolean convertSexToBoolean(Sex entry) {
+		return entry == Sex.MALE ? true : false;
 	}
 }
