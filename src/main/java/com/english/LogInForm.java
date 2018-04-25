@@ -3,6 +3,8 @@ package com.english;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -53,11 +55,7 @@ public class LogInForm extends FormLayout {
 	}
 	
 	private boolean isLoginTextFieldAndPasswordTextFieldValid() {
-		/* TODO
-		 * if(loginTextField.isValid() == false || passwordTextField.isValid() == false) {
-			return false;
-		}*/
-		return true;
+		return (loginTextField.isValid() && passwordTextField.isValid()) ? true : false;
 	}
 	
 	private boolean isLoginAndPasswordCorrect(String login, String password) {
@@ -91,8 +89,11 @@ public class LogInForm extends FormLayout {
 			
 			if(isLoginAndPasswordCorrect(login, password)) {
 				handleLogInFormWhileLogInButtonClickSuccessfulCase(login);
+			} else {
+				Notification.show("Incorrect email or password", Type.WARNING_MESSAGE);
 			}
 		} else {
+			Notification.show("Incorrect email or password", Type.WARNING_MESSAGE);
 			handleLogInFormWhileLogInButtonClickFailureCase();
 		}
 	}
