@@ -78,8 +78,8 @@ public class LogInForm extends FormLayout {
 	}
 	
 	protected void handleLogInFormWhileLogInButtonClickFailureCase() {
-		passwordTextField.focus();
-		passwordTextField.clear();		
+		Notification.show("Incorrect email or password", Type.WARNING_MESSAGE);
+		clearTextFields();
 	}
 	
 	protected void logInButtonClick() {
@@ -89,17 +89,15 @@ public class LogInForm extends FormLayout {
 			
 			if(isLoginAndPasswordCorrect(login, password)) {
 				handleLogInFormWhileLogInButtonClickSuccessfulCase(login);
-			} else {
-				Notification.show("Incorrect email or password", Type.WARNING_MESSAGE);
+				return;
 			}
-		} else {
-			Notification.show("Incorrect email or password", Type.WARNING_MESSAGE);
-			handleLogInFormWhileLogInButtonClickFailureCase();
 		}
+		handleLogInFormWhileLogInButtonClickFailureCase();
 	}
 	
 	private void closeButtonClick() {
 		setVisible(false);
+		clearTextFields();
 	}
 	
 	public boolean showLogInFormOnButtonClick() {
