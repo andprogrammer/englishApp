@@ -14,6 +14,16 @@ import com.english.GlobalFunctions;
 
 public class CustomerService {
 
+	public enum FILTER_TYPE {
+		FIRST_NAME,
+		LAST_NAME,
+		COUNTRY,
+		ENGLISH_LEVEL,
+		SKYPE,
+		SEX,
+		EMAIL
+	}
+	
 	private static CustomerService instance;
 	private static final Logger LOGGER = Logger.getLogger(CustomerService.class.getName());
 	
@@ -35,6 +45,68 @@ public class CustomerService {
 		return findAll(null);
 	}
 
+	public synchronized List<Customer> findBy(String inputText, FILTER_TYPE inputTextType) {
+		ArrayList<Customer> filteredCustomers = new ArrayList<>();
+		for(Customer contact : contacts.values()) {
+			try {
+				filterCustomers(inputText, inputTextType, filteredCustomers, contact);
+			} catch(CloneNotSupportedException ex) {
+				Logger.getLogger(CustomerService.class.getName()).log(Level.SEVERE, "Cant clone customer in findByFirstName()", ex);
+			}
+		}
+		Collections.sort(filteredCustomers, new Comparator<Customer>() {
+			@Override
+			public int compare(Customer o1, Customer o2) {
+				return (int) (o2.getId() - o1.getId());
+			}
+		});
+		return filteredCustomers;
+	}
+
+	private void filterCustomers(String inputText, FILTER_TYPE inputTextType, ArrayList<Customer> filteredCustomers,
+			Customer contact) throws CloneNotSupportedException {
+		boolean passesFilter = (inputText == null || inputText.isEmpty());
+		String contactData = new String();
+		switch(inputTextType)
+		{
+		case FIRST_NAME: {
+			contactData = contact.getFirstName();
+			break;
+		}
+		case LAST_NAME: {
+			contactData = contact.getLastName();
+			break;
+		}
+		case COUNTRY: {
+			contactData = contact.getCountry();
+			break;
+		}
+		case ENGLISH_LEVEL: {
+			contactData = Integer.toString(contact.getEnglishLevel());
+			break;
+		}
+		case SKYPE: {
+			contactData = contact.getSkype();
+			break;
+		}
+		case SEX: {
+			passesFilter = contact.getSex().name().toLowerCase().equals(inputText.toLowerCase());
+			break;
+		}
+		case EMAIL: {
+			contactData = contact.getEmail();
+			break;
+		}
+		default:
+			break;
+		}
+		
+		passesFilter = passesFilter || contactData.toLowerCase().contains(inputText.toLowerCase());
+		if(passesFilter) {
+			filteredCustomers.add(contact.clone());
+		}
+	}
+	
 	public synchronized List<Customer> findAll(String filter) {
 		ArrayList<Customer> arrayList = new ArrayList<>();
 		for(Customer contact : contacts.values()) {

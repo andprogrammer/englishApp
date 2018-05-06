@@ -124,32 +124,32 @@ public class MyUI extends UI {
 	private void handleTextFieldsFiltering() {
         firstNameTextField.setInputPrompt("filtered by first name");
         firstNameTextField.addTextChangeListener(e->{
-        	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findAll(e.getText())));
+        	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.FIRST_NAME)));
         });
         
         lastNameTextField.setInputPrompt("filtered by last name");
         lastNameTextField.addTextChangeListener(e->{
-        	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findAll(e.getText())));
+        	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.LAST_NAME)));
         });
         
         countryTextField.setInputPrompt("filtered by country");
         countryTextField.addTextChangeListener(e->{
-        	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findAll(e.getText())));
+        	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.COUNTRY)));
         });
         
         englishLevelTextField.setInputPrompt("filtered by english level");
         englishLevelTextField.addTextChangeListener(e->{
-        	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findAll(e.getText())));
+        	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.ENGLISH_LEVEL)));
         });
         
         skypeTextField.setInputPrompt("filtered by skype");
         skypeTextField.addTextChangeListener(e->{
-        	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findAll(e.getText())));
+        	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.SKYPE)));
         });
         
         sexTextField.setInputPrompt("filtered by sex");
         sexTextField.addTextChangeListener(e->{
-        	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findAll(e.getText())));
+        	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.SEX)));
         });
         
         emailTextField.setInputPrompt("filtered by email");
