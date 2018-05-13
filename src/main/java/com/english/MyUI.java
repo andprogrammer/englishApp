@@ -218,20 +218,32 @@ public class MyUI extends UI {
         						emailTextField,
         						clearFilterEmailButton);
 	}
-	
+
+	private void setFormsToInvisible() {
+		mainGrid.select(null);
+		registrationForm.setVisible(false);
+		logInForm.setVisible(false);
+		customerForm.setVisible(false);
+	}
+
 	private void handleRegisterButton() {
 		registerButton.addClickListener(e->{
-        	mainGrid.select(null);
-        	//registrationForm.setFormVisible(true);
-        	registrationForm.setCustomer(new Customer()); //this is handled in saveButtonClick()
+			if(registrationForm.isVisible()) setFormsToInvisible();
+			else {
+				setFormsToInvisible();
+				registrationForm.setCustomer(new Customer()); //this is handled in saveButtonClick()
+			}
         });		
 	}
 	
 	private void handleLogInButton() {
         logInButton.addClickListener(e->{
-        	mainGrid.select(null);
-        	logInForm.showLogInFormOnButtonClick();
-        });		
+        	if(logInForm.isVisible()) setFormsToInvisible();
+			else {
+				setFormsToInvisible();
+				logInForm.showLogInFormOnButtonClick();
+			}
+        });
 	}
 
 	private void handleLogOutButton() {
@@ -289,7 +301,7 @@ public class MyUI extends UI {
 		
 		mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customers));
 	}
-	
+
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
     @VaadinServletConfiguration(ui = MyUI.class, productionMode = false)
     public static class MyUIServlet extends VaadinServlet {
