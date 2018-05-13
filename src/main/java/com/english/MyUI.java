@@ -115,22 +115,20 @@ public class MyUI extends UI {
 	}
 
 	private void handleTextFieldsFiltering() {
-        firstNameTextField.setInputPrompt("filter by first name");
+		setFilterInputPrompt();
+
         firstNameTextField.addTextChangeListener(e->{
         	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.FIRST_NAME)));
         });
 
-        lastNameTextField.setInputPrompt("filter by last name");
         lastNameTextField.addTextChangeListener(e->{
         	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.LAST_NAME)));
         });
 
-        countryTextField.setInputPrompt("filter by country");
         countryTextField.addTextChangeListener(e->{
         	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.COUNTRY)));
         });
 
-		englishLevelComboBox.setInputPrompt("filter by english level");
 		englishLevelComboBox.addItem(1);
 		englishLevelComboBox.addItem(2);
 		englishLevelComboBox.addItem(3);
@@ -141,12 +139,10 @@ public class MyUI extends UI {
 			mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(getFilterEnglishLevel(), CustomerService.FILTER_TYPE.ENGLISH_LEVEL)));
 		});
 
-        skypeTextField.setInputPrompt("filter by skype");
         skypeTextField.addTextChangeListener(e->{
         	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.SKYPE)));
         });
 
-		sexComboBox.setInputPrompt("filter by sex");
 		sexComboBox.addItem(true);
 		sexComboBox.addItem(false);
 		sexComboBox.setItemCaption(true, "Male");
@@ -155,7 +151,6 @@ public class MyUI extends UI {
 			mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(getFilterSex(), CustomerService.FILTER_TYPE.SEX)));
 		});
 
-        emailTextField.setInputPrompt("filter by email");
         emailTextField.addTextChangeListener(e->{
         	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findAll(e.getText())));
         });
@@ -168,6 +163,16 @@ public class MyUI extends UI {
 				skypeTextField,
 				sexComboBox,
 				emailTextField);
+	}
+
+	private void setFilterInputPrompt() {
+		firstNameTextField.setInputPrompt("filter by first name");
+		lastNameTextField.setInputPrompt("filter by last name");
+		countryTextField.setInputPrompt("filter by country");
+		englishLevelComboBox.setInputPrompt("filter by english level");
+		skypeTextField.setInputPrompt("filter by skype");
+		sexComboBox.setInputPrompt("filter by sex");
+		emailTextField.setInputPrompt("filter by email");
 	}
 
 	private String getFilterEnglishLevel() {
