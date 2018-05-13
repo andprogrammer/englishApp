@@ -62,7 +62,9 @@ public class MyUI extends UI {
         initComponents();
         handleTextFieldsFiltering();
         handleButtons();
-        
+
+		setStyleName("backgroundimage");
+
         final VerticalLayout pageLayout = new VerticalLayout();
         
         VerticalLayout toolbarLayout = new VerticalLayout(filteringLayout, loginStatusLabel, registerButton, logInButton, logOutButton, clearFilterButton);

@@ -1,26 +1,24 @@
 package com.english;
 
-import com.english.GlobalFunctions;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.themes.ValoTheme;
+import com.vaadin.ui.TextField;
 
 
 @SuppressWarnings("serial")
 public class RegistrationForm extends CustomerForm {
 	
-	private PasswordField passwordPasswordField = new PasswordField("password");
-	private PasswordField passwordConfirmationPasswordField = new PasswordField("passwordConfirmation");
+	private TextField passwordTextField = new TextField();
+	private TextField confirmPasswordTextField = new TextField();
 	
 	private Button saveButton = new Button("Save me");
 	private Button closeButton = new Button("Close me");
 	
 	private CustomerService customerService = CustomerService.getInstance();
 	private MyUI myUI;
-	
-	
+
 	public RegistrationForm(MyUI myUI) {
 		this.myUI = myUI;
 		
@@ -29,8 +27,14 @@ public class RegistrationForm extends CustomerForm {
 		
 		HorizontalLayout buttonsHorizontalLayouts = new HorizontalLayout(saveButton, closeButton);
 		buttonsHorizontalLayouts.setSpacing(true);
-		
-		addComponents(passwordPasswordField, passwordConfirmationPasswordField, buttonsHorizontalLayouts);
+
+		setTextFieldsPrompts();
+		addComponents(passwordTextField, confirmPasswordTextField, buttonsHorizontalLayouts);
+	}
+
+	private void setTextFieldsPrompts() {
+		passwordTextField.setInputPrompt("password");
+		confirmPasswordTextField.setInputPrompt("confirm password");
 	}
 
 	private void initComponents() {
@@ -41,10 +45,6 @@ public class RegistrationForm extends CustomerForm {
 		
 		saveButton.addClickListener(e->saveButtonClick());
 		closeButton.addClickListener(e->closeButtonClick());
-	}
-	
-	public void setFormVisible(boolean visible) {
-		setVisible(visible);
 	}
 	
 	private void saveButtonClick() {
@@ -72,7 +72,7 @@ public class RegistrationForm extends CustomerForm {
 		customer.setSex(GlobalFunctions.convertBooleanToSex((boolean) sex.getValue()));
 		customer.setEmail(email.getValue());
 		customer.setDescription(description.getValue());
-		customer.setPassword(passwordPasswordField.getValue());
+		customer.setPassword(passwordTextField.getValue());
 	}
 	
 	protected boolean checkContracts() {
@@ -84,11 +84,11 @@ public class RegistrationForm extends CustomerForm {
 			   Contract.isNull(sex.getValue(), "sex") ||
 			   Contract.isNull(email.getValue(), "email") ||
 			   //description could be empty
-			   Contract.isNull(passwordPasswordField.getValue(), "password");
+			   Contract.isNull(passwordTextField.getValue(), "password");
 	}
 	
 	protected boolean checkIfPasswordAndPasswordConfirmationAreTheSame() {
-		if(false == passwordPasswordField.getValue().equals(passwordConfirmationPasswordField.getValue())) {
+		if(false == passwordTextField.getValue().equals(confirmPasswordTextField.getValue())) {
 			Notification.show("Different passwords", "", Notification.Type.HUMANIZED_MESSAGE);
 			return false;
 		}
@@ -101,7 +101,7 @@ public class RegistrationForm extends CustomerForm {
 	
 	protected void clearRegistrationFields() {
 		super.clearRegistrationFields();
-		passwordPasswordField.clear();
-		passwordConfirmationPasswordField.clear();//This field is not store in Customer and it is not refreshing value
+		passwordTextField.clear();
+		confirmPasswordTextField.clear();//This field is not store in Customer and it is not refreshing value
 	}
 }

@@ -13,23 +13,29 @@ public class LogInForm extends FormLayout {
 
 	private static final long serialVersionUID = 1L;
 	
-	private TextField loginTextField = new TextField("email");
-	private TextField passwordTextField = new TextField("password");
+	private TextField emailTextField = new TextField();
+	private TextField passwordTextField = new TextField();
 	
 	private Button logInButton = new Button("Log me");
 	private Button closeButton = new Button("Close me");
 	
 	private MyUI myUI;
 	
-	
+
 	public LogInForm(MyUI myUI) {
 		this.myUI = myUI;
 		
 		initComponents();
 		setSizeUndefined();
-		addComponents(loginTextField, passwordTextField, logInButton, closeButton);
+		setTextFieldsPrompt();
+		addComponents(emailTextField, passwordTextField, logInButton, closeButton);
 	}
-	
+
+	private void setTextFieldsPrompt() {
+		emailTextField.setInputPrompt("email");
+		passwordTextField.setInputPrompt("password");
+	}
+
 	private void initComponents() {
 		logInButton.setStyleName(ValoTheme.BUTTON_PRIMARY);
 		logInButton.setClickShortcut(KeyCode.ENTER);
@@ -40,7 +46,7 @@ public class LogInForm extends FormLayout {
 	}
 	
 	protected void clearTextFields() {
-		loginTextField.clear();
+		emailTextField.clear();
 		passwordTextField.clear();
 	}
 	
@@ -55,7 +61,7 @@ public class LogInForm extends FormLayout {
 	}
 	
 	private boolean isLoginTextFieldAndPasswordTextFieldValid() {
-		return (loginTextField.isValid() && passwordTextField.isValid()) ? true : false;
+		return (emailTextField.isValid() && passwordTextField.isValid()) ? true : false;
 	}
 	
 	private boolean isLoginAndPasswordCorrect(String login, String password) {
@@ -84,7 +90,7 @@ public class LogInForm extends FormLayout {
 	
 	protected void logInButtonClick() {
 		if (isLoginTextFieldAndPasswordTextFieldValid()) {		
-			String login = loginTextField.getValue();
+			String login = emailTextField.getValue();
 			String password = passwordTextField.getValue();
 			
 			if(isLoginAndPasswordCorrect(login, password)) {
@@ -100,9 +106,8 @@ public class LogInForm extends FormLayout {
 		clearTextFields();
 	}
 	
-	public boolean showLogInFormOnButtonClick() {
-		loginTextField.focus();
+	public void showLogInFormOnButtonClick() {
+		//emailTextField.focus();
 		setVisible(true);
-		return true;
 	}
 }

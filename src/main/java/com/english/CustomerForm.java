@@ -14,14 +14,14 @@ import com.vaadin.data.fieldgroup.BeanFieldGroup;
 @SuppressWarnings("serial")
 public class CustomerForm extends FormLayout {
 	
-	protected TextField firstName = new TextField("First name");
-	protected TextField lastName = new TextField("Last name");
-	protected TextField country = new TextField("Coutry");
-	protected ComboBox englishLevel = new ComboBox("English level");
-	protected TextField skype = new TextField("Skype");
-	protected ComboBox sex = new ComboBox("Sex");
-	protected TextField email = new TextField("Email");
-	protected TextArea description = new TextArea("Description");
+	protected TextField firstName = new TextField();
+	protected TextField lastName = new TextField();
+	protected TextField country = new TextField();
+	protected ComboBox englishLevel = new ComboBox();
+	protected TextField skype = new TextField();
+	protected ComboBox sex = new ComboBox();
+	protected TextField email = new TextField();
+	protected TextArea description = new TextArea();
 	
 	//private Button save = new Button("Save");
 	//private Button delete = new Button("Delete");
@@ -38,7 +38,9 @@ public class CustomerForm extends FormLayout {
 		
 		//save.addClickListener(e->save());
 		//delete.addClickListener(e->delete());
-		
+
+		setTextFieldsPrompts();
+
 		englishLevel.addItem(1);
 		englishLevel.addItem(2);
 		englishLevel.addItem(3);
@@ -52,7 +54,7 @@ public class CustomerForm extends FormLayout {
 		sex.setItemCaption(true, "Male");
 		sex.setItemCaption(false, "Female");
 		sex.setNullSelectionAllowed(false);
-		
+
 		description.setRows(10);
 		description.setSizeFull();
 		
@@ -61,7 +63,18 @@ public class CustomerForm extends FormLayout {
 		//buttonsHorizontalLayouts.setSpacing(true);
 		addComponents(firstName, lastName, country, englishLevel, skype, sex, email, description);
 	}
-	
+
+	private void setTextFieldsPrompts() {
+		firstName.setInputPrompt("First name");
+		lastName.setInputPrompt("Last name");
+		country.setInputPrompt("Country");
+		englishLevel.setInputPrompt("English level");
+		skype.setInputPrompt("Skype");
+		sex.setInputPrompt("Sex");
+		email.setInputPrompt("Email");
+		description.setInputPrompt("Description");
+	}
+
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 		initializeGUIelements(customer);
