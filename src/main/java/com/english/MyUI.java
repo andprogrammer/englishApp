@@ -1,24 +1,14 @@
 package com.english;
 
-import javax.servlet.annotation.WebServlet;
-
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
-import com.vaadin.server.FontAwesome;
+import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.ui.ComboBox;
 
+import javax.servlet.annotation.WebServlet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +33,7 @@ public class MyUI extends UI {
 	private TextField firstNameTextField = new TextField();
 	private TextField lastNameTextField = new TextField();
 	private TextField countryTextField = new TextField();
-	private TextField englishLevelTextField = new TextField();
+	private ComboBox englishLevelComboBox = new ComboBox();
 	private TextField skypeTextField = new TextField();
 	private ComboBox sexComboBox = new ComboBox();
 	private TextField emailTextField = new TextField();
@@ -140,10 +130,16 @@ public class MyUI extends UI {
         	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.COUNTRY)));
         });
 
-        englishLevelTextField.setInputPrompt("filter by english level");
-        englishLevelTextField.addTextChangeListener(e->{
-        	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.ENGLISH_LEVEL)));
-        });
+		englishLevelComboBox.setInputPrompt("filter by english level");
+		englishLevelComboBox.addItem(1);
+		englishLevelComboBox.addItem(2);
+		englishLevelComboBox.addItem(3);
+		englishLevelComboBox.addItem(4);
+		englishLevelComboBox.addItem(5);
+		englishLevelComboBox.addItem(6);
+		englishLevelComboBox.addValueChangeListener(e->{
+			mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(getFilterEnglishLevel(), CustomerService.FILTER_TYPE.ENGLISH_LEVEL)));
+		});
 
         skypeTextField.setInputPrompt("filter by skype");
         skypeTextField.addTextChangeListener(e->{
@@ -168,10 +164,14 @@ public class MyUI extends UI {
         filteringLayout.addComponents(firstNameTextField,
 				lastNameTextField,
 				countryTextField,
-				englishLevelTextField,
+				englishLevelComboBox,
 				skypeTextField,
 				sexComboBox,
 				emailTextField);
+	}
+
+	private String getFilterEnglishLevel() {
+		return null == englishLevelComboBox.getValue() ? "" : Integer.toString((Integer) englishLevelComboBox.getValue());
 	}
 
 	private String getFilterSex() {
@@ -232,7 +232,7 @@ public class MyUI extends UI {
 		firstNameTextField.clear();
 		lastNameTextField.clear();
 		countryTextField.clear();
-		englishLevelTextField.clear();
+		englishLevelComboBox.clear();
 		skypeTextField.clear();
 		sexComboBox.clear();
 		emailTextField.clear();
@@ -245,7 +245,7 @@ public class MyUI extends UI {
 		List<Customer> customersFilteredByFirstName = customerService.findAll(firstNameTextField.getValue());
 		List<Customer> customersFilteredByLastName = customerService.findAll(lastNameTextField.getValue());
 		List<Customer> customersFilteredByCountry = customerService.findAll(countryTextField.getValue());
-		List<Customer> customersFilteredByEnglishLevel = customerService.findAll(englishLevelTextField.getValue());
+		List<Customer> customersFilteredByEnglishLevel = customerService.findAll(getFilterEnglishLevel());
 		List<Customer> customersFilteredBySkype = customerService.findAll(skypeTextField.getValue());
 		List<Customer> customersFilteredBySex = customerService.findAll(getFilterSex());
 		List<Customer> customersFilteredByEmail = customerService.findAll(emailTextField.getValue());
