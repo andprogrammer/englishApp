@@ -19,4 +19,6 @@ public class GlobalFunctions {
 	public static boolean convertSexToBoolean(Sex entry) {
 		return entry == Sex.MALE ? true : false;
 	}
+
+	public static String convertBooleanToString(boolean entry) { return entry ? "MALE" : "FEMALE"; }
 }
