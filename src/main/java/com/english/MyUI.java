@@ -38,6 +38,7 @@ public class MyUI extends UI {
 	private ComboBox sexComboBox = new ComboBox();
 	private TextField emailTextField = new TextField();
 	private Label loginStatusLabel = new Label();
+	private Label filterByLabel = new Label("Filter by:");
 	private Button registerButton = new Button("Register me");
 	private Button logInButton = new Button("Log me");
 	private Button logOutButton = new Button("Log out me");
@@ -58,7 +59,7 @@ public class MyUI extends UI {
 
         final VerticalLayout pageLayout = new VerticalLayout();
 
-        VerticalLayout toolbarLayout = new VerticalLayout(filteringLayout, loginStatusLabel, registerButton, logInButton, logOutButton, clearFilterButton);
+        VerticalLayout toolbarLayout = new VerticalLayout(filterByLabel, filteringLayout, loginStatusLabel, registerButton, logInButton, logOutButton, clearFilterButton);
         toolbarLayout.setSpacing(true);
 
         mainGrid.setColumns("firstName", "lastName", "country", "englishLevel", "skype", "sex", "email");
@@ -166,13 +167,13 @@ public class MyUI extends UI {
 	}
 
 	private void setFiltersInputPrompt() {
-		firstNameTextField.setInputPrompt("filter by first name");
-		lastNameTextField.setInputPrompt("filter by last name");
-		countryTextField.setInputPrompt("filter by country");
-		englishLevelComboBox.setInputPrompt("filter by english level");
-		skypeTextField.setInputPrompt("filter by skype");
-		sexComboBox.setInputPrompt("filter by sex");
-		emailTextField.setInputPrompt("filter by email");
+		firstNameTextField.setInputPrompt("first name");
+		lastNameTextField.setInputPrompt("last name");
+		countryTextField.setInputPrompt("country");
+		englishLevelComboBox.setInputPrompt("english level");
+		skypeTextField.setInputPrompt("skype");
+		sexComboBox.setInputPrompt("sex");
+		emailTextField.setInputPrompt("email");
 	}
 
 	private String getFilterEnglishLevel() {
