@@ -115,7 +115,7 @@ public class MyUI extends UI {
 	}
 
 	private void handleTextFieldsFiltering() {
-		setFilterInputPrompt();
+		setFiltersInputPrompt();
 
         firstNameTextField.addTextChangeListener(e->{
         	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.FIRST_NAME)));
@@ -165,7 +165,7 @@ public class MyUI extends UI {
 				emailTextField);
 	}
 
-	private void setFilterInputPrompt() {
+	private void setFiltersInputPrompt() {
 		firstNameTextField.setInputPrompt("filter by first name");
 		lastNameTextField.setInputPrompt("filter by last name");
 		countryTextField.setInputPrompt("filter by country");
