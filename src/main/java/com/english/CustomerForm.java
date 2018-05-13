@@ -1,14 +1,9 @@
 package com.english;
 
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.themes.ValoTheme;
-import com.vaadin.event.ShortcutAction.KeyCode;
-import com.vaadin.ui.Button;
-import com.vaadin.data.fieldgroup.BeanFieldGroup;
 
 
 @SuppressWarnings("serial")

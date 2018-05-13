@@ -2,6 +2,7 @@ package com.english;
 
 import com.vaadin.ui.Notification;
 
+
 public class Contract {
 	public static boolean isNull(Object entry, String objectName) {
 		if(entry == null || entry.toString().isEmpty()) { 

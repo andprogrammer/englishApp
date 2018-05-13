@@ -1,15 +1,9 @@
 package com.english;
 
-import java.util.logging.Logger;
-import java.util.logging.Level;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import com.english.GlobalFunctions;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class CustomerService {
@@ -109,54 +103,36 @@ public class CustomerService {
 	
 	public synchronized List<Customer> findAll(String filter) {
 		ArrayList<Customer> arrayList = new ArrayList<>();
-		for(Customer contact : contacts.values()) {
-			try {
-				boolean passesFilter = (filter == null || filter.isEmpty())
-						|| contact.toString().toLowerCase().contains(filter.toLowerCase());
-				if(passesFilter) {
-					arrayList.add(contact.clone());
-				}
-			} catch(CloneNotSupportedException ex) {
-				Logger.getLogger(CustomerService.class.getName()).log(Level.SEVERE, null, ex);
-			}
-		}
-		Collections.sort(arrayList, new Comparator<Customer>() {
-			
-			@Override
-			public int compare(Customer o1, Customer o2) {
-				return (int) (o2.getId() - o1.getId());
-			}
-		});
+		filterContacts(filter, arrayList);
+		Collections.sort(arrayList, (o1, o2) -> (int) (o2.getId() - o1.getId()));
 		return arrayList;
 	}
 	
 	public synchronized List<Customer> findAll(String filter, int start, int maxResults) {
 		ArrayList<Customer> arrayList = new ArrayList<>();
-		for(Customer contact : contacts.values()) {
-			try {
-				boolean passesFilter = (filter == null || filter.isEmpty())
-						|| contact.toString().toLowerCase().contains(filter.toLowerCase());
-				if(passesFilter) {
-					arrayList.add(contact.clone());
-				}
-			} catch(CloneNotSupportedException ex) {
-				Logger.getLogger(CustomerService.class.getName()).log(Level.SEVERE, null, ex);
-			}
-		}
-		Collections.sort(arrayList, new Comparator<Customer>() {
-			
-			@Override
-			public int compare(Customer o1, Customer o2) {
-				return (int) (o1.getId() - o2.getId());
-			}
-		});
+		filterContacts(filter, arrayList);
+		Collections.sort(arrayList, (o1, o2) -> (int) (o1.getId() - o2.getId()));
 		int end = start + maxResults;
 		if(end > arrayList.size()) {
 			end = arrayList.size();
 		}
 		return arrayList.subList(start, end);
 	}
-	
+
+	private void filterContacts(String filter, ArrayList<Customer> arrayList) {
+		for(Customer contact : contacts.values()) {
+			try {
+				boolean passesFilter = (filter == null || filter.isEmpty())
+						|| contact.toString().toLowerCase().contains(filter.toLowerCase());
+				if(passesFilter) {
+					arrayList.add(contact.clone());
+				}
+			} catch(CloneNotSupportedException ex) {
+				Logger.getLogger(CustomerService.class.getName()).log(Level.SEVERE, null, ex);
+			}
+		}
+	}
+
 	public synchronized long count() {
 		return contacts.size();
 	}
@@ -174,7 +150,7 @@ public class CustomerService {
 			entry.setId(++nextId);
 		}
 		try {
-			entry = (Customer) entry.clone();
+			entry = entry.clone();
 		} catch(Exception ex) {
 			throw new RuntimeException(ex);
 		}
