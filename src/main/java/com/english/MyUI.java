@@ -125,98 +125,49 @@ public class MyUI extends UI {
 	}
 	
 	private void handleTextFieldsFiltering() {
-        firstNameTextField.setInputPrompt("filtered by first name");
+        firstNameTextField.setInputPrompt("filter by first name");
         firstNameTextField.addTextChangeListener(e->{
         	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.FIRST_NAME)));
         });
         
-        lastNameTextField.setInputPrompt("filtered by last name");
+        lastNameTextField.setInputPrompt("filter by last name");
         lastNameTextField.addTextChangeListener(e->{
         	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.LAST_NAME)));
         });
         
-        countryTextField.setInputPrompt("filtered by country");
+        countryTextField.setInputPrompt("filter by country");
         countryTextField.addTextChangeListener(e->{
         	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.COUNTRY)));
         });
         
-        englishLevelTextField.setInputPrompt("filtered by english level");
+        englishLevelTextField.setInputPrompt("filter by english level");
         englishLevelTextField.addTextChangeListener(e->{
         	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.ENGLISH_LEVEL)));
         });
         
-        skypeTextField.setInputPrompt("filtered by skype");
+        skypeTextField.setInputPrompt("filter by skype");
         skypeTextField.addTextChangeListener(e->{
         	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.SKYPE)));
         });
         
-        sexTextField.setInputPrompt("filtered by sex");
+        sexTextField.setInputPrompt("filter by sex");
         sexTextField.addTextChangeListener(e->{
         	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.SEX)));
         });
         
-        emailTextField.setInputPrompt("filtered by email");
+        emailTextField.setInputPrompt("filter by email");
         emailTextField.addTextChangeListener(e->{
         	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findAll(e.getText())));
         });
-        
-        Button clearFilterFirstNameButton = new Button(FontAwesome.TIMES);
-        clearFilterFirstNameButton.addClickListener(e->{
-        	firstNameTextField.clear();
-        	updateList();
-        });
-        
-        Button clearFilterLastNameButton = new Button(FontAwesome.TIMES);
-        clearFilterLastNameButton.addClickListener(e->{
-        	lastNameTextField.clear();
-        	updateList();
-        });
-        
-        Button clearFilterCountryButton = new Button(FontAwesome.TIMES);
-        clearFilterCountryButton.addClickListener(e->{
-        	countryTextField.clear();
-        	updateList();
-        });
-        
-        Button clearFilterEnglishLevelButton = new Button(FontAwesome.TIMES);
-        clearFilterEnglishLevelButton.addClickListener(e->{
-        	englishLevelTextField.clear();
-        	updateList();
-        });
-        
-        Button clearFilterSkypeButton = new Button(FontAwesome.TIMES);
-        clearFilterSkypeButton.addClickListener(e->{
-        	skypeTextField.clear();
-        	updateList();
-        });
-        
-        Button clearFilterSexButton = new Button(FontAwesome.TIMES);
-        clearFilterSexButton.addClickListener(e->{
-        	sexTextField.clear();
-        	updateList();
-        });
-        
-        Button clearFilterEmailButton = new Button(FontAwesome.TIMES);
-        clearFilterEmailButton.addClickListener(e->{
-        	emailTextField.clear();
-        	updateList();
-        });
 
         filteringLayout.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-        filteringLayout.addComponents(firstNameTextField, 
-        						clearFilterFirstNameButton, 
-        						lastNameTextField, 
-        						clearFilterLastNameButton,
+        filteringLayout.addComponents(firstNameTextField,
+        						lastNameTextField,
         						countryTextField,
-        						clearFilterCountryButton,
         						englishLevelTextField,
-        						clearFilterEnglishLevelButton,
         						skypeTextField,
-        						clearFilterSkypeButton,
         						sexTextField,
-        						clearFilterSexButton,
-        						emailTextField,
-        						clearFilterEmailButton);
+        						emailTextField);
 	}
 
 	private void setFormsToInvisible() {
