@@ -14,7 +14,7 @@ public class CustomerService {
 		COUNTRY,
 		ENGLISH_LEVEL,
 		SKYPE,
-		SEX,
+		GENDER,
 		EMAIL
 	}
 	
@@ -83,8 +83,8 @@ public class CustomerService {
 			contactData = contact.getSkype();
 			break;
 		}
-		case SEX: {
-			passesFilter = contact.getSex().name().toLowerCase().equals(inputText.toLowerCase());
+		case GENDER: {
+			passesFilter = contact.getGender().name().toLowerCase().equals(inputText.toLowerCase());
 			break;
 		}
 		case EMAIL: {
@@ -174,7 +174,7 @@ public class CustomerService {
 				newCustomer.setEmail(split[0].toLowerCase() + "@" + split[1].toLowerCase());
 				newCustomer.setBirthDate(new Date());
 				newCustomer.setEnglishLevel(ThreadLocalRandom.current().nextInt(1,6));
-				newCustomer.setSex(GlobalFunctions.convertBooleanToSex(ThreadLocalRandom.current().nextBoolean()));
+				newCustomer.setGender(GlobalFunctions.convertBooleanToGender(ThreadLocalRandom.current().nextBoolean()));
 				save(newCustomer);
 			}
 		}

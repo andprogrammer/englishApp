@@ -35,7 +35,7 @@ public class MyUI extends UI {
 	private TextField countryTextField = new TextField();
 	private ComboBox englishLevelComboBox = new ComboBox();
 	private TextField skypeTextField = new TextField();
-	private ComboBox sexComboBox = new ComboBox();
+	private ComboBox genderComboBox = new ComboBox();
 	private TextField emailTextField = new TextField();
 	private Label loginStatusLabel = new Label();
 	private Label filterByLabel = new Label("Filter by:");
@@ -62,7 +62,7 @@ public class MyUI extends UI {
         VerticalLayout toolbarLayout = new VerticalLayout(filterByLabel, filteringLayout, loginStatusLabel, registerButton, logInButton, logOutButton, clearFilterButton);
         toolbarLayout.setSpacing(true);
 
-        mainGrid.setColumns("firstName", "lastName", "country", "englishLevel", "skype", "sex", "email");
+        mainGrid.setColumns("firstName", "lastName", "country", "englishLevel", "skype", "gender", "email");
 
         HorizontalLayout mainLayout = new HorizontalLayout(mainGrid, customerForm, registrationForm, logInForm);
         mainLayout.setSpacing(true);
@@ -144,12 +144,12 @@ public class MyUI extends UI {
         	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.SKYPE)));
         });
 
-		sexComboBox.addItem(true);
-		sexComboBox.addItem(false);
-		sexComboBox.setItemCaption(true, "Male");
-		sexComboBox.setItemCaption(false, "Female");
-		sexComboBox.addValueChangeListener(e->{
-			mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(getFilterSex(), CustomerService.FILTER_TYPE.SEX)));
+		genderComboBox.addItem(true);
+		genderComboBox.addItem(false);
+		genderComboBox.setItemCaption(true, "Male");
+		genderComboBox.setItemCaption(false, "Female");
+		genderComboBox.addValueChangeListener(e->{
+			mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(getFilterGender(), CustomerService.FILTER_TYPE.GENDER)));
 		});
 
         emailTextField.addTextChangeListener(e->{
@@ -162,7 +162,7 @@ public class MyUI extends UI {
 				countryTextField,
 				englishLevelComboBox,
 				skypeTextField,
-				sexComboBox,
+				genderComboBox,
 				emailTextField);
 	}
 
@@ -172,7 +172,7 @@ public class MyUI extends UI {
 		countryTextField.setInputPrompt("country");
 		englishLevelComboBox.setInputPrompt("english level");
 		skypeTextField.setInputPrompt("skype");
-		sexComboBox.setInputPrompt("sex");
+		genderComboBox.setInputPrompt("gender");
 		emailTextField.setInputPrompt("email");
 	}
 
@@ -180,8 +180,8 @@ public class MyUI extends UI {
 		return null == englishLevelComboBox.getValue() ? "" : Integer.toString((Integer) englishLevelComboBox.getValue());
 	}
 
-	private String getFilterSex() {
-		return null == sexComboBox.getValue() ? "" : GlobalFunctions.convertBooleanToString((boolean) sexComboBox.getValue());
+	private String getFilterGender() {
+		return null == genderComboBox.getValue() ? "" : GlobalFunctions.convertBooleanToString((boolean) genderComboBox.getValue());
 	}
 
 	private void setFormsToInvisible() {
@@ -240,7 +240,7 @@ public class MyUI extends UI {
 		countryTextField.clear();
 		englishLevelComboBox.clear();
 		skypeTextField.clear();
-		sexComboBox.clear();
+		genderComboBox.clear();
 		emailTextField.clear();
 		updateList();
 	}
@@ -253,7 +253,7 @@ public class MyUI extends UI {
 		List<Customer> customersFilteredByCountry = customerService.findAll(countryTextField.getValue());
 		List<Customer> customersFilteredByEnglishLevel = customerService.findAll(getFilterEnglishLevel());
 		List<Customer> customersFilteredBySkype = customerService.findAll(skypeTextField.getValue());
-		List<Customer> customersFilteredBySex = customerService.findAll(getFilterSex());
+		List<Customer> customersFilteredByGender = customerService.findAll(getFilterGender());
 		List<Customer> customersFilteredByEmail = customerService.findAll(emailTextField.getValue());
 
 		customers.addAll(customersFilteredByFirstName);
@@ -261,7 +261,7 @@ public class MyUI extends UI {
 		customers.addAll(customersFilteredByCountry);
 		customers.addAll(customersFilteredByEnglishLevel);
 		customers.addAll(customersFilteredBySkype);
-		customers.addAll(customersFilteredBySex);
+		customers.addAll(customersFilteredByGender);
 		customers.addAll(customersFilteredByEmail);
 
 		mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customers));

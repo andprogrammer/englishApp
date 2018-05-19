@@ -69,7 +69,7 @@ public class RegistrationForm extends CustomerForm {
 		customer.setCountry(country.getValue());
 		customer.setEnglishLevel((int) englishLevel.getValue());
 		customer.setSkype(skype.getValue());
-		customer.setSex(GlobalFunctions.convertBooleanToSex((boolean) sex.getValue()));
+		customer.setGender(GlobalFunctions.convertBooleanToGender((boolean) gender.getValue()));
 		customer.setEmail(email.getValue());
 		customer.setDescription(description.getValue());
 		customer.setPassword(passwordTextField.getValue());
@@ -81,7 +81,7 @@ public class RegistrationForm extends CustomerForm {
 			   Contract.isNull(country, "country") ||
 			   Contract.isNull(englishLevel.getValue(), "english level") ||
 			   Contract.isNull(skype.getValue(), "skype") ||
-			   Contract.isNull(sex.getValue(), "sex") ||
+			   Contract.isNull(gender.getValue(), "gender") ||
 			   Contract.isNull(email.getValue(), "email") ||
 			   //description could be empty
 			   Contract.isNull(passwordTextField.getValue(), "password");

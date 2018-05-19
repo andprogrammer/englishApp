@@ -1,6 +1,6 @@
 package com.english;
 
-import com.english.Customer.Sex;
+import com.english.Customer.Gender;
 
 
 public class GlobalFunctions {
@@ -12,12 +12,12 @@ public class GlobalFunctions {
 		return emailMatcher.matches();
 	}
 	
-	public static Sex convertBooleanToSex(boolean entry) {
-		return entry ? Sex.MALE : Sex.FEMALE;
+	public static Customer.Gender convertBooleanToGender(boolean entry) {
+		return entry ? Gender.MALE : Gender.FEMALE;
 	}
 	
-	public static boolean convertSexToBoolean(Sex entry) {
-		return entry == Sex.MALE ? true : false;
+	public static boolean convertGenderToBoolean(Customer.Gender entry) {
+		return entry == Gender.MALE ? true : false;
 	}
 
 	public static String convertBooleanToString(boolean entry) { return entry ? "MALE" : "FEMALE"; }

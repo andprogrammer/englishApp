@@ -14,7 +14,7 @@ public class CustomerForm extends FormLayout {
 	protected TextField country = new TextField();
 	protected ComboBox englishLevel = new ComboBox();
 	protected TextField skype = new TextField();
-	protected ComboBox sex = new ComboBox();
+	protected ComboBox gender = new ComboBox();
 	protected TextField email = new TextField();
 	protected TextArea description = new TextArea();
 	
@@ -43,12 +43,12 @@ public class CustomerForm extends FormLayout {
 		englishLevel.addItem(5);
 		englishLevel.addItem(6);
 		englishLevel.setNullSelectionAllowed(false);
-		
-		sex.addItem(true);
-		sex.addItem(false);
-		sex.setItemCaption(true, "Male");
-		sex.setItemCaption(false, "Female");
-		sex.setNullSelectionAllowed(false);
+
+		gender.addItem(true);
+		gender.addItem(false);
+		gender.setItemCaption(true, "Male");
+		gender.setItemCaption(false, "Female");
+		gender.setNullSelectionAllowed(false);
 
 		description.setRows(10);
 		description.setSizeFull();
@@ -56,7 +56,7 @@ public class CustomerForm extends FormLayout {
 		setSizeUndefined();
 		//HorizontalLayout buttonsHorizontalLayouts = new HorizontalLayout(save, delete);
 		//buttonsHorizontalLayouts.setSpacing(true);
-		addComponents(firstName, lastName, country, englishLevel, skype, sex, email, description);
+		addComponents(firstName, lastName, country, englishLevel, skype, gender, email, description);
 	}
 
 	private void setTextFieldsPrompts() {
@@ -65,7 +65,7 @@ public class CustomerForm extends FormLayout {
 		country.setInputPrompt("Country");
 		englishLevel.setInputPrompt("English level");
 		skype.setInputPrompt("Skype");
-		sex.setInputPrompt("Sex");
+        gender.setInputPrompt("Gender");
 		email.setInputPrompt("Email");
 		description.setInputPrompt("Description");
 	}
@@ -82,7 +82,7 @@ public class CustomerForm extends FormLayout {
 		country.setValue(customer.getCountry());
 		englishLevel.setValue(customer.getEnglishLevel());
 		skype.setValue(customer.getSkype());
-		sex.setValue(GlobalFunctions.convertSexToBoolean(customer.getSex()));
+        gender.setValue(GlobalFunctions.convertGenderToBoolean(customer.getGender()));
 		email.setValue(customer.getEmail());
 		description.setValue(customer.getDescription());
 	}
@@ -93,7 +93,7 @@ public class CustomerForm extends FormLayout {
 		country.clear();
 		englishLevel.clear();
 		skype.clear();
-		sex.clear();
+        gender.clear();
 		email.clear();
 		description.clear();
 	}

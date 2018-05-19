@@ -7,7 +7,7 @@ import java.util.Date;
 @SuppressWarnings("serial")
 public class Customer implements Serializable, Cloneable {
 
-	public enum Sex {
+	public enum Gender {
 		FEMALE,
 		MALE
 	}
@@ -21,7 +21,7 @@ public class Customer implements Serializable, Cloneable {
 	private String city="";
 	private int englishLevel=0;
 	private String skype="";
-	private Sex sex=Sex.FEMALE;
+	private Gender gender =Gender.FEMALE;
 	private String email="";
 	private String description="";
 	private String password="";
@@ -98,12 +98,12 @@ public class Customer implements Serializable, Cloneable {
 		this.skype = skype;
 	}
 	
-	public Sex getSex() {
-		return sex;
+	public Gender getGender() {
+		return gender;
 	}
 	
-	public void setSex(Sex sex) {
-		this.sex = sex;
+	public void setGender(Gender gender) {
+		this.gender = gender;
 	}
 	
 	public String getEmail() {
@@ -162,6 +162,6 @@ public class Customer implements Serializable, Cloneable {
 	
 	@Override
 	public String toString() {
-		return firstName + " " + lastName + " " + country + " " + englishLevel + " " + skype + " " + sex + " " + email;
+		return firstName + " " + lastName + " " + country + " " + englishLevel + " " + skype + " " + gender + " " + email;
 	}
 }
