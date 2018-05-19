@@ -64,25 +64,25 @@ public class RegistrationForm extends CustomerForm {
 	
 	void setCustomerValue() {
 		//TODO birthday field
-		customer.setFirstName(firstName.getValue());
-		customer.setLastName(lastName.getValue());
-		customer.setCountry(country.getValue());
-		customer.setEnglishLevel((int) englishLevel.getValue());
-		customer.setSkype(skype.getValue());
-		customer.setGender(GlobalFunctions.convertBooleanToGender((boolean) gender.getValue()));
-		customer.setEmail(email.getValue());
-		customer.setDescription(description.getValue());
+		customer.setFirstName(firstNameTextField.getValue());
+		customer.setLastName(lastNameTextField.getValue());
+		customer.setCountry(countryTextField.getValue());
+		customer.setEnglishLevel((int) englishLevelComboBox.getValue());
+		customer.setSkype(skypeTextField.getValue());
+		customer.setGender(GlobalFunctions.convertBooleanToGender((boolean) genderComboBox.getValue()));
+		customer.setEmail(emailTextField.getValue());
+		customer.setDescription(descriptionTextArea.getValue());
 		customer.setPassword(passwordTextField.getValue());
 	}
 	
 	protected boolean checkContracts() {
-		return Contract.isNull(firstName.getValue(), "first name") ||
-			   Contract.isNull(lastName.getValue(), "last name") ||
-			   Contract.isNull(country, "country") ||
-			   Contract.isNull(englishLevel.getValue(), "english level") ||
-			   Contract.isNull(skype.getValue(), "skype") ||
-			   Contract.isNull(gender.getValue(), "gender") ||
-			   Contract.isNull(email.getValue(), "email") ||
+		return Contract.isNull(firstNameTextField.getValue(), "first name") ||
+			   Contract.isNull(lastNameTextField.getValue(), "last name") ||
+			   Contract.isNull(countryTextField, "country") ||
+			   Contract.isNull(englishLevelComboBox.getValue(), "english level") ||
+			   Contract.isNull(skypeTextField.getValue(), "skype") ||
+			   Contract.isNull(genderComboBox.getValue(), "gender") ||
+			   Contract.isNull(emailTextField.getValue(), "email") ||
 			   //description could be empty
 			   Contract.isNull(passwordTextField.getValue(), "password");
 	}
