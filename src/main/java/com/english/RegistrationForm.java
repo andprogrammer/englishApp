@@ -44,7 +44,7 @@ public class RegistrationForm extends CustomerForm {
 		closeButton.setStyleName(ValoTheme.BUTTON_PRIMARY);
 		
 		saveButton.addClickListener(e->saveButtonClick());
-		closeButton.addClickListener(e->closeButtonClick());
+		closeButton.addClickListener(f->closeButtonClick());
 	}
 	
 	private void saveButtonClick() {

@@ -1,7 +1,9 @@
 package com.english;
 
-import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,10 +22,9 @@ public class CustomerService {
 	
 	private static CustomerService instance;
 	private static final Logger LOGGER = Logger.getLogger(CustomerService.class.getName());
-	
-	private final HashMap<Long, Customer> contacts = new HashMap<>();
-	private long nextId = 0;
-	
+
+	private final ArrayList<Customer> contacts = new ArrayList<>();
+
 	private CustomerService() {
 	}
 	
@@ -41,24 +42,14 @@ public class CustomerService {
 
 	public synchronized List<Customer> findBy(String inputText, FILTER_TYPE inputTextType) {
 		ArrayList<Customer> filteredCustomers = new ArrayList<>();
-		for(Customer contact : contacts.values()) {
-			try {
-				filterCustomers(inputText, inputTextType, filteredCustomers, contact);
-			} catch(CloneNotSupportedException ex) {
-				Logger.getLogger(CustomerService.class.getName()).log(Level.SEVERE, "Cant clone customer in findByFirstName()", ex);
-			}
+		for(Customer contact : contacts) {
+			filterCustomers(inputText, inputTextType, filteredCustomers, contact);
 		}
-		Collections.sort(filteredCustomers, new Comparator<Customer>() {
-			@Override
-			public int compare(Customer o1, Customer o2) {
-				return (int) (o2.getId() - o1.getId());
-			}
-		});
+		Collections.sort(filteredCustomers, (o1, o2) -> o2.getId() - o1.getId());
 		return filteredCustomers;
 	}
 
-	private void filterCustomers(String inputText, FILTER_TYPE inputTextType, ArrayList<Customer> filteredCustomers,
-			Customer contact) throws CloneNotSupportedException {
+	private void filterCustomers(String inputText, FILTER_TYPE inputTextType, ArrayList<Customer> filteredCustomers, Customer contact) {
 		boolean passesFilter = (inputText == null || inputText.isEmpty());
 		String contactData = new String();
 		switch(inputTextType)
@@ -97,21 +88,21 @@ public class CustomerService {
 		
 		passesFilter = passesFilter || contactData.toLowerCase().contains(inputText.toLowerCase());
 		if(passesFilter) {
-			filteredCustomers.add(contact.clone());
+			filteredCustomers.add(contact);
 		}
 	}
-	
+
 	public synchronized List<Customer> findAll(String filter) {
 		ArrayList<Customer> arrayList = new ArrayList<>();
 		filterContacts(filter, arrayList);
-		Collections.sort(arrayList, (o1, o2) -> (int) (o2.getId() - o1.getId()));
+		Collections.sort(arrayList, (o1, o2) -> o2.getId() - o1.getId());
 		return arrayList;
 	}
 	
 	public synchronized List<Customer> findAll(String filter, int start, int maxResults) {
 		ArrayList<Customer> arrayList = new ArrayList<>();
 		filterContacts(filter, arrayList);
-		Collections.sort(arrayList, (o1, o2) -> (int) (o1.getId() - o2.getId()));
+		Collections.sort(arrayList, Comparator.comparingInt(Customer::getId));
 		int end = start + maxResults;
 		if(end > arrayList.size()) {
 			end = arrayList.size();
@@ -120,15 +111,11 @@ public class CustomerService {
 	}
 
 	private void filterContacts(String filter, ArrayList<Customer> arrayList) {
-		for(Customer contact : contacts.values()) {
-			try {
-				boolean passesFilter = (filter == null || filter.isEmpty())
-						|| contact.toString().toLowerCase().contains(filter.toLowerCase());
-				if(passesFilter) {
-					arrayList.add(contact.clone());
-				}
-			} catch(CloneNotSupportedException ex) {
-				Logger.getLogger(CustomerService.class.getName()).log(Level.SEVERE, null, ex);
+		for(Customer contact : contacts) {
+			boolean passesFilter = (filter == null || filter.isEmpty())
+					|| contact.toString().toLowerCase().contains(filter.toLowerCase());
+			if(passesFilter) {
+				arrayList.add(contact);
 			}
 		}
 	}
@@ -146,37 +133,13 @@ public class CustomerService {
 			LOGGER.log(Level.SEVERE, "Customer is null.");
 			return;
 		}
-		if(entry.getId() == null) {
-			entry.setId(++nextId);
-		}
-		try {
-			entry = entry.clone();
-		} catch(Exception ex) {
-			throw new RuntimeException(ex);
-		}
-		contacts.put(entry.getId(), entry);
+		DBHandler.AddNewCustomerToDB(entry);
+		contacts.add(entry);
 	}
 	
 	public void ensureTestData() {
-		if(findAll().isEmpty()) {
-			final String[] names = new String[] { "Gabrielle Patel", "Brian Robinson", "Eduardo Haugen",
-					"Koen Johansen", "Alejandro Macdonald", "Angel Karlsson", "Yahir Gustavsson", "Haiden Svensson",
-					"Emily Stewart", "Corinne Davis", "Ryann Davis", "Yurem Jackson", "Kelly Gustavsson",
-					"Eileen Walker", "Katelyn Martin", "Israel Carlsson", "Quinn Hansson", "Makena Smith",
-					"Danielle Watson", "Leland Harris", "Gunner Karlsen", "Jamar Olsson", "Lara Martin",
-					"Ann Andersson", "Remington Andersson", "Rene Carlsson", "Elvis Olsen", "Solomon Olsen",
-					"Jaydan Jackson", "Bernard Nilsen" };
-			for(String name : names) {
-				String[] split = name.split(" ");
-				Customer newCustomer = new Customer();
-				newCustomer.setFirstName(split[0]);
-				newCustomer.setLastName(split[1]);
-				newCustomer.setEmail(split[0].toLowerCase() + "@" + split[1].toLowerCase());
-				newCustomer.setBirthDate(new Date());
-				newCustomer.setEnglishLevel(ThreadLocalRandom.current().nextInt(1,6));
-				newCustomer.setGender(GlobalFunctions.convertBooleanToGender(ThreadLocalRandom.current().nextBoolean()));
-				save(newCustomer);
-			}
-		}
+	    for(Customer customer : DBHandler.GetCustomerFromDB()) {
+            contacts.add(customer);
+        }
 	}
 }
