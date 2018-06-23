@@ -13,3 +13,6 @@ Requirements:
 ==============
 
 jetty, mvn, eclipse/intellij, mysql (mariaDB on Arch)
+
+
+Let's get fun!
