@@ -11,6 +11,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import javax.servlet.annotation.WebServlet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -43,6 +44,7 @@ public class MyUI extends UI {
 	private Button logInButton = new Button("Log me");
 	private Button logOutButton = new Button("Log out me");
 	private Button clearFilterButton = new Button("Clear filteres");
+	private Button editMeButton = new Button("Edit me");
 
 	private Grid mainGrid = new Grid();
 	CssLayout filteringLayout = new CssLayout();
@@ -59,7 +61,7 @@ public class MyUI extends UI {
 
         final VerticalLayout pageLayout = new VerticalLayout();
 
-        VerticalLayout toolbarLayout = new VerticalLayout(filterByLabel, filteringLayout, loginStatusLabel, registerButton, logInButton, logOutButton, clearFilterButton);
+        VerticalLayout toolbarLayout = new VerticalLayout(filterByLabel, filteringLayout, loginStatusLabel, registerButton, logInButton, logOutButton, clearFilterButton, editMeButton);
         toolbarLayout.setSpacing(true);
 
         mainGrid.setColumns("firstName", "lastName", "country", "englishLevel", "skype", "gender", "email");
@@ -105,6 +107,10 @@ public class MyUI extends UI {
 
 	public void setVisibleReigsterButton(boolean visible) {
 		registerButton.setVisible(visible);
+	}
+
+	public void setVisibleEditMeButton(boolean visible) {
+    	editMeButton.setVisible(visible);
 	}
 
 	public void setVisibleLogInButton(boolean visible) {
@@ -201,6 +207,20 @@ public class MyUI extends UI {
         });
 	}
 
+	private void handleEditMeButton() {
+    	editMeButton.addClickListener(e->{
+			if(registrationForm.isVisible()) setFormsToInvisible();
+    		else {
+				setFormsToInvisible();
+				Optional<Customer> customer = DBHandler.GetSingleCustomer((String) getSession().getAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE));
+				if (customer.isPresent()) {
+					registrationForm.setCustomer(customer.get());
+				}
+			}
+		});
+    	editMeButton.setVisible(false);
+	}
+
 	private void handleLogInButton() {
         logInButton.addClickListener(e->{
         	if(logInForm.isVisible()) setFormsToInvisible();
@@ -219,6 +239,7 @@ public class MyUI extends UI {
         	logInButton.setVisible(true);
         	logOutButton.setVisible(false);
         	loginStatusLabel.setValue(LOGIN_STATUS);
+        	editMeButton.setVisible(false);
         });
         logOutButton.setVisible(false);
 	}
@@ -232,6 +253,7 @@ public class MyUI extends UI {
 		handleLogInButton();
 		handleLogOutButton();
 		handleClearFilterButton();
+		handleEditMeButton();
 	}
 
 	protected void clearFilteringTextFields() {

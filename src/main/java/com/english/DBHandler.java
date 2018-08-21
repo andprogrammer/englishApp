@@ -5,6 +5,7 @@ import org.hibernate.SessionFactory;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,6 +32,21 @@ public class DBHandler {
         }
     }
 
+    public static void UpdateCustomerInDB(Customer customer) {
+        try {
+            SessionFactory sf = HibernateUtil.getSessionFactory();
+            Session session = sf.openSession();
+            session.beginTransaction();
+            session.update(customer);
+            LOGGER.log(Level.FINE, "Update customer {0} in DB", customer.getFirstName());
+            session.getTransaction().commit();
+            session.close();
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            e.getStackTrace();
+        }
+    }
+
     public static List<Customer> GetCustomerFromDB() {
         try
         {
@@ -47,5 +63,41 @@ public class DBHandler {
             e.getStackTrace();
         }
         return Collections.emptyList();
+    }
+
+    public static Optional<Customer> GetSingleCustomer(String email, String password) {
+        Customer customer = null;
+        try
+        {
+            SessionFactory sf = HibernateUtil.getSessionFactory();
+            Session session = sf.openSession();
+            List<Customer> customers = session.createSQLQuery("SELECT * FROM customer where customer_email='" + email + "' AND customer_password='" + password + "'").addEntity(Customer.class).list();
+            if(customers.size() > 0) customer = customers.get(0);
+            session.close();
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.toString());
+            e.getStackTrace();
+        }
+        return Optional.ofNullable(customer);
+    }
+
+    public static Optional<Customer> GetSingleCustomer(String email) {
+        Customer customer = null;
+        try
+        {
+            SessionFactory sf = HibernateUtil.getSessionFactory();
+            Session session = sf.openSession();
+            List<Customer> customers = session.createSQLQuery("SELECT * FROM customer where customer_email='" + email + "'").addEntity(Customer.class).list();
+            if(customers.size() > 0) customer = customers.get(0);
+            session.close();
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.toString());
+            e.getStackTrace();
+        }
+        return Optional.ofNullable(customer);
     }
 }

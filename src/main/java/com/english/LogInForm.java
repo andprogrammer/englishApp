@@ -66,13 +66,15 @@ public class LogInForm extends FormLayout {
 	
 	private boolean isLoginAndPasswordCorrect(String login, String password) {
 		//TODO Add database request
-		return login.equals("test") && password.equals("test2");
+		return DBHandler.GetSingleCustomer(login, password).isPresent();
+		//return login.equals("test") && password.equals("test2");
 	}
 	
 	protected void handleMainUIWhileLogInButtonClick(String login) {
 		myUI.setVisibleReigsterButton(false);
 		myUI.setVisibleLogInButton(false);
 		myUI.setVisibleLogOutButton(true);
+		myUI.setVisibleEditMeButton(true);
 		myUI.setLoginStatus("Hello : " + login);
 	}
 	
