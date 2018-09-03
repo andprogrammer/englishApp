@@ -65,6 +65,24 @@ public class DBHandler {
         return Collections.emptyList();
     }
 
+    public static boolean checkIfEmailExist(String email) {
+        try
+        {
+            SessionFactory sf = HibernateUtil.getSessionFactory();
+            Session session = sf.openSession();
+            List<Customer> customers = session.createSQLQuery("SELECT * FROM customer WHERE customer_email='" + email + "'").addEntity(Customer.class).list();
+            LOGGER.log(Level.FINE, "Processing {0} customers from DB", customers.size());
+            session.close();
+            return customers.size() > 0 ? true : false;
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.toString());
+            e.getStackTrace();
+        }
+        return false;
+    }
+
     public static Optional<Customer> getSingleCustomer(String email, String password) {
         Customer customer = null;
         try

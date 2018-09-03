@@ -54,6 +54,10 @@ public class RegistrationForm extends CustomerForm {
 		if(false == checkIfPasswordAndPasswordConfirmationAreTheSame()) {
 			return;
 		}
+		if(DBHandler.checkIfEmailExist(emailTextField.getValue())) {
+			Notification.show("Email already in use", "", Notification.Type.HUMANIZED_MESSAGE);
+			return;
+		}
 		if(checkContracts()) { 
 			return; 
 		}
