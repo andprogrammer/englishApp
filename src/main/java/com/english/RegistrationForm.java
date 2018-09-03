@@ -7,24 +7,26 @@ import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.ui.TextField;
 
 
-@SuppressWarnings("serial")
+//@SuppressWarnings("serial")
 public class RegistrationForm extends CustomerForm {
 	
-	private TextField passwordTextField = new TextField();
-	private TextField confirmPasswordTextField = new TextField();
+	protected TextField passwordTextField = new TextField();
+	protected TextField confirmPasswordTextField = new TextField();
 	
-	private Button saveButton = new Button("Save me");
+	protected Button saveButton = new Button("Save me");
 	private Button closeButton = new Button("Close me");
 	
-	private CustomerService customerService = CustomerService.getInstance();
-	private MyUI myUI;
+	protected CustomerService customerService = CustomerService.getInstance();
+	protected MyUI myUI;
 
 	public RegistrationForm(MyUI myUI) {
+		super();
+
 		this.myUI = myUI;
-		
+
 		initComponents();
 		setSizeUndefined();
-		
+
 		HorizontalLayout buttonsHorizontalLayouts = new HorizontalLayout(saveButton, closeButton);
 		buttonsHorizontalLayouts.setSpacing(true);
 
@@ -33,6 +35,7 @@ public class RegistrationForm extends CustomerForm {
 	}
 
 	private void setTextFieldsPrompts() {
+//		super.setTextFieldsPrompts();
 		passwordTextField.setInputPrompt("password");
 		confirmPasswordTextField.setInputPrompt("confirm password");
 	}
@@ -44,7 +47,7 @@ public class RegistrationForm extends CustomerForm {
 		closeButton.setStyleName(ValoTheme.BUTTON_PRIMARY);
 		
 		saveButton.addClickListener(e->saveButtonClick());
-		closeButton.addClickListener(e->closeButtonClick());
+		closeButton.addClickListener(f->closeButtonClick());
 	}
 	
 	private void saveButtonClick() {
@@ -64,25 +67,25 @@ public class RegistrationForm extends CustomerForm {
 	
 	void setCustomerValue() {
 		//TODO birthday field
-		customer.setFirstName(firstName.getValue());
-		customer.setLastName(lastName.getValue());
-		customer.setCountry(country.getValue());
-		customer.setEnglishLevel((int) englishLevel.getValue());
-		customer.setSkype(skype.getValue());
-		customer.setSex(GlobalFunctions.convertBooleanToSex((boolean) sex.getValue()));
-		customer.setEmail(email.getValue());
-		customer.setDescription(description.getValue());
+		customer.setFirstName(firstNameTextField.getValue());
+		customer.setLastName(lastNameTextField.getValue());
+		customer.setCountry(countryTextField.getValue());
+		customer.setEnglishLevel((int) englishLevelComboBox.getValue());
+		customer.setSkype(skypeTextField.getValue());
+		customer.setGender(GlobalFunctions.convertBooleanToGender((boolean) genderComboBox.getValue()));
+		customer.setEmail(emailTextField.getValue());
+		customer.setDescription(descriptionTextArea.getValue());
 		customer.setPassword(passwordTextField.getValue());
 	}
 	
 	protected boolean checkContracts() {
-		return Contract.isNull(firstName.getValue(), "first name") ||
-			   Contract.isNull(lastName.getValue(), "last name") ||
-			   Contract.isNull(country, "country") ||
-			   Contract.isNull(englishLevel.getValue(), "english level") ||
-			   Contract.isNull(skype.getValue(), "skype") ||
-			   Contract.isNull(sex.getValue(), "sex") ||
-			   Contract.isNull(email.getValue(), "email") ||
+		return Contract.isNull(firstNameTextField.getValue(), "first name") ||
+			   Contract.isNull(lastNameTextField.getValue(), "last name") ||
+			   Contract.isNull(countryTextField, "country") ||
+			   Contract.isNull(englishLevelComboBox.getValue(), "english level") ||
+			   Contract.isNull(skypeTextField.getValue(), "skype") ||
+			   Contract.isNull(genderComboBox.getValue(), "gender") ||
+			   Contract.isNull(emailTextField.getValue(), "email") ||
 			   //description could be empty
 			   Contract.isNull(passwordTextField.getValue(), "password");
 	}

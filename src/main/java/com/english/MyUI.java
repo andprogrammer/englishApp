@@ -11,6 +11,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import javax.servlet.annotation.WebServlet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -29,13 +30,14 @@ public class MyUI extends UI {
 	private CustomerForm customerForm = new CustomerForm();
 	private RegistrationForm registrationForm = new RegistrationForm(this);
 	private LogInForm logInForm = new LogInForm(this);
+	private EditionForm editionForm = new EditionForm(this);
 
 	private TextField firstNameTextField = new TextField();
 	private TextField lastNameTextField = new TextField();
 	private TextField countryTextField = new TextField();
 	private ComboBox englishLevelComboBox = new ComboBox();
 	private TextField skypeTextField = new TextField();
-	private ComboBox sexComboBox = new ComboBox();
+	private ComboBox genderComboBox = new ComboBox();
 	private TextField emailTextField = new TextField();
 	private Label loginStatusLabel = new Label();
 	private Label filterByLabel = new Label("Filter by:");
@@ -43,6 +45,7 @@ public class MyUI extends UI {
 	private Button logInButton = new Button("Log me");
 	private Button logOutButton = new Button("Log out me");
 	private Button clearFilterButton = new Button("Clear filteres");
+	private Button editMeButton = new Button("Edit me");
 
 	private Grid mainGrid = new Grid();
 	CssLayout filteringLayout = new CssLayout();
@@ -59,12 +62,12 @@ public class MyUI extends UI {
 
         final VerticalLayout pageLayout = new VerticalLayout();
 
-        VerticalLayout toolbarLayout = new VerticalLayout(filterByLabel, filteringLayout, loginStatusLabel, registerButton, logInButton, logOutButton, clearFilterButton);
+        VerticalLayout toolbarLayout = new VerticalLayout(filterByLabel, filteringLayout, loginStatusLabel, registerButton, logInButton, logOutButton, clearFilterButton, editMeButton);
         toolbarLayout.setSpacing(true);
 
-        mainGrid.setColumns("firstName", "lastName", "country", "englishLevel", "skype", "sex", "email");
+        mainGrid.setColumns("firstName", "lastName", "country", "englishLevel", "skype", "gender", "email");
 
-        HorizontalLayout mainLayout = new HorizontalLayout(mainGrid, customerForm, registrationForm, logInForm);
+        HorizontalLayout mainLayout = new HorizontalLayout(mainGrid, customerForm, registrationForm, logInForm, editionForm);
         mainLayout.setSpacing(true);
         mainLayout.setSizeFull();
         mainGrid.setSizeFull();
@@ -79,7 +82,7 @@ public class MyUI extends UI {
         setContent(pageLayout);
 
         mainGrid.addSelectionListener(event->{
-        	if(event.getSelected().isEmpty() || registrationForm.isVisible() || logInForm.isVisible()) {
+        	if(event.getSelected().isEmpty() || registrationForm.isVisible() || logInForm.isVisible() || editionForm.isVisible()) {
         		customerForm.setVisible(false);
         	} else {
         		Customer customer = (Customer) event.getSelected().iterator().next();
@@ -93,6 +96,7 @@ public class MyUI extends UI {
         customerForm.setVisible(false);
         registrationForm.setVisible(false);
         logInForm.setVisible(false);
+        editionForm.setVisible(false);
     }
 
 	public void setLoginStatus(String status) {
@@ -105,6 +109,10 @@ public class MyUI extends UI {
 
 	public void setVisibleReigsterButton(boolean visible) {
 		registerButton.setVisible(visible);
+	}
+
+	public void setVisibleEditMeButton(boolean visible) {
+    	editMeButton.setVisible(visible);
 	}
 
 	public void setVisibleLogInButton(boolean visible) {
@@ -144,12 +152,12 @@ public class MyUI extends UI {
         	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.SKYPE)));
         });
 
-		sexComboBox.addItem(true);
-		sexComboBox.addItem(false);
-		sexComboBox.setItemCaption(true, "Male");
-		sexComboBox.setItemCaption(false, "Female");
-		sexComboBox.addValueChangeListener(e->{
-			mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(getFilterSex(), CustomerService.FILTER_TYPE.SEX)));
+		genderComboBox.addItem(true);
+		genderComboBox.addItem(false);
+		genderComboBox.setItemCaption(true, "Male");
+		genderComboBox.setItemCaption(false, "Female");
+		genderComboBox.addValueChangeListener(e->{
+			mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(getFilterGender(), CustomerService.FILTER_TYPE.GENDER)));
 		});
 
         emailTextField.addTextChangeListener(e->{
@@ -162,7 +170,7 @@ public class MyUI extends UI {
 				countryTextField,
 				englishLevelComboBox,
 				skypeTextField,
-				sexComboBox,
+				genderComboBox,
 				emailTextField);
 	}
 
@@ -172,7 +180,7 @@ public class MyUI extends UI {
 		countryTextField.setInputPrompt("country");
 		englishLevelComboBox.setInputPrompt("english level");
 		skypeTextField.setInputPrompt("skype");
-		sexComboBox.setInputPrompt("sex");
+		genderComboBox.setInputPrompt("gender");
 		emailTextField.setInputPrompt("email");
 	}
 
@@ -180,8 +188,8 @@ public class MyUI extends UI {
 		return null == englishLevelComboBox.getValue() ? "" : Integer.toString((Integer) englishLevelComboBox.getValue());
 	}
 
-	private String getFilterSex() {
-		return null == sexComboBox.getValue() ? "" : GlobalFunctions.convertBooleanToString((boolean) sexComboBox.getValue());
+	private String getFilterGender() {
+		return null == genderComboBox.getValue() ? "" : GlobalFunctions.convertBooleanToString((boolean) genderComboBox.getValue());
 	}
 
 	private void setFormsToInvisible() {
@@ -189,6 +197,7 @@ public class MyUI extends UI {
 		registrationForm.setVisible(false);
 		logInForm.setVisible(false);
 		customerForm.setVisible(false);
+		editionForm.setVisible(false);
 	}
 
 	private void handleRegisterButton() {
@@ -199,6 +208,20 @@ public class MyUI extends UI {
 				registrationForm.setCustomer(new Customer()); //this is handled in saveButtonClick()
 			}
         });
+	}
+
+	private void handleEditMeButton() {
+    	editMeButton.addClickListener(e->{
+			if(editionForm.isVisible()) setFormsToInvisible();
+    		else {
+				setFormsToInvisible();
+				Optional<Customer> customer = DBHandler.GetSingleCustomer((String) getSession().getAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE));
+				if (customer.isPresent()) {
+					editionForm.setCustomer(customer.get());
+				}
+			}
+		});
+    	editMeButton.setVisible(false);
 	}
 
 	private void handleLogInButton() {
@@ -219,6 +242,7 @@ public class MyUI extends UI {
         	logInButton.setVisible(true);
         	logOutButton.setVisible(false);
         	loginStatusLabel.setValue(LOGIN_STATUS);
+        	editMeButton.setVisible(false);
         });
         logOutButton.setVisible(false);
 	}
@@ -232,6 +256,7 @@ public class MyUI extends UI {
 		handleLogInButton();
 		handleLogOutButton();
 		handleClearFilterButton();
+		handleEditMeButton();
 	}
 
 	protected void clearFilteringTextFields() {
@@ -240,7 +265,7 @@ public class MyUI extends UI {
 		countryTextField.clear();
 		englishLevelComboBox.clear();
 		skypeTextField.clear();
-		sexComboBox.clear();
+		genderComboBox.clear();
 		emailTextField.clear();
 		updateList();
 	}
@@ -253,7 +278,7 @@ public class MyUI extends UI {
 		List<Customer> customersFilteredByCountry = customerService.findAll(countryTextField.getValue());
 		List<Customer> customersFilteredByEnglishLevel = customerService.findAll(getFilterEnglishLevel());
 		List<Customer> customersFilteredBySkype = customerService.findAll(skypeTextField.getValue());
-		List<Customer> customersFilteredBySex = customerService.findAll(getFilterSex());
+		List<Customer> customersFilteredByGender = customerService.findAll(getFilterGender());
 		List<Customer> customersFilteredByEmail = customerService.findAll(emailTextField.getValue());
 
 		customers.addAll(customersFilteredByFirstName);
@@ -261,10 +286,14 @@ public class MyUI extends UI {
 		customers.addAll(customersFilteredByCountry);
 		customers.addAll(customersFilteredByEnglishLevel);
 		customers.addAll(customersFilteredBySkype);
-		customers.addAll(customersFilteredBySex);
+		customers.addAll(customersFilteredByGender);
 		customers.addAll(customersFilteredByEmail);
 
 		mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customers));
+	}
+
+	public void updateCustomers() {
+    	customerService.updateCustomersFromDB();
 	}
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)

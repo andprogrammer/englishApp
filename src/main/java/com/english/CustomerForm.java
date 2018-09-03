@@ -9,14 +9,14 @@ import com.vaadin.ui.TextField;
 @SuppressWarnings("serial")
 public class CustomerForm extends FormLayout {
 	
-	protected TextField firstName = new TextField();
-	protected TextField lastName = new TextField();
-	protected TextField country = new TextField();
-	protected ComboBox englishLevel = new ComboBox();
-	protected TextField skype = new TextField();
-	protected ComboBox sex = new ComboBox();
-	protected TextField email = new TextField();
-	protected TextArea description = new TextArea();
+	protected TextField firstNameTextField = new TextField();
+	protected TextField lastNameTextField = new TextField();
+	protected TextField countryTextField = new TextField();
+	protected ComboBox englishLevelComboBox = new ComboBox();
+	protected TextField skypeTextField = new TextField();
+	protected ComboBox genderComboBox = new ComboBox();
+	protected TextField emailTextField = new TextField();
+	protected TextArea descriptionTextArea = new TextArea();
 	
 	//private Button save = new Button("Save");
 	//private Button delete = new Button("Delete");
@@ -36,38 +36,38 @@ public class CustomerForm extends FormLayout {
 
 		setTextFieldsPrompts();
 
-		englishLevel.addItem(1);
-		englishLevel.addItem(2);
-		englishLevel.addItem(3);
-		englishLevel.addItem(4);
-		englishLevel.addItem(5);
-		englishLevel.addItem(6);
-		englishLevel.setNullSelectionAllowed(false);
-		
-		sex.addItem(true);
-		sex.addItem(false);
-		sex.setItemCaption(true, "Male");
-		sex.setItemCaption(false, "Female");
-		sex.setNullSelectionAllowed(false);
+		englishLevelComboBox.addItem(1);
+		englishLevelComboBox.addItem(2);
+		englishLevelComboBox.addItem(3);
+		englishLevelComboBox.addItem(4);
+		englishLevelComboBox.addItem(5);
+		englishLevelComboBox.addItem(6);
+		englishLevelComboBox.setNullSelectionAllowed(false);
 
-		description.setRows(10);
-		description.setSizeFull();
+		genderComboBox.addItem(true);
+		genderComboBox.addItem(false);
+		genderComboBox.setItemCaption(true, "Male");
+		genderComboBox.setItemCaption(false, "Female");
+		genderComboBox.setNullSelectionAllowed(false);
+
+		descriptionTextArea.setRows(10);
+		descriptionTextArea.setSizeFull();
 		
 		setSizeUndefined();
 		//HorizontalLayout buttonsHorizontalLayouts = new HorizontalLayout(save, delete);
 		//buttonsHorizontalLayouts.setSpacing(true);
-		addComponents(firstName, lastName, country, englishLevel, skype, sex, email, description);
+		addComponents(firstNameTextField, lastNameTextField, countryTextField, englishLevelComboBox, skypeTextField, genderComboBox, emailTextField, descriptionTextArea);
 	}
 
 	private void setTextFieldsPrompts() {
-		firstName.setInputPrompt("First name");
-		lastName.setInputPrompt("Last name");
-		country.setInputPrompt("Country");
-		englishLevel.setInputPrompt("English level");
-		skype.setInputPrompt("Skype");
-		sex.setInputPrompt("Sex");
-		email.setInputPrompt("Email");
-		description.setInputPrompt("Description");
+		firstNameTextField.setInputPrompt("First name");
+		lastNameTextField.setInputPrompt("Last name");
+		countryTextField.setInputPrompt("Country");
+		englishLevelComboBox.setInputPrompt("English level");
+		skypeTextField.setInputPrompt("Skype");
+		genderComboBox.setInputPrompt("Gender");
+		emailTextField.setInputPrompt("Email");
+		descriptionTextArea.setInputPrompt("Description");
 	}
 
 	public void setCustomer(Customer customer) {
@@ -77,25 +77,25 @@ public class CustomerForm extends FormLayout {
 	}
 
 	protected void initializeGUIelements(Customer customer) {
-		firstName.setValue(customer.getFirstName());
-		lastName.setValue(customer.getLastName());
-		country.setValue(customer.getCountry());
-		englishLevel.setValue(customer.getEnglishLevel());
-		skype.setValue(customer.getSkype());
-		sex.setValue(GlobalFunctions.convertSexToBoolean(customer.getSex()));
-		email.setValue(customer.getEmail());
-		description.setValue(customer.getDescription());
+		firstNameTextField.setValue(customer.getFirstName());
+		lastNameTextField.setValue(customer.getLastName());
+		countryTextField.setValue(customer.getCountry());
+		englishLevelComboBox.setValue(customer.getEnglishLevel());
+		skypeTextField.setValue(customer.getSkype());
+		genderComboBox.setValue(GlobalFunctions.convertGenderToBoolean(customer.getGender()));
+		emailTextField.setValue(customer.getEmail());
+		descriptionTextArea.setValue(customer.getDescription());
 	}
 	
 	protected void clearRegistrationFields() {
-		firstName.clear();
-		lastName.clear();
-		country.clear();
-		englishLevel.clear();
-		skype.clear();
-		sex.clear();
-		email.clear();
-		description.clear();
+		firstNameTextField.clear();
+		lastNameTextField.clear();
+		countryTextField.clear();
+		englishLevelComboBox.clear();
+		skypeTextField.clear();
+		genderComboBox.clear();
+		emailTextField.clear();
+		descriptionTextArea.clear();
 	}
 	
 	/*private void save() {
