@@ -31,7 +31,7 @@ public class CustomerService {
 	public static CustomerService getInstance() {
 		if(instance == null) {
 			instance = new CustomerService();
-			instance.ensureTestData();
+			instance.ensureCustomersFromDB();
 		}
 		return instance;
 	}
@@ -137,7 +137,7 @@ public class CustomerService {
 		contacts.add(entry);
 	}
 	
-	public void ensureTestData() {
+	public void ensureCustomersFromDB() {
 	    for(Customer customer : DBHandler.GetCustomerFromDB()) {
             contacts.add(customer);
         }
@@ -145,7 +145,7 @@ public class CustomerService {
 
 	public void updateCustomersFromDB() {
 		contacts.clear();
-		ensureTestData();
+		ensureCustomersFromDB();
 	}
 
 	public synchronized void update(Customer customer) {
