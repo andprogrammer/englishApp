@@ -66,7 +66,7 @@ public class LogInForm extends FormLayout {
 	
 	private boolean isLoginAndPasswordCorrect(String login, String password) {
 		//TODO Add database request
-		return DBHandler.GetSingleCustomer(login, password).isPresent();
+		return DBHandler.getSingleCustomer(login, password).isPresent();
 		//return login.equals("test") && password.equals("test2");
 	}
 	

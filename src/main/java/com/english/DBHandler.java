@@ -14,7 +14,7 @@ public class DBHandler {
 
     private static final Logger LOGGER = Logger.getLogger(DBHandler.class.getName());
 
-    public static void AddNewCustomerToDB(Customer customer) {
+    public static void addNewCustomerToDB(Customer customer) {
         try
         {
             SessionFactory sf = HibernateUtil.getSessionFactory();
@@ -32,7 +32,7 @@ public class DBHandler {
         }
     }
 
-    public static void UpdateCustomerInDB(Customer customer) {
+    public static void updateCustomerInDB(Customer customer) {
         try {
             SessionFactory sf = HibernateUtil.getSessionFactory();
             Session session = sf.openSession();
@@ -47,7 +47,7 @@ public class DBHandler {
         }
     }
 
-    public static List<Customer> GetCustomerFromDB() {
+    public static List<Customer> getAllCustomersFromDB() {
         try
         {
             SessionFactory sf = HibernateUtil.getSessionFactory();
@@ -65,7 +65,7 @@ public class DBHandler {
         return Collections.emptyList();
     }
 
-    public static Optional<Customer> GetSingleCustomer(String email, String password) {
+    public static Optional<Customer> getSingleCustomer(String email, String password) {
         Customer customer = null;
         try
         {
@@ -83,7 +83,7 @@ public class DBHandler {
         return Optional.ofNullable(customer);
     }
 
-    public static Optional<Customer> GetSingleCustomer(String email) {
+    public static Optional<Customer> getSingleCustomer(String email) {
         Customer customer = null;
         try
         {

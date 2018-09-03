@@ -215,7 +215,7 @@ public class MyUI extends UI {
 			if(editionForm.isVisible()) setFormsToInvisible();
     		else {
 				setFormsToInvisible();
-				Optional<Customer> customer = DBHandler.GetSingleCustomer((String) getSession().getAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE));
+				Optional<Customer> customer = DBHandler.getSingleCustomer((String) getSession().getAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE));
 				if (customer.isPresent()) {
 					editionForm.setCustomer(customer.get());
 				}

@@ -133,12 +133,12 @@ public class CustomerService {
 			LOGGER.log(Level.SEVERE, "Customer is null.");
 			return;
 		}
-		DBHandler.AddNewCustomerToDB(entry);
+		DBHandler.addNewCustomerToDB(entry);
 		contacts.add(entry);
 	}
 	
 	public void ensureCustomersFromDB() {
-	    for(Customer customer : DBHandler.GetCustomerFromDB()) {
+	    for(Customer customer : DBHandler.getAllCustomersFromDB()) {
             contacts.add(customer);
         }
 	}
@@ -153,6 +153,6 @@ public class CustomerService {
 			LOGGER.log(Level.SEVERE, "Customer is null.");
 			return;
 		}
-		DBHandler.UpdateCustomerInDB(customer);
+		DBHandler.updateCustomerInDB(customer);
 	}
 }
