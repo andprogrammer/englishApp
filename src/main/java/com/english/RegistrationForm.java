@@ -7,24 +7,26 @@ import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.ui.TextField;
 
 
-@SuppressWarnings("serial")
+//@SuppressWarnings("serial")
 public class RegistrationForm extends CustomerForm {
 	
-	private TextField passwordTextField = new TextField();
-	private TextField confirmPasswordTextField = new TextField();
+	protected TextField passwordTextField = new TextField();
+	protected TextField confirmPasswordTextField = new TextField();
 	
-	private Button saveButton = new Button("Save me");
+	protected Button saveButton = new Button("Save me");
 	private Button closeButton = new Button("Close me");
 	
-	private CustomerService customerService = CustomerService.getInstance();
-	private MyUI myUI;
+	protected CustomerService customerService = CustomerService.getInstance();
+	protected MyUI myUI;
 
 	public RegistrationForm(MyUI myUI) {
+		super();
+
 		this.myUI = myUI;
-		
+
 		initComponents();
 		setSizeUndefined();
-		
+
 		HorizontalLayout buttonsHorizontalLayouts = new HorizontalLayout(saveButton, closeButton);
 		buttonsHorizontalLayouts.setSpacing(true);
 
@@ -33,6 +35,7 @@ public class RegistrationForm extends CustomerForm {
 	}
 
 	private void setTextFieldsPrompts() {
+//		super.setTextFieldsPrompts();
 		passwordTextField.setInputPrompt("password");
 		confirmPasswordTextField.setInputPrompt("confirm password");
 	}

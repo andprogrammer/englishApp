@@ -30,6 +30,7 @@ public class MyUI extends UI {
 	private CustomerForm customerForm = new CustomerForm();
 	private RegistrationForm registrationForm = new RegistrationForm(this);
 	private LogInForm logInForm = new LogInForm(this);
+	private EditionForm editionForm = new EditionForm(this);
 
 	private TextField firstNameTextField = new TextField();
 	private TextField lastNameTextField = new TextField();
@@ -66,7 +67,7 @@ public class MyUI extends UI {
 
         mainGrid.setColumns("firstName", "lastName", "country", "englishLevel", "skype", "gender", "email");
 
-        HorizontalLayout mainLayout = new HorizontalLayout(mainGrid, customerForm, registrationForm, logInForm);
+        HorizontalLayout mainLayout = new HorizontalLayout(mainGrid, customerForm, registrationForm, logInForm, editionForm);
         mainLayout.setSpacing(true);
         mainLayout.setSizeFull();
         mainGrid.setSizeFull();
@@ -81,7 +82,7 @@ public class MyUI extends UI {
         setContent(pageLayout);
 
         mainGrid.addSelectionListener(event->{
-        	if(event.getSelected().isEmpty() || registrationForm.isVisible() || logInForm.isVisible()) {
+        	if(event.getSelected().isEmpty() || registrationForm.isVisible() || logInForm.isVisible() || editionForm.isVisible()) {
         		customerForm.setVisible(false);
         	} else {
         		Customer customer = (Customer) event.getSelected().iterator().next();
@@ -95,6 +96,7 @@ public class MyUI extends UI {
         customerForm.setVisible(false);
         registrationForm.setVisible(false);
         logInForm.setVisible(false);
+        editionForm.setVisible(false);
     }
 
 	public void setLoginStatus(String status) {
@@ -195,6 +197,7 @@ public class MyUI extends UI {
 		registrationForm.setVisible(false);
 		logInForm.setVisible(false);
 		customerForm.setVisible(false);
+		editionForm.setVisible(false);
 	}
 
 	private void handleRegisterButton() {
@@ -209,12 +212,12 @@ public class MyUI extends UI {
 
 	private void handleEditMeButton() {
     	editMeButton.addClickListener(e->{
-			if(registrationForm.isVisible()) setFormsToInvisible();
+			if(editionForm.isVisible()) setFormsToInvisible();
     		else {
 				setFormsToInvisible();
 				Optional<Customer> customer = DBHandler.GetSingleCustomer((String) getSession().getAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE));
 				if (customer.isPresent()) {
-					registrationForm.setCustomer(customer.get());
+					editionForm.setCustomer(customer.get());
 				}
 			}
 		});
@@ -287,6 +290,10 @@ public class MyUI extends UI {
 		customers.addAll(customersFilteredByEmail);
 
 		mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customers));
+	}
+
+	public void updateCustomers() {
+    	customerService.updateCustomersFromDB();
 	}
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)

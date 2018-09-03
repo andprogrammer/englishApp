@@ -142,4 +142,17 @@ public class CustomerService {
             contacts.add(customer);
         }
 	}
+
+	public void updateCustomersFromDB() {
+		contacts.clear();
+		ensureTestData();
+	}
+
+	public synchronized void update(Customer customer) {
+		if (customer == null) {
+			LOGGER.log(Level.SEVERE, "Customer is null.");
+			return;
+		}
+		DBHandler.UpdateCustomerInDB(customer);
+	}
 }
