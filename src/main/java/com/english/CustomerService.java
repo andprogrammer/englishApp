@@ -129,7 +129,7 @@ public class CustomerService {
 			LOGGER.log(Level.SEVERE, "Customer is null.");
 			return;
 		}
-		DBHandler.deleteCustomerFromDB(customer);
+		DBHandler.deleteCustomer(customer);
 		removeFromContacts(customer);
 	}
 
@@ -151,7 +151,7 @@ public class CustomerService {
 			LOGGER.log(Level.SEVERE, "Customer is null.");
 			return;
 		}
-		DBHandler.addNewCustomerToDB(customer);
+		DBHandler.saveCustomer(customer);
 		contacts.add(customer);
 	}
 	
@@ -171,6 +171,6 @@ public class CustomerService {
 			LOGGER.log(Level.SEVERE, "Customer is null.");
 			return;
 		}
-		DBHandler.updateCustomerInDB(customer);
+		DBHandler.updateCustomer(customer);
 	}
 }

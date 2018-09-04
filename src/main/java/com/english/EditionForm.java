@@ -48,11 +48,17 @@ public class EditionForm extends CustomerForm {
         closeButton.addClickListener(f->closeButtonClick());
     }
 
+    private boolean newEmailSameAsLogged(String email) {
+        String sessionEmail = getSession().getAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE).toString();
+        return sessionEmail.equals(email);
+    }
+
     private void saveButtonClick() {
         if(false == checkIfPasswordAndPasswordConfirmationAreTheSame()) {
             return;
         }
-        if(DBHandler.checkIfEmailExist(emailTextField.getValue())) {
+        String email = emailTextField.getValue();
+        if(DBHandler.checkIfEmailExist(email) && false == newEmailSameAsLogged(email) ) {
             Notification.show("Email already in use", "", Notification.Type.HUMANIZED_MESSAGE);
             return;
         }

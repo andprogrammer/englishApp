@@ -66,7 +66,14 @@
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-themes</artifactId>
 		</dependency>
-<!-- Mysql & related dependencies added -->
+		<!-- https://mvnrepository.com/artifact/junit/junit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- Mysql & related dependencies added -->
 		<!-- https://mvnrepository.com/artifact/antlr/antlr -->
 		<dependency>
 			<groupId>antlr</groupId>

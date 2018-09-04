@@ -3,6 +3,7 @@ package com.english;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -12,45 +13,43 @@ import java.util.logging.Logger;
 
 public class DBHandler {
 
+    public enum PROCEDURE_TYPE {
+        SAVE, UPDATE, DELETE
+    }
+
     private static final Logger LOGGER = Logger.getLogger(DBHandler.class.getName());
 
-    public static void addNewCustomerToDB(Customer customer) {
-        try {
-            SessionFactory sf = HibernateUtil.getSessionFactory();
-            Session session = sf.openSession();
-            session.beginTransaction();
-            session.save(customer);
-            LOGGER.log(Level.FINE, "Save new customer {0} to DB", customer.getEmail());
-            session.getTransaction().commit();
-            session.close();
-        } catch (Exception e) {
-            System.out.println(e.toString());
-            e.getStackTrace();
-        }
+    public static void saveCustomer(Customer customer) {
+        executeProcedure(customer, PROCEDURE_TYPE.SAVE, "Save new customer {0} to DB");
     }
 
-    public static void deleteCustomerFromDB(Customer customer) {
-        try {
-            SessionFactory sf = HibernateUtil.getSessionFactory();
-            Session session = sf.openSession();
-            session.beginTransaction();
-            session.delete(customer);
-            LOGGER.log(Level.FINE, "Delete customer {0} from DB", customer.getEmail());
-            session.getTransaction().commit();
-            session.close();
-        } catch (Exception e) {
-            System.out.println(e.toString());
-            e.getStackTrace();
-        }
+    public static void updateCustomer(Customer customer) {
+        executeProcedure(customer, PROCEDURE_TYPE.UPDATE, "Update customer {0} in DB");
     }
 
-    public static void updateCustomerInDB(Customer customer) {
+    public static void deleteCustomer(Customer customer) {
+        executeProcedure(customer, PROCEDURE_TYPE.DELETE, "Delete customer {0} to from DB");
+    }
+
+    private static void executeProcedure(Customer customer, PROCEDURE_TYPE procedureType, String description) {
         try {
             SessionFactory sf = HibernateUtil.getSessionFactory();
             Session session = sf.openSession();
             session.beginTransaction();
-            session.update(customer);
-            LOGGER.log(Level.FINE, "Update customer {0} in DB", customer.getFirstName());
+
+            switch(procedureType){
+                case SAVE:
+                    session.save(customer);
+                    break;
+                case UPDATE:
+                    session.update(customer);
+                    break;
+                case DELETE:
+                    session.delete(customer);
+                    break;
+            }
+
+            LOGGER.log(Level.FINE, description, customer.getEmail());
             session.getTransaction().commit();
             session.close();
         } catch (Exception e) {
