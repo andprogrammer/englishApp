@@ -124,17 +124,35 @@ public class CustomerService {
 		return contacts.size();
 	}
 	
-	public synchronized void delete(Customer value) {
-		contacts.remove(value.getId());
-	}
-	
-	public synchronized void save(Customer entry) {
-		if(entry == null) {
+	public synchronized void delete(Customer customer) {
+		if(customer == null) {
 			LOGGER.log(Level.SEVERE, "Customer is null.");
 			return;
 		}
-		DBHandler.addNewCustomerToDB(entry);
-		contacts.add(entry);
+		DBHandler.deleteCustomerFromDB(customer);
+		removeFromContacts(customer);
+	}
+
+	protected void removeFromContacts(Customer customer) {
+		if(customer == null) {
+			LOGGER.log(Level.SEVERE, "Customer is null.");
+			return;
+		}
+		for(Customer contact : contacts) {
+			if(contact.getEmail().equals(customer.getEmail())) {
+				contacts.remove(contact);
+				break;
+			}
+		}
+	}
+
+	public synchronized void save(Customer customer) {
+		if(customer == null) {
+			LOGGER.log(Level.SEVERE, "Customer is null.");
+			return;
+		}
+		DBHandler.addNewCustomerToDB(customer);
+		contacts.add(customer);
 	}
 	
 	public void ensureCustomersFromDB() {

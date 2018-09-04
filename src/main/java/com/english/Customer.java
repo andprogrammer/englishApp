@@ -14,6 +14,21 @@ public class Customer implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
+	public Customer() {
+    }
+
+	public Customer(String firstName, String lastName, String country, int englishLevel, String skype, Boolean gender, String email, String description, String password) {
+	    this.firstName = firstName;
+	    this.lastName = lastName;
+	    this.country = country;
+	    this.englishLevel = englishLevel;
+	    this.skype = skype;
+	    this.gender = GlobalFunctions.convertBooleanToGender(gender);
+	    this.email = email;
+	    this.description = description;
+	    this.password = password;
+    }
+
 	public enum Gender {
 		FEMALE,
 		MALE

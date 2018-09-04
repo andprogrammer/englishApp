@@ -15,18 +15,30 @@ public class DBHandler {
     private static final Logger LOGGER = Logger.getLogger(DBHandler.class.getName());
 
     public static void addNewCustomerToDB(Customer customer) {
-        try
-        {
+        try {
             SessionFactory sf = HibernateUtil.getSessionFactory();
             Session session = sf.openSession();
             session.beginTransaction();
             session.save(customer);
-            LOGGER.log(Level.FINE, "Save new customer {0} to DB", customer.getFirstName());
+            LOGGER.log(Level.FINE, "Save new customer {0} to DB", customer.getEmail());
             session.getTransaction().commit();
             session.close();
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            e.getStackTrace();
         }
-        catch (Exception e)
-        {
+    }
+
+    public static void deleteCustomerFromDB(Customer customer) {
+        try {
+            SessionFactory sf = HibernateUtil.getSessionFactory();
+            Session session = sf.openSession();
+            session.beginTransaction();
+            session.delete(customer);
+            LOGGER.log(Level.FINE, "Delete customer {0} from DB", customer.getEmail());
+            session.getTransaction().commit();
+            session.close();
+        } catch (Exception e) {
             System.out.println(e.toString());
             e.getStackTrace();
         }
