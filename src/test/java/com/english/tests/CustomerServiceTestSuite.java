@@ -11,8 +11,9 @@ import java.util.Optional;
 import static org.junit.Assert.*;
 
 public class CustomerServiceTestSuite {
-    protected CustomerService customerService = CustomerService.getInstance();
 
+    protected CustomerService customerService = CustomerService.getInstance();
+    //TODO add setup()
     @Test
     public void testSaveDelete() {
         List<Customer> allCustomers = customerService.findAll(null);

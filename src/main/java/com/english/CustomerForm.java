@@ -1,9 +1,7 @@
 package com.english;
 
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.TextArea;
-import com.vaadin.ui.TextField;
+import com.vaadin.ui.*;
+import com.vaadin.ui.themes.ValoTheme;
 
 
 @SuppressWarnings("serial")
@@ -17,23 +15,17 @@ public class CustomerForm extends FormLayout {
 	protected ComboBox genderComboBox = new ComboBox();
 	protected TextField emailTextField = new TextField();
 	protected TextArea descriptionTextArea = new TextArea();
-	
-	//private Button save = new Button("Save");
-	//private Button delete = new Button("Delete");
-	
-	//private CustomerService customerService = CustomerService.getInstance();
+	protected TextField passwordTextField = new TextField();
+	protected TextField confirmPasswordTextField = new TextField();
+	protected Button saveButton = new Button("Save me");
+	protected Button closeButton = new Button("Close me");
+
 	protected Customer customer;
-	//private MyUI myUI;
+	protected CustomerService customerService = CustomerService.getInstance();
+	protected MyUI myUI;
+
 	
 	public CustomerForm() {
-		//this.myUI = myUI;
-		
-		//save.setStyleName(ValoTheme.BUTTON_PRIMARY);
-		//save.setClickShortcut(KeyCode.ENTER);
-		
-		//save.addClickListener(e->save());
-		//delete.addClickListener(e->delete());
-
 		setTextFieldsPrompts();
 
 		englishLevelComboBox.addItem(1);
@@ -54,12 +46,61 @@ public class CustomerForm extends FormLayout {
 		descriptionTextArea.setSizeFull();
 		
 		setSizeUndefined();
-		//HorizontalLayout buttonsHorizontalLayouts = new HorizontalLayout(save, delete);
-		//buttonsHorizontalLayouts.setSpacing(true);
 		addComponents(firstNameTextField, lastNameTextField, countryTextField, englishLevelComboBox, skypeTextField, genderComboBox, emailTextField, descriptionTextArea);
 	}
 
-	private void setTextFieldsPrompts() {
+	protected void initComponents() {
+		clearRegistrationFields();
+		saveButton.setStyleName(ValoTheme.BUTTON_PRIMARY);
+		closeButton.setStyleName(ValoTheme.BUTTON_PRIMARY);
+		saveButton.addClickListener(e->saveButtonClick());
+		closeButton.addClickListener(f->closeButtonClick());
+	}
+
+	protected void saveButtonClick() {
+		if (false == checkIfPasswordAndPasswordConfirmationAreTheSame()) {
+			return;
+		}
+	}
+
+	void setCustomerValue() {
+		//TODO birthday field
+		customer.setFirstName(firstNameTextField.getValue());
+		customer.setLastName(lastNameTextField.getValue());
+		customer.setCountry(countryTextField.getValue());
+		customer.setEnglishLevel((int) englishLevelComboBox.getValue());
+		customer.setSkype(skypeTextField.getValue());
+		customer.setGender(GlobalFunctions.convertBooleanToGender((boolean) genderComboBox.getValue()));
+		customer.setEmail(emailTextField.getValue());
+		customer.setDescription(descriptionTextArea.getValue());
+		customer.setPassword(passwordTextField.getValue());
+	}
+
+	protected boolean checkContracts() {
+		return Contract.isNull(firstNameTextField.getValue(), "first name") ||
+				Contract.isNull(lastNameTextField.getValue(), "last name") ||
+				Contract.isNull(countryTextField, "country") ||
+				Contract.isNull(englishLevelComboBox.getValue(), "english level") ||
+				Contract.isNull(skypeTextField.getValue(), "skype") ||
+				Contract.isNull(genderComboBox.getValue(), "gender") ||
+				Contract.isNull(emailTextField.getValue(), "email") ||
+				//description could be empty
+				Contract.isNull(passwordTextField.getValue(), "password");
+	}
+
+	protected boolean checkIfPasswordAndPasswordConfirmationAreTheSame() {
+		if(false == passwordTextField.getValue().equals(confirmPasswordTextField.getValue())) {
+			Notification.show("Different passwords", "", Notification.Type.HUMANIZED_MESSAGE);
+			return false;
+		}
+		return true;
+	}
+
+	private void closeButtonClick() {
+		setVisible(false);
+	}
+
+	protected void setTextFieldsPrompts() {
 		firstNameTextField.setInputPrompt("First name");
 		lastNameTextField.setInputPrompt("Last name");
 		countryTextField.setInputPrompt("Country");
@@ -68,6 +109,9 @@ public class CustomerForm extends FormLayout {
 		genderComboBox.setInputPrompt("Gender");
 		emailTextField.setInputPrompt("Email");
 		descriptionTextArea.setInputPrompt("Description");
+
+		passwordTextField.setInputPrompt("password");
+		confirmPasswordTextField.setInputPrompt("confirm password");
 	}
 
 	public void setCustomer(Customer customer) {
@@ -96,17 +140,7 @@ public class CustomerForm extends FormLayout {
 		genderComboBox.clear();
 		emailTextField.clear();
 		descriptionTextArea.clear();
+		passwordTextField.clear();
+		confirmPasswordTextField.clear();//This field is not store in Customer and it is not refreshing value
 	}
-	
-	/*private void save() {
-		customerService.save(customer);
-		myUI.updateList();
-		setVisible(false);
-	}*/
-	
-	/*private void delete() {
-		customerService.delete(customer);
-		myUI.updateList();
-		setVisible(false);
-	}*/
 }
