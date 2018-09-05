@@ -54,36 +54,29 @@ public class CustomerService {
 		String contactData = new String();
 		switch(inputTextType)
 		{
-		case FIRST_NAME: {
-			contactData = contact.getFirstName();
-			break;
-		}
-		case LAST_NAME: {
-			contactData = contact.getLastName();
-			break;
-		}
-		case COUNTRY: {
-			contactData = contact.getCountry();
-			break;
-		}
-		case ENGLISH_LEVEL: {
-			contactData = Integer.toString(contact.getEnglishLevel());
-			break;
-		}
-		case SKYPE: {
-			contactData = contact.getSkype();
-			break;
-		}
-		case GENDER: {
-			passesFilter = contact.getGender().name().toLowerCase().equals(inputText.toLowerCase());
-			break;
-		}
-		case EMAIL: {
-			contactData = contact.getEmail();
-			break;
-		}
-		default:
-			break;
+			case FIRST_NAME:
+				contactData = contact.getFirstName();
+				break;
+			case LAST_NAME:
+				contactData = contact.getLastName();
+				break;
+			case COUNTRY:
+				contactData = contact.getCountry();
+				break;
+			case ENGLISH_LEVEL:
+				contactData = Integer.toString(contact.getEnglishLevel());
+				break;
+			case SKYPE:
+				contactData = contact.getSkype();
+				break;
+			case GENDER:
+				passesFilter = contact.getGender().name().toLowerCase().equals(inputText.toLowerCase());
+				break;
+			case EMAIL:
+				contactData = contact.getEmail();
+				break;
+			default:
+				break;
 		}
 		
 		passesFilter = passesFilter || contactData.toLowerCase().contains(inputText.toLowerCase());

@@ -49,25 +49,13 @@ public class LogInForm extends FormLayout {
 		emailTextField.clear();
 		passwordTextField.clear();
 	}
-	
-	protected boolean isLoginCorrect() {
-		//TODO
-		return true;
-	}
-	
-	protected boolean isPasswordCorrect() {
-		//TODO
-		return true;
-	}
-	
+
 	private boolean isLoginTextFieldAndPasswordTextFieldValid() {
-		return (emailTextField.isValid() && passwordTextField.isValid()) ? true : false;
+		return emailTextField.isValid() && passwordTextField.isValid();
 	}
 	
 	private boolean isLoginAndPasswordCorrect(String login, String password) {
-		//TODO Add database request
 		return DBHandler.getSingleCustomer(login, password).isPresent();
-		//return login.equals("test") && password.equals("test2");
 	}
 	
 	protected void handleMainUIWhileLogInButtonClick(String login) {
@@ -109,7 +97,6 @@ public class LogInForm extends FormLayout {
 	}
 	
 	public void showLogInFormOnButtonClick() {
-		//emailTextField.focus();
 		setVisible(true);
 	}
 }

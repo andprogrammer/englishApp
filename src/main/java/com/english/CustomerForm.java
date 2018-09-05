@@ -109,7 +109,6 @@ public class CustomerForm extends FormLayout {
 		genderComboBox.setInputPrompt("Gender");
 		emailTextField.setInputPrompt("Email");
 		descriptionTextArea.setInputPrompt("Description");
-
 		passwordTextField.setInputPrompt("password");
 		confirmPasswordTextField.setInputPrompt("confirm password");
 	}

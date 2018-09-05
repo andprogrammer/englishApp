@@ -3,7 +3,6 @@ package com.english;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +36,7 @@ public class DBHandler {
             Session session = sf.openSession();
             session.beginTransaction();
 
-            switch(procedureType){
+            switch(procedureType) {
                 case SAVE:
                     session.save(customer);
                     break;
@@ -59,17 +58,14 @@ public class DBHandler {
     }
 
     public static List<Customer> getAllCustomersFromDB() {
-        try
-        {
+        try {
             SessionFactory sf = HibernateUtil.getSessionFactory();
             Session session = sf.openSession();
             List<Customer> customers = session.createSQLQuery("SELECT * FROM customer").addEntity(Customer.class).list();
             LOGGER.log(Level.FINE, "Processing {0} customers from DB", customers.size());
             session.close();
             return customers;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println(e.toString());
             e.getStackTrace();
         }
@@ -77,17 +73,14 @@ public class DBHandler {
     }
 
     public static boolean checkIfEmailExist(String email) {
-        try
-        {
+        try {
             SessionFactory sf = HibernateUtil.getSessionFactory();
             Session session = sf.openSession();
             List<Customer> customers = session.createSQLQuery("SELECT * FROM customer WHERE customer_email='" + email + "'").addEntity(Customer.class).list();
             LOGGER.log(Level.FINE, "Processing {0} customers from DB", customers.size());
             session.close();
             return customers.size() > 0 ? true : false;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println(e.toString());
             e.getStackTrace();
         }
@@ -95,35 +88,24 @@ public class DBHandler {
     }
 
     public static Optional<Customer> getSingleCustomer(String email, String password) {
-        Customer customer = null;
-        try
-        {
-            SessionFactory sf = HibernateUtil.getSessionFactory();
-            Session session = sf.openSession();
-            List<Customer> customers = session.createSQLQuery("SELECT * FROM customer where customer_email='" + email + "' AND customer_password='" + password + "'").addEntity(Customer.class).list();
-            if(customers.size() > 0) customer = customers.get(0);
-            session.close();
-        }
-        catch (Exception e)
-        {
-            System.out.println(e.toString());
-            e.getStackTrace();
-        }
-        return Optional.ofNullable(customer);
+        String query = "SELECT * FROM customer where customer_email='" + email + "' AND customer_password='" + password + "'";
+        return getCustomer(query);
     }
 
     public static Optional<Customer> getSingleCustomer(String email) {
+        String query = "SELECT * FROM customer where customer_email='" + email + "'";
+        return getCustomer(query);
+    }
+
+    private static Optional<Customer> getCustomer(String query) {
         Customer customer = null;
-        try
-        {
+        try {
             SessionFactory sf = HibernateUtil.getSessionFactory();
             Session session = sf.openSession();
-            List<Customer> customers = session.createSQLQuery("SELECT * FROM customer where customer_email='" + email + "'").addEntity(Customer.class).list();
+            List<Customer> customers = session.createSQLQuery(query).addEntity(Customer.class).list();
             if(customers.size() > 0) customer = customers.get(0);
             session.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println(e.toString());
             e.getStackTrace();
         }
