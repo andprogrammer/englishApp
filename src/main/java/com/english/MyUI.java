@@ -40,6 +40,7 @@ public class MyUI extends UI {
 	private ComboBox genderComboBox = new ComboBox();
 	private TextField emailTextField = new TextField();
 	private Label loginStatusLabel = new Label();
+	private Label titleLabel = new Label("Let's speak English. Together ;-)");
 	private Label filterByLabel = new Label("Filter by:");
 	private Button registerButton = new Button("Register me");
 	private Button logInButton = new Button("Log me");
@@ -62,7 +63,9 @@ public class MyUI extends UI {
 
         final VerticalLayout pageLayout = new VerticalLayout();
 
-        VerticalLayout toolbarLayout = new VerticalLayout(filterByLabel, filteringLayout, loginStatusLabel, registerButton, logInButton, logOutButton, clearFilterButton, editMeButton);
+        titleLabel.setStyleName("FontAwesome");
+
+        VerticalLayout toolbarLayout = new VerticalLayout(titleLabel, filterByLabel, filteringLayout, loginStatusLabel, registerButton, logInButton, logOutButton, clearFilterButton, editMeButton);
         toolbarLayout.setSpacing(true);
 
         mainGrid.setColumns("firstName", "lastName", "country", "englishLevel", "skype", "gender", "email");
