@@ -3,6 +3,7 @@ package com.english;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.*;
@@ -40,13 +41,19 @@ public class MyUI extends UI {
 	private ComboBox genderComboBox = new ComboBox();
 	private TextField emailTextField = new TextField();
 	private Label loginStatusLabel = new Label();
-	private Label titleLabel = new Label("Let's speak English. Together ;-)");
 	private Label filterByLabel = new Label("Filter by:");
+	private Label descriptionLabel = new Label("Find a person you would like to speak in English");
 	private Button registerButton = new Button("Register me");
 	private Button logInButton = new Button("Log me");
 	private Button logOutButton = new Button("Log out me");
 	private Button clearFilterButton = new Button("Clear filteres");
 	private Button editMeButton = new Button("Edit me");
+
+	ThemeResource letsSpeakEnglishResource = new ThemeResource("images/LetsSpeakEng.png");
+	Image letsSpeakEnglishImage = new Image("", letsSpeakEnglishResource);
+
+	ThemeResource skypeResourse = new ThemeResource("images/Skype.png");
+	Image skypeImage = new Image("", skypeResourse);
 
 	private Grid mainGrid = new Grid();
 	CssLayout filteringLayout = new CssLayout();
@@ -63,9 +70,7 @@ public class MyUI extends UI {
 
         final VerticalLayout pageLayout = new VerticalLayout();
 
-        titleLabel.setStyleName("FontAwesome");
-
-        VerticalLayout toolbarLayout = new VerticalLayout(titleLabel, filterByLabel, filteringLayout, loginStatusLabel, registerButton, logInButton, logOutButton, clearFilterButton, editMeButton);
+        VerticalLayout toolbarLayout = new VerticalLayout(letsSpeakEnglishImage, descriptionLabel, filterByLabel, filteringLayout, loginStatusLabel, registerButton, logInButton, logOutButton, clearFilterButton, editMeButton);
         toolbarLayout.setSpacing(true);
 
         mainGrid.setColumns("firstName", "lastName", "country", "englishLevel", "skype", "gender", "email");
@@ -76,7 +81,7 @@ public class MyUI extends UI {
         mainGrid.setSizeFull();
         mainLayout.setExpandRatio(mainGrid, 1);
 
-        pageLayout.addComponents(toolbarLayout, mainLayout);
+        pageLayout.addComponents(toolbarLayout, mainLayout, skypeImage);
 
         updateList();
 
