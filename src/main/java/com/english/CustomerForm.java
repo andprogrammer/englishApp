@@ -85,7 +85,8 @@ public class CustomerForm extends FormLayout {
 				Contract.isNull(genderComboBox.getValue(), "gender") ||
 				Contract.isNull(emailTextField.getValue(), "email") ||
 				//description could be empty
-				Contract.isNull(passwordTextField.getValue(), "password");
+				Contract.isNull(passwordTextField.getValue(), "password") ||
+				Contract.incorrectEmail(emailTextField.getValue());
 	}
 
 	protected boolean checkIfPasswordAndPasswordConfirmationAreTheSame() {

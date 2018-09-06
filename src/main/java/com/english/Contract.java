@@ -11,4 +11,12 @@ public class Contract {
 		}
 		return false;
 	}
+
+	public static boolean incorrectEmail(String email) {
+		if(false == GlobalFunctions.isValidEmailAddress(email)) {
+			Notification.show("email", " is incorrect", Notification.Type.HUMANIZED_MESSAGE);
+			return true;
+		}
+		return false;
+	}
 }
