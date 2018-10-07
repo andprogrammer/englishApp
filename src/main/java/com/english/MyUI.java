@@ -49,7 +49,7 @@ public class MyUI extends UI {
 	ThemeResource letsSpeakEnglishResource = new ThemeResource("images/LetsSpeakEng.png");
 	Image letsSpeakEnglishImage = new Image("", letsSpeakEnglishResource);
 
-	ThemeResource skypeLogoResourse = new ThemeResource("images/Skype_logo.png");
+	ThemeResource skypeLogoResourse = new ThemeResource("images/SkypeLogo.png");
 	Image skypeLogoImage = new Image("", skypeLogoResourse);
 
 	private Grid mainGrid = new Grid();
