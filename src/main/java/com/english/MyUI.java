@@ -27,7 +27,7 @@ public class MyUI extends UI {
 
 	private static final long serialVersionUID = 1L;
 
-	private final String LOGIN_STATUS = "NOT LOGGED";
+	private final String LOGIN_STATUS = "You're not logged in";
 	private CustomerForm customerForm = new CustomerForm();
 	private RegistrationForm registrationForm = new RegistrationForm(this);
 	private LogInForm logInForm = new LogInForm(this);
@@ -38,8 +38,8 @@ public class MyUI extends UI {
 	private TextField contactMeTextField = new TextField();
 	private ComboBox englishLevelComboBox = new ComboBox();
 	private Label loginStatusLabel = new Label();
-	private Label filterByLabel = new Label("Filter by:");
-	private Label descriptionLabel = new Label("find a person with whom you would like to talk in English");
+	private Label descriptionLabel = new Label("Find a person with whom you would like to talk in English");
+	private Label subtitleLabel = new Label("Improve your English skills");
 	private Button registerButton = new Button("Register me");
 	private Button logInButton = new Button("Log me");
 	private Button logOutButton = new Button("Log out me");
@@ -49,11 +49,12 @@ public class MyUI extends UI {
 	ThemeResource letsSpeakEnglishResource = new ThemeResource("images/LetsSpeakEng.png");
 	Image letsSpeakEnglishImage = new Image("", letsSpeakEnglishResource);
 
-	ThemeResource skypeResourse = new ThemeResource("images/Skype.png");
-	Image skypeImage = new Image("", skypeResourse);
+	ThemeResource skypeLogoResourse = new ThemeResource("images/Skype_logo.png");
+	Image skypeLogoImage = new Image("", skypeLogoResourse);
 
 	private Grid mainGrid = new Grid();
 	CssLayout filteringLayout = new CssLayout();
+	CssLayout mainButtonsLayout = new CssLayout();
 
 	private CustomerService customerService = CustomerService.getInstance();
 
@@ -61,13 +62,18 @@ public class MyUI extends UI {
     protected void init(VaadinRequest vaadinRequest) {
         initComponents();
         handleTextFieldsFiltering();
+		handleMainButtonsLayout();
         handleButtons();
 
 		setStyleName("backgroundimage");
 
         final VerticalLayout pageLayout = new VerticalLayout();
 
-        VerticalLayout toolbarLayout = new VerticalLayout(letsSpeakEnglishImage, descriptionLabel, filterByLabel, filteringLayout, loginStatusLabel, registerButton, logInButton, logOutButton, clearFilterButton, editMeButton);
+		setMainLabelsStyle();
+
+        VerticalLayout toolbarLayout = new VerticalLayout();
+        toolbarLayout.setDefaultComponentAlignment(Alignment.TOP_CENTER);
+        toolbarLayout.addComponents(descriptionLabel, subtitleLabel, filteringLayout, mainButtonsLayout, skypeLogoImage, loginStatusLabel);
         toolbarLayout.setSpacing(true);
 
         mainGrid.setColumns("name", "skype", "contactMe", "englishLevel");
@@ -78,7 +84,7 @@ public class MyUI extends UI {
         mainGrid.setSizeFull();
         mainLayout.setExpandRatio(mainGrid, 1);
 
-        pageLayout.addComponents(toolbarLayout, mainLayout, skypeImage);
+        pageLayout.addComponents(toolbarLayout, mainLayout);
 
         updateList();
 
@@ -96,7 +102,13 @@ public class MyUI extends UI {
         });
     }
 
-    private void initComponents() {
+	private void setMainLabelsStyle() {
+		descriptionLabel.setStyleName("mainLabel");
+		subtitleLabel.setStyleName("subtitleLabel");
+		loginStatusLabel.setStyleName("loginStatusLabel");
+	}
+
+	private void initComponents() {
     	loginStatusLabel.setValue(LOGIN_STATUS);
         customerForm.setVisible(false);
         registrationForm.setVisible(false);
@@ -158,6 +170,11 @@ public class MyUI extends UI {
 				skypeTextField,
 				contactMeTextField,
 				englishLevelComboBox);
+	}
+
+	private void handleMainButtonsLayout() {
+		mainButtonsLayout.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+		mainButtonsLayout.addComponents(clearFilterButton, registerButton, logInButton, logOutButton, editMeButton);
 	}
 
 	private void setFiltersInputPrompt() {

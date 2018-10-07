@@ -11,5 +11,23 @@
 }
 
 .backgroundimage {
-  background: url("images/mainLayoutBackgroundImage.jpg") !important;
+  background: url("images/WhiteBackground.png") !important;
+}
+
+.mainLabel {
+  font-size: 35px;
+  color: #ce3812;
+  font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", geneva, helvetica, arial, tahoma, verdana, sans-serif
+}
+
+.subtitleLabel {
+  font-size: 20px;
+  color: #1b87e3;
+  font-family: "Helvetica Neue", sans-serif;
+}
+
+.loginStatusLabel {
+  font-size: 15px;
+  color: #0e0e0e;
+  font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", geneva, helvetica, arial, tahoma, verdana, sans-serif;
 }
