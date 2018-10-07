@@ -8,7 +8,7 @@ import org.junit.Test;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class CustomerServiceTestSuite {
 
@@ -18,11 +18,11 @@ public class CustomerServiceTestSuite {
     public void testSaveDelete() {
         List<Customer> allCustomers = customerService.findAll(null);
         int numOfCustomers = allCustomers.size();
-        Customer customer = new Customer("Jack", "Sparrow", "Carribean", 6, "skysparrow", true, "sparrow@gmail.com", "I'm the Pirate", "pass");
+        Customer customer = new Customer("Jack", "skysparrow", "sparrow@gmail.com", 5, "pass");
         customerService.save(customer);
         assertEquals(numOfCustomers + 1, customerService.findAll(null).size());
 
-        Optional<Customer> result = DBHandler.getSingleCustomer(customer.getEmail());
+        Optional<Customer> result = DBHandler.getSingleCustomer(customer.getContactMe());
         if (result.isPresent()) {
             customerService.delete(result.get());
             assertEquals(numOfCustomers, customerService.findAll(null).size());
@@ -31,23 +31,23 @@ public class CustomerServiceTestSuite {
 
     @Test
     public void testUpdate() {
-        Customer customer = new Customer("Jack", "Sparrow", "Carribean", 6, "skysparrow", true, "sparrow@gmail.com", "I'm the Pirate", "pass");
+        Customer customer = new Customer("Jack", "skysparrow", "sparrow@gmail.com", 5, "pass");
         customerService.save(customer);
 
-        String firstName = "Quentin";
-        String lastName = "Tarantino";
+        String name = "Quentin";
+        String skype = "queueskype";
 
-        Optional<Customer> tempObject = DBHandler.getSingleCustomer(customer.getEmail());
+        Optional<Customer> tempObject = DBHandler.getSingleCustomer(customer.getContactMe());
         if (tempObject.isPresent()) {
-            tempObject.get().setFirstName(firstName);
-            tempObject.get().setLastName(lastName);
+            tempObject.get().setName(name);
+            tempObject.get().setSkype(skype);
             customerService.update(tempObject.get());
         }
 
-        Optional<Customer> result = DBHandler.getSingleCustomer(customer.getEmail());
+        Optional<Customer> result = DBHandler.getSingleCustomer(customer.getContactMe());
         if(result.isPresent()){
-            assertEquals(result.get().getFirstName(), firstName);
-            assertEquals(result.get().getLastName(), lastName);
+            assertEquals(result.get().getName(), name);
+            assertEquals(result.get().getSkype(), skype);
             customerService.delete(tempObject.get());
         }
     }

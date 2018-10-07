@@ -23,7 +23,7 @@ public class RegistrationForm extends CustomerForm {
 	protected void saveButtonClick() {
 		super.saveButtonClick();
 
-		if(DBHandler.checkIfEmailExist(emailTextField.getValue())) {
+		if(DBHandler.checkIfEmailExist(contactMe.getValue())) {
 			Notification.show("Email already in use", "", Notification.Type.HUMANIZED_MESSAGE);
 			return;
 		}

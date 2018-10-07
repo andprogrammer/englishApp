@@ -13,7 +13,7 @@ public class LogInForm extends FormLayout {
 
 	private static final long serialVersionUID = 1L;
 	
-	private TextField emailTextField = new TextField();
+	private TextField customerIdentifierTextField = new TextField();
 	private TextField passwordTextField = new TextField();
 	
 	private Button logInButton = new Button("Log me");
@@ -28,11 +28,11 @@ public class LogInForm extends FormLayout {
 		initComponents();
 		setSizeUndefined();
 		setTextFieldsPrompt();
-		addComponents(emailTextField, passwordTextField, logInButton, closeButton);
+		addComponents(customerIdentifierTextField, passwordTextField, logInButton, closeButton);
 	}
 
 	private void setTextFieldsPrompt() {
-		emailTextField.setInputPrompt("email");
+		customerIdentifierTextField.setInputPrompt("name/email");   //TODO Handle name input
 		passwordTextField.setInputPrompt("password");
 	}
 
@@ -46,45 +46,45 @@ public class LogInForm extends FormLayout {
 	}
 	
 	protected void clearTextFields() {
-		emailTextField.clear();
+		customerIdentifierTextField.clear();
 		passwordTextField.clear();
 	}
 
 	private boolean isLoginTextFieldAndPasswordTextFieldValid() {
-		return emailTextField.isValid() && passwordTextField.isValid();
+		return customerIdentifierTextField.isValid() && passwordTextField.isValid();
 	}
 	
-	private boolean isLoginAndPasswordCorrect(String login, String password) {
-		return DBHandler.getSingleCustomer(login, password).isPresent();
+	private boolean isLoginAndPasswordCorrect(String customerIdentifier, String password) {
+		return DBHandler.getSingleCustomer(customerIdentifier, password).isPresent();
 	}
 	
-	protected void handleMainUIWhileLogInButtonClick(String login) {
+	protected void handleMainUIWhileLogInButtonClick(String customerIdentifier) {
 		myUI.setVisibleReigsterButton(false);
 		myUI.setVisibleLogInButton(false);
 		myUI.setVisibleLogOutButton(true);
 		myUI.setVisibleEditMeButton(true);
-		myUI.setLoginStatus("Hello : " + login);
+		myUI.setLoginStatus("Hello : " + customerIdentifier);
 	}
 	
-	protected void handleLogInFormWhileLogInButtonClickSuccessfulCase(String login) {
-		getSession().setAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE, login);
-		handleMainUIWhileLogInButtonClick(login);
+	protected void handleLogInFormWhileLogInButtonClickSuccessfulCase(String customerIdentifier) {
+		getSession().setAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE, customerIdentifier);
+		handleMainUIWhileLogInButtonClick(customerIdentifier);
 		clearTextFields();
 		setVisible(false);
 	}
 	
 	protected void handleLogInFormWhileLogInButtonClickFailureCase() {
-		Notification.show("Incorrect email or password", Type.WARNING_MESSAGE);
+		Notification.show("Incorrect customer identifier or password", Type.WARNING_MESSAGE);
 		clearTextFields();
 	}
 	
 	protected void logInButtonClick() {
 		if (isLoginTextFieldAndPasswordTextFieldValid()) {		
-			String login = emailTextField.getValue();
+			String email = customerIdentifierTextField.getValue();
 			String password = passwordTextField.getValue();
 			
-			if(isLoginAndPasswordCorrect(login, password)) {
-				handleLogInFormWhileLogInButtonClickSuccessfulCase(login);
+			if(isLoginAndPasswordCorrect(email, password)) {
+				handleLogInFormWhileLogInButtonClickSuccessfulCase(email);
 				return;
 			}
 		}

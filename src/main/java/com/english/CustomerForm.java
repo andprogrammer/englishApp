@@ -7,14 +7,10 @@ import com.vaadin.ui.themes.ValoTheme;
 @SuppressWarnings("serial")
 public class CustomerForm extends FormLayout {
 	
-	protected TextField firstNameTextField = new TextField();
-	protected TextField lastNameTextField = new TextField();
-	protected TextField countryTextField = new TextField();
-	protected ComboBox englishLevelComboBox = new ComboBox();
+	protected TextField nameTextField = new TextField();
 	protected TextField skypeTextField = new TextField();
-	protected ComboBox genderComboBox = new ComboBox();
-	protected TextField emailTextField = new TextField();
-	protected TextArea descriptionTextArea = new TextArea();
+	protected TextField contactMe = new TextField();
+	protected ComboBox englishLevelComboBox = new ComboBox();
 	protected TextField passwordTextField = new TextField();
 	protected TextField confirmPasswordTextField = new TextField();
 	protected Button saveButton = new Button("Save me");
@@ -35,18 +31,9 @@ public class CustomerForm extends FormLayout {
 		englishLevelComboBox.addItem(5);
 		englishLevelComboBox.addItem(6);
 		englishLevelComboBox.setNullSelectionAllowed(false);
-
-		genderComboBox.addItem(true);
-		genderComboBox.addItem(false);
-		genderComboBox.setItemCaption(true, "Male");
-		genderComboBox.setItemCaption(false, "Female");
-		genderComboBox.setNullSelectionAllowed(false);
-
-		descriptionTextArea.setRows(10);
-		descriptionTextArea.setSizeFull();
 		
 		setSizeUndefined();
-		addComponents(firstNameTextField, lastNameTextField, countryTextField, englishLevelComboBox, skypeTextField, genderComboBox, emailTextField, descriptionTextArea);
+		addComponents(nameTextField, skypeTextField, contactMe, englishLevelComboBox);
 	}
 
 	protected void initComponents() {
@@ -64,29 +51,19 @@ public class CustomerForm extends FormLayout {
 	}
 
 	void setCustomerValue() {
-		//TODO birthday field
-		customer.setFirstName(firstNameTextField.getValue());
-		customer.setLastName(lastNameTextField.getValue());
-		customer.setCountry(countryTextField.getValue());
-		customer.setEnglishLevel((int) englishLevelComboBox.getValue());
+		customer.setName(nameTextField.getValue());
 		customer.setSkype(skypeTextField.getValue());
-		customer.setGender(GlobalFunctions.convertBooleanToGender((boolean) genderComboBox.getValue()));
-		customer.setEmail(emailTextField.getValue());
-		customer.setDescription(descriptionTextArea.getValue());
+		customer.setContactMe(contactMe.getValue());
+		customer.setEnglishLevel((int) englishLevelComboBox.getValue());
 		customer.setPassword(passwordTextField.getValue());
 	}
 
 	protected boolean checkContracts() {
-		return Contract.isNull(firstNameTextField.getValue(), "first name") ||
-				Contract.isNull(lastNameTextField.getValue(), "last name") ||
-				Contract.isNull(countryTextField, "country") ||
-				Contract.isNull(englishLevelComboBox.getValue(), "english level") ||
+		return Contract.isNull(nameTextField.getValue(), "name") ||
 				Contract.isNull(skypeTextField.getValue(), "skype") ||
-				Contract.isNull(genderComboBox.getValue(), "gender") ||
-				Contract.isNull(emailTextField.getValue(), "email") ||
-				//description could be empty
-				Contract.isNull(passwordTextField.getValue(), "password") ||
-				Contract.incorrectEmail(emailTextField.getValue());
+				Contract.isNull(contactMe.getValue(), "contact me") ||
+				Contract.isNull(englishLevelComboBox.getValue(), "english level") ||
+				Contract.isNull(passwordTextField.getValue(), "password");
 	}
 
 	protected boolean checkIfPasswordAndPasswordConfirmationAreTheSame() {
@@ -102,14 +79,10 @@ public class CustomerForm extends FormLayout {
 	}
 
 	protected void setTextFieldsPrompts() {
-		firstNameTextField.setInputPrompt("First name");
-		lastNameTextField.setInputPrompt("Last name");
-		countryTextField.setInputPrompt("Country");
+		nameTextField.setInputPrompt("name");
+		skypeTextField.setInputPrompt("skype");
+		contactMe.setInputPrompt("contact [e.g. mail]");
 		englishLevelComboBox.setInputPrompt("English level");
-		skypeTextField.setInputPrompt("Skype");
-		genderComboBox.setInputPrompt("Gender");
-		emailTextField.setInputPrompt("Email");
-		descriptionTextArea.setInputPrompt("Description");
 		passwordTextField.setInputPrompt("password");
 		confirmPasswordTextField.setInputPrompt("confirm password");
 	}
@@ -121,25 +94,17 @@ public class CustomerForm extends FormLayout {
 	}
 
 	protected void initializeGUIelements(Customer customer) {
-		firstNameTextField.setValue(customer.getFirstName());
-		lastNameTextField.setValue(customer.getLastName());
-		countryTextField.setValue(customer.getCountry());
-		englishLevelComboBox.setValue(customer.getEnglishLevel());
+		nameTextField.setValue(customer.getName());
 		skypeTextField.setValue(customer.getSkype());
-		genderComboBox.setValue(GlobalFunctions.convertGenderToBoolean(customer.getGender()));
-		emailTextField.setValue(customer.getEmail());
-		descriptionTextArea.setValue(customer.getDescription());
+		contactMe.setValue(customer.getContactMe());
+		englishLevelComboBox.setValue(customer.getEnglishLevel());
 	}
 	
 	protected void clearRegistrationFields() {
-		firstNameTextField.clear();
-		lastNameTextField.clear();
-		countryTextField.clear();
-		englishLevelComboBox.clear();
+		nameTextField.clear();
 		skypeTextField.clear();
-		genderComboBox.clear();
-		emailTextField.clear();
-		descriptionTextArea.clear();
+		contactMe.clear();
+		englishLevelComboBox.clear();
 		passwordTextField.clear();
 		confirmPasswordTextField.clear();//This field is not store in Customer and it is not refreshing value
 	}

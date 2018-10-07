@@ -48,7 +48,7 @@ public class DBHandler {
                     break;
             }
 
-            LOGGER.log(Level.FINE, description, customer.getEmail());
+            LOGGER.log(Level.FINE, description, customer.getContactMe());
             session.getTransaction().commit();
             session.close();
         } catch (Exception e) {
@@ -88,12 +88,12 @@ public class DBHandler {
     }
 
     public static Optional<Customer> getSingleCustomer(String email, String password) {
-        String query = "SELECT * FROM customer where customer_email='" + email + "' AND customer_password='" + password + "'";
+        String query = "SELECT * FROM customer where customer_contact_me='" + email + "' AND customer_password='" + password + "'";
         return getCustomer(query);
     }
 
     public static Optional<Customer> getSingleCustomer(String email) {
-        String query = "SELECT * FROM customer where customer_email='" + email + "'";
+        String query = "SELECT * FROM customer where customer_contact_me='" + email + "'";
         return getCustomer(query);
     }
 

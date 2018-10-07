@@ -33,16 +33,13 @@ public class MyUI extends UI {
 	private LogInForm logInForm = new LogInForm(this);
 	private EditionForm editionForm = new EditionForm(this);
 
-	private TextField firstNameTextField = new TextField();
-	private TextField lastNameTextField = new TextField();
-	private TextField countryTextField = new TextField();
-	private ComboBox englishLevelComboBox = new ComboBox();
+	private TextField nameTextField = new TextField();
 	private TextField skypeTextField = new TextField();
-	private ComboBox genderComboBox = new ComboBox();
-	private TextField emailTextField = new TextField();
+	private TextField contactMeTextField = new TextField();
+	private ComboBox englishLevelComboBox = new ComboBox();
 	private Label loginStatusLabel = new Label();
 	private Label filterByLabel = new Label("Filter by:");
-	private Label descriptionLabel = new Label("Find a person you would like to speak in English");
+	private Label descriptionLabel = new Label("find a person with whom you would like to talk in English");
 	private Button registerButton = new Button("Register me");
 	private Button logInButton = new Button("Log me");
 	private Button logOutButton = new Button("Log out me");
@@ -73,7 +70,7 @@ public class MyUI extends UI {
         VerticalLayout toolbarLayout = new VerticalLayout(letsSpeakEnglishImage, descriptionLabel, filterByLabel, filteringLayout, loginStatusLabel, registerButton, logInButton, logOutButton, clearFilterButton, editMeButton);
         toolbarLayout.setSpacing(true);
 
-        mainGrid.setColumns("firstName", "lastName", "country", "englishLevel", "skype", "gender", "email");
+        mainGrid.setColumns("name", "skype", "contactMe", "englishLevel");
 
         HorizontalLayout mainLayout = new HorizontalLayout(mainGrid, customerForm, registrationForm, logInForm, editionForm);
         mainLayout.setSpacing(true);
@@ -134,16 +131,16 @@ public class MyUI extends UI {
 	private void handleTextFieldsFiltering() {
 		setFiltersInputPrompt();
 
-        firstNameTextField.addTextChangeListener(e->{
-        	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.FIRST_NAME)));
+        nameTextField.addTextChangeListener(e->{
+        	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.NAME)));
         });
 
-        lastNameTextField.addTextChangeListener(e->{
-        	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.LAST_NAME)));
-        });
+		skypeTextField.addTextChangeListener(e->{
+			mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.SKYPE)));
+		});
 
-        countryTextField.addTextChangeListener(e->{
-        	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.COUNTRY)));
+        contactMeTextField.addTextChangeListener(e->{
+        	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.CONTACT_ME)));
         });
 
 		englishLevelComboBox.addItem(1);
@@ -156,48 +153,22 @@ public class MyUI extends UI {
 			mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(getFilterEnglishLevel(), CustomerService.FILTER_TYPE.ENGLISH_LEVEL)));
 		});
 
-        skypeTextField.addTextChangeListener(e->{
-        	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.SKYPE)));
-        });
-
-		genderComboBox.addItem(true);
-		genderComboBox.addItem(false);
-		genderComboBox.setItemCaption(true, "Male");
-		genderComboBox.setItemCaption(false, "Female");
-		genderComboBox.addValueChangeListener(e->{
-			mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(getFilterGender(), CustomerService.FILTER_TYPE.GENDER)));
-		});
-
-        emailTextField.addTextChangeListener(e->{
-        	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findAll(e.getText())));
-        });
-
         filteringLayout.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-        filteringLayout.addComponents(firstNameTextField,
-				lastNameTextField,
-				countryTextField,
-				englishLevelComboBox,
+        filteringLayout.addComponents(nameTextField,
 				skypeTextField,
-				genderComboBox,
-				emailTextField);
+				contactMeTextField,
+				englishLevelComboBox);
 	}
 
 	private void setFiltersInputPrompt() {
-		firstNameTextField.setInputPrompt("first name");
-		lastNameTextField.setInputPrompt("last name");
-		countryTextField.setInputPrompt("country");
-		englishLevelComboBox.setInputPrompt("english level");
+		nameTextField.setInputPrompt("name");
 		skypeTextField.setInputPrompt("skype");
-		genderComboBox.setInputPrompt("gender");
-		emailTextField.setInputPrompt("email");
+		contactMeTextField.setInputPrompt("contact");
+		englishLevelComboBox.setInputPrompt("english level");
 	}
 
 	private String getFilterEnglishLevel() {
 		return null == englishLevelComboBox.getValue() ? "" : Integer.toString((Integer) englishLevelComboBox.getValue());
-	}
-
-	private String getFilterGender() {
-		return null == genderComboBox.getValue() ? "" : GlobalFunctions.convertBooleanToString((boolean) genderComboBox.getValue());
 	}
 
 	private void setFormsToInvisible() {
@@ -268,34 +239,25 @@ public class MyUI extends UI {
 	}
 
 	protected void clearFilteringTextFields() {
-		firstNameTextField.clear();
-		lastNameTextField.clear();
-		countryTextField.clear();
-		englishLevelComboBox.clear();
+		nameTextField.clear();
 		skypeTextField.clear();
-		genderComboBox.clear();
-		emailTextField.clear();
+		contactMeTextField.clear();
+		englishLevelComboBox.clear();
 		updateList();
 	}
 
 	public void updateList() {
 		List<Customer> customers = new ArrayList<Customer>();
 
-		List<Customer> customersFilteredByFirstName = customerService.findAll(firstNameTextField.getValue());
-		List<Customer> customersFilteredByLastName = customerService.findAll(lastNameTextField.getValue());
-		List<Customer> customersFilteredByCountry = customerService.findAll(countryTextField.getValue());
-		List<Customer> customersFilteredByEnglishLevel = customerService.findAll(getFilterEnglishLevel());
+		List<Customer> customersFilteredByName = customerService.findAll(nameTextField.getValue());
 		List<Customer> customersFilteredBySkype = customerService.findAll(skypeTextField.getValue());
-		List<Customer> customersFilteredByGender = customerService.findAll(getFilterGender());
-		List<Customer> customersFilteredByEmail = customerService.findAll(emailTextField.getValue());
+		List<Customer> customersFilteredByContactMe = customerService.findAll(contactMeTextField.getValue());
+		List<Customer> customersFilteredByEnglishLevel = customerService.findAll(getFilterEnglishLevel());
 
-		customers.addAll(customersFilteredByFirstName);
-		customers.addAll(customersFilteredByLastName);
-		customers.addAll(customersFilteredByCountry);
-		customers.addAll(customersFilteredByEnglishLevel);
+		customers.addAll(customersFilteredByName);
 		customers.addAll(customersFilteredBySkype);
-		customers.addAll(customersFilteredByGender);
-		customers.addAll(customersFilteredByEmail);
+		customers.addAll(customersFilteredByContactMe);
+		customers.addAll(customersFilteredByEnglishLevel);
 
 		mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customers));
 	}

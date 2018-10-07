@@ -11,13 +11,10 @@ import java.util.logging.Logger;
 public class CustomerService {
 
 	public enum FILTER_TYPE {
-		FIRST_NAME,
-		LAST_NAME,
-		COUNTRY,
-		ENGLISH_LEVEL,
+		NAME,
 		SKYPE,
-		GENDER,
-		EMAIL
+		CONTACT_ME,
+		ENGLISH_LEVEL
 	}
 	
 	private static CustomerService instance;
@@ -54,26 +51,17 @@ public class CustomerService {
 		String contactData = new String();
 		switch(inputTextType)
 		{
-			case FIRST_NAME:
-				contactData = contact.getFirstName();
-				break;
-			case LAST_NAME:
-				contactData = contact.getLastName();
-				break;
-			case COUNTRY:
-				contactData = contact.getCountry();
-				break;
-			case ENGLISH_LEVEL:
-				contactData = Integer.toString(contact.getEnglishLevel());
+			case NAME:
+				contactData = contact.getName();
 				break;
 			case SKYPE:
 				contactData = contact.getSkype();
 				break;
-			case GENDER:
-				passesFilter = contact.getGender().name().toLowerCase().equals(inputText.toLowerCase());
+			case CONTACT_ME:
+				contactData = contact.getContactMe();
 				break;
-			case EMAIL:
-				contactData = contact.getEmail();
+			case ENGLISH_LEVEL:
+				contactData = Integer.toString(contact.getEnglishLevel());
 				break;
 			default:
 				break;
@@ -132,7 +120,7 @@ public class CustomerService {
 			return;
 		}
 		for(Customer contact : contacts) {
-			if(contact.getEmail().equals(customer.getEmail())) {
+			if(contact.getContactMe().equals(customer.getContactMe())) {
 				contacts.remove(contact);
 				break;
 			}
@@ -149,9 +137,8 @@ public class CustomerService {
 	}
 	
 	public void ensureCustomersFromDB() {
-	    for(Customer customer : DBHandler.getAllCustomersFromDB()) {
+	    for(Customer customer : DBHandler.getAllCustomersFromDB())
             contacts.add(customer);
-        }
 	}
 
 	public void updateCustomersFromDB() {

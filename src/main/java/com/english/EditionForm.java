@@ -27,7 +27,7 @@ public class EditionForm extends CustomerForm {
 
     protected void saveButtonClick() {
         super.saveButtonClick();
-        String email = emailTextField.getValue();
+        String email = contactMe.getValue();
         if(DBHandler.checkIfEmailExist(email) && false == newEmailSameAsLogged(email) ) {
             Notification.show("Email already in use", "", Notification.Type.HUMANIZED_MESSAGE);
             return;
