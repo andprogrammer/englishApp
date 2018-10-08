@@ -20,15 +20,15 @@ public class RegistrationForm extends CustomerForm {
 		addComponents(passwordTextField, confirmPasswordTextField, buttonsHorizontalLayouts);
 	}
 
-	protected void saveButtonClick() {
-		super.saveButtonClick();
+	protected boolean saveButtonClick() {
+		if (false == super.saveButtonClick()) return false;
 
-		if(DBHandler.checkIfEmailExist(contactMe.getValue())) {
+		if(DBHandler.checkIfContactMeAlreadyExists(contactMeTextField.getValue())) {
 			Notification.show("Email already in use", "", Notification.Type.HUMANIZED_MESSAGE);
-			return;
+			return false;
 		}
 		if(checkContracts()) { 
-			return; 
+			return false;
 		}
 		setCustomerValue();
 		
@@ -36,5 +36,6 @@ public class RegistrationForm extends CustomerForm {
 		myUI.updateList();
 		setVisible(false);
 		clearRegistrationFields();
+		return true;
 	}
 }

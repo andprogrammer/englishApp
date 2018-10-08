@@ -72,11 +72,19 @@ public class DBHandler {
         return Collections.emptyList();
     }
 
-    public static boolean checkIfEmailExist(String email) {
+    public static boolean checkIfContactMeAlreadyExists(String contactMe) {
+        return checkIfInputAlreadyExist(contactMe, "SELECT * FROM customer WHERE customer_contact_me='");
+    }
+
+    public static boolean checkIfNameAlreadyExists(String name) {
+        return checkIfInputAlreadyExist(name, "SELECT * FROM customer WHERE customer_name='");
+    }
+
+    private static boolean checkIfInputAlreadyExist(String contactMe, String query) {
         try {
             SessionFactory sf = HibernateUtil.getSessionFactory();
             Session session = sf.openSession();
-            List<Customer> customers = session.createSQLQuery("SELECT * FROM customer WHERE customer_email='" + email + "'").addEntity(Customer.class).list();
+            List<Customer> customers = session.createSQLQuery(query + contactMe + "'").addEntity(Customer.class).list();
             LOGGER.log(Level.FINE, "Processing {0} customers from DB", customers.size());
             session.close();
             return customers.size() > 0 ? true : false;
@@ -87,13 +95,23 @@ public class DBHandler {
         return false;
     }
 
-    public static Optional<Customer> getSingleCustomer(String email, String password) {
-        String query = "SELECT * FROM customer where customer_contact_me='" + email + "' AND customer_password='" + password + "'";
+    public static Optional<Customer> getSingleCustomerViaContactMe(String contactMe, String password) {
+        String query = "SELECT * FROM customer where customer_contact_me='" + contactMe + "' AND customer_password='" + password + "'";
         return getCustomer(query);
     }
 
-    public static Optional<Customer> getSingleCustomer(String email) {
-        String query = "SELECT * FROM customer where customer_contact_me='" + email + "'";
+    public static Optional<Customer> getSingleCustomerViaContactMe(String contactMe) {
+        String query = "SELECT * FROM customer where customer_contact_me='" + contactMe + "'";
+        return getCustomer(query);
+    }
+
+    public static Optional<Customer> getSingleCustomerViaName(String name, String password) {
+        String query = "SELECT * FROM customer where customer_name='" + name + "' AND customer_password='" + password + "'";
+        return getCustomer(query);
+    }
+
+    public static Optional<Customer> getSingleCustomerViaName(String name) {
+        String query = "SELECT * FROM customer where customer_name='" + name + "'";
         return getCustomer(query);
     }
 

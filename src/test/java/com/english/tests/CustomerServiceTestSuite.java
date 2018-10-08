@@ -22,7 +22,7 @@ public class CustomerServiceTestSuite {
         customerService.save(customer);
         assertEquals(numOfCustomers + 1, customerService.findAll(null).size());
 
-        Optional<Customer> result = DBHandler.getSingleCustomer(customer.getContactMe());
+        Optional<Customer> result = DBHandler.getSingleCustomerViaContactMe(customer.getContactMe());
         if (result.isPresent()) {
             customerService.delete(result.get());
             assertEquals(numOfCustomers, customerService.findAll(null).size());
@@ -37,14 +37,14 @@ public class CustomerServiceTestSuite {
         String name = "Quentin";
         String skype = "queueskype";
 
-        Optional<Customer> tempObject = DBHandler.getSingleCustomer(customer.getContactMe());
+        Optional<Customer> tempObject = DBHandler.getSingleCustomerViaContactMe(customer.getContactMe());
         if (tempObject.isPresent()) {
             tempObject.get().setName(name);
             tempObject.get().setSkype(skype);
             customerService.update(tempObject.get());
         }
 
-        Optional<Customer> result = DBHandler.getSingleCustomer(customer.getContactMe());
+        Optional<Customer> result = DBHandler.getSingleCustomerViaContactMe(customer.getContactMe());
         if(result.isPresent()){
             assertEquals(result.get().getName(), name);
             assertEquals(result.get().getSkype(), skype);

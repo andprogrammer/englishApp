@@ -8,31 +8,33 @@ import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.ValoTheme;
 
+import java.util.Optional;
+
 
 public class LogInForm extends FormLayout {
 
 	private static final long serialVersionUID = 1L;
-	
-	private TextField customerIdentifierTextField = new TextField();
+
+	private TextField logInTextField = new TextField();
 	private TextField passwordTextField = new TextField();
-	
+
 	private Button logInButton = new Button("Log me");
 	private Button closeButton = new Button("Close me");
-	
+
 	private MyUI myUI;
-	
+
 
 	public LogInForm(MyUI myUI) {
 		this.myUI = myUI;
-		
+
 		initComponents();
 		setSizeUndefined();
 		setTextFieldsPrompt();
-		addComponents(customerIdentifierTextField, passwordTextField, logInButton, closeButton);
+		addComponents(logInTextField, passwordTextField, logInButton, closeButton);
 	}
 
 	private void setTextFieldsPrompt() {
-		customerIdentifierTextField.setInputPrompt("name/email");   //TODO Handle name input
+		logInTextField.setInputPrompt("name/email");
 		passwordTextField.setInputPrompt("password");
 	}
 
@@ -40,62 +42,74 @@ public class LogInForm extends FormLayout {
 		logInButton.setStyleName(ValoTheme.BUTTON_PRIMARY);
 		logInButton.setClickShortcut(KeyCode.ENTER);
 		closeButton.setStyleName(ValoTheme.BUTTON_PRIMARY);
-		
+
 		logInButton.addClickListener(e->logInButtonClick());
 		closeButton.addClickListener(e->closeButtonClick());
 	}
-	
+
 	protected void clearTextFields() {
-		customerIdentifierTextField.clear();
+		logInTextField.clear();
 		passwordTextField.clear();
 	}
 
 	private boolean isLoginTextFieldAndPasswordTextFieldValid() {
-		return customerIdentifierTextField.isValid() && passwordTextField.isValid();
+		return logInTextField.isValid() && passwordTextField.isValid();
 	}
-	
-	private boolean isLoginAndPasswordCorrect(String customerIdentifier, String password) {
-		return DBHandler.getSingleCustomer(customerIdentifier, password).isPresent();
+
+	private boolean isLogInInputAndPasswordCorrect(String logInInput, String password) {
+		return DBHandler.getSingleCustomerViaContactMe(logInInput, password).isPresent() || DBHandler.getSingleCustomerViaName(logInInput, password).isPresent();
 	}
-	
-	protected void handleMainUIWhileLogInButtonClick(String customerIdentifier) {
+
+	protected void handleMainUIWhileLogInButtonClick() {
 		myUI.setVisibleReigsterButton(false);
 		myUI.setVisibleLogInButton(false);
 		myUI.setVisibleLogOutButton(true);
 		myUI.setVisibleEditMeButton(true);
-		myUI.setLoginStatus("Hello : " + customerIdentifier);
 	}
-	
-	protected void handleLogInFormWhileLogInButtonClickSuccessfulCase(String customerIdentifier) {
-		getSession().setAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE, customerIdentifier);
-		handleMainUIWhileLogInButtonClick(customerIdentifier);
+
+	protected void handleLogInFormWhileLogInButtonClickSuccessfulCase(String logInInput) {
+		Optional<Customer> customer_optional = DBHandler.getSingleCustomerViaContactMe(logInInput);
+		if (customer_optional.isPresent()) {
+            handleSuccessfulLogIn(customer_optional);
+		} else {
+			customer_optional = DBHandler.getSingleCustomerViaName(logInInput);
+			if (customer_optional.isPresent()) {
+                handleSuccessfulLogIn(customer_optional);
+			}
+		}
+	}
+
+    private void handleSuccessfulLogIn(Optional<Customer> customer_optional) {
+        getSession().setAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE, customer_optional.get().getName());
+        myUI.setLoginStatusLabel(customer_optional.get().getName());
+        handleMainUIWhileLogInButtonClick();
+        clearTextFields();
+        setVisible(false);
+    }
+
+    protected void handleLogInFormWhileLogInButtonClickFailureCase() {
+		Notification.show("Incorrect customer login or password", Type.WARNING_MESSAGE);
 		clearTextFields();
-		setVisible(false);
 	}
-	
-	protected void handleLogInFormWhileLogInButtonClickFailureCase() {
-		Notification.show("Incorrect customer identifier or password", Type.WARNING_MESSAGE);
-		clearTextFields();
-	}
-	
+
 	protected void logInButtonClick() {
-		if (isLoginTextFieldAndPasswordTextFieldValid()) {		
-			String email = customerIdentifierTextField.getValue();
+		if (isLoginTextFieldAndPasswordTextFieldValid()) {
+			String logInInput = logInTextField.getValue();
 			String password = passwordTextField.getValue();
-			
-			if(isLoginAndPasswordCorrect(email, password)) {
-				handleLogInFormWhileLogInButtonClickSuccessfulCase(email);
+
+			if(isLogInInputAndPasswordCorrect(logInInput, password)) {
+				handleLogInFormWhileLogInButtonClickSuccessfulCase(logInInput);
 				return;
 			}
 		}
 		handleLogInFormWhileLogInButtonClickFailureCase();
 	}
-	
+
 	private void closeButtonClick() {
 		setVisible(false);
 		clearTextFields();
 	}
-	
+
 	public void showLogInFormOnButtonClick() {
 		setVisible(true);
 	}

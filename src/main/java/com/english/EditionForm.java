@@ -20,27 +20,40 @@ public class EditionForm extends CustomerForm {
         addComponents(passwordTextField, confirmPasswordTextField, buttonsHorizontalLayouts);
     }
 
-    private boolean newEmailSameAsLogged(String email) {
-        String sessionEmail = getSession().getAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE).toString();
-        return sessionEmail.equals(email);
+    private boolean nameSameAsLoggedIn(String name) {   //session label ALWAYS set to customer name!
+        Object sessionAttribute = getSession().getAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE);
+        if(sessionAttribute != null) return sessionAttribute.toString().toLowerCase().equals(name.toLowerCase());
+        return false;
     }
 
-    protected void saveButtonClick() {
-        super.saveButtonClick();
-        String email = contactMe.getValue();
-        if(DBHandler.checkIfEmailExist(email) && false == newEmailSameAsLogged(email) ) {
-            Notification.show("Email already in use", "", Notification.Type.HUMANIZED_MESSAGE);
-            return;
+    protected boolean saveButtonClick() {
+        if (false == super.saveButtonClick()) return false;
+        String name = this.nameTextField.getValue();
+        String contactMe = this.contactMeTextField.getValue();
+
+        if(DBHandler.checkIfNameAlreadyExists(name) && false == nameSameAsLoggedIn(name)) {
+            Notification.show("Name already in use", "", Notification.Type.HUMANIZED_MESSAGE);
+            return false;
         }
+
+        if(DBHandler.checkIfContactMeAlreadyExists(contactMe) && false == customer.getContactMe().equals(contactMe)) {
+            Notification.show("Contact already in use", "", Notification.Type.HUMANIZED_MESSAGE);
+            return false;
+        }
+
         if(checkContracts()) {
-            return;
+            return false;
         }
         setCustomerValue();
+
+        getSession().setAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE, name);
+        myUI.setLoginStatusLabel(name);
 
         customerService.update(customer);
         myUI.updateCustomers();
         myUI.updateList();
         setVisible(false);
         clearRegistrationFields();
+        return true;
     }
 }

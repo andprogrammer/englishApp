@@ -9,7 +9,7 @@ public class CustomerForm extends FormLayout {
 	
 	protected TextField nameTextField = new TextField();
 	protected TextField skypeTextField = new TextField();
-	protected TextField contactMe = new TextField();
+	protected TextField contactMeTextField = new TextField();
 	protected ComboBox englishLevelComboBox = new ComboBox();
 	protected TextField passwordTextField = new TextField();
 	protected TextField confirmPasswordTextField = new TextField();
@@ -33,7 +33,7 @@ public class CustomerForm extends FormLayout {
 		englishLevelComboBox.setNullSelectionAllowed(false);
 		
 		setSizeUndefined();
-		addComponents(nameTextField, skypeTextField, contactMe, englishLevelComboBox);
+		addComponents(nameTextField, skypeTextField, contactMeTextField, englishLevelComboBox);
 	}
 
 	protected void initComponents() {
@@ -44,16 +44,14 @@ public class CustomerForm extends FormLayout {
 		closeButton.addClickListener(f->closeButtonClick());
 	}
 
-	protected void saveButtonClick() {
-		if (false == checkIfPasswordAndPasswordConfirmationAreTheSame()) {
-			return;
-		}
+	protected boolean saveButtonClick() {
+		return checkIfPasswordAndPasswordConfirmationAreTheSame();
 	}
 
 	void setCustomerValue() {
 		customer.setName(nameTextField.getValue());
 		customer.setSkype(skypeTextField.getValue());
-		customer.setContactMe(contactMe.getValue());
+		customer.setContactMe(contactMeTextField.getValue());
 		customer.setEnglishLevel((int) englishLevelComboBox.getValue());
 		customer.setPassword(passwordTextField.getValue());
 	}
@@ -61,7 +59,7 @@ public class CustomerForm extends FormLayout {
 	protected boolean checkContracts() {
 		return Contract.isNull(nameTextField.getValue(), "name") ||
 				Contract.isNull(skypeTextField.getValue(), "skype") ||
-				Contract.isNull(contactMe.getValue(), "contact me") ||
+				Contract.isNull(contactMeTextField.getValue(), "contact me") ||
 				Contract.isNull(englishLevelComboBox.getValue(), "english level") ||
 				Contract.isNull(passwordTextField.getValue(), "password");
 	}
@@ -81,7 +79,7 @@ public class CustomerForm extends FormLayout {
 	protected void setTextFieldsPrompts() {
 		nameTextField.setInputPrompt("name");
 		skypeTextField.setInputPrompt("skype");
-		contactMe.setInputPrompt("contact [e.g. mail]");
+		contactMeTextField.setInputPrompt("contact [e.g. mail]");
 		englishLevelComboBox.setInputPrompt("English level");
 		passwordTextField.setInputPrompt("password");
 		confirmPasswordTextField.setInputPrompt("confirm password");
@@ -96,14 +94,14 @@ public class CustomerForm extends FormLayout {
 	protected void initializeGUIelements(Customer customer) {
 		nameTextField.setValue(customer.getName());
 		skypeTextField.setValue(customer.getSkype());
-		contactMe.setValue(customer.getContactMe());
+		contactMeTextField.setValue(customer.getContactMe());
 		englishLevelComboBox.setValue(customer.getEnglishLevel());
 	}
 	
 	protected void clearRegistrationFields() {
 		nameTextField.clear();
 		skypeTextField.clear();
-		contactMe.clear();
+		contactMeTextField.clear();
 		englishLevelComboBox.clear();
 		passwordTextField.clear();
 		confirmPasswordTextField.clear();//This field is not store in Customer and it is not refreshing value

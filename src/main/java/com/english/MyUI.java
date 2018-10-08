@@ -27,7 +27,7 @@ public class MyUI extends UI {
 
 	private static final long serialVersionUID = 1L;
 
-	private final String LOGIN_STATUS = "You're not logged in";
+	private final String STATUS_NOT_LOG_IN = "You're not logged in";
 	private CustomerForm customerForm = new CustomerForm();
 	private RegistrationForm registrationForm = new RegistrationForm(this);
 	private LogInForm logInForm = new LogInForm(this);
@@ -109,15 +109,16 @@ public class MyUI extends UI {
 	}
 
 	private void initComponents() {
-    	loginStatusLabel.setValue(LOGIN_STATUS);
+		setLoginStatusLabel("");
         customerForm.setVisible(false);
         registrationForm.setVisible(false);
         logInForm.setVisible(false);
         editionForm.setVisible(false);
     }
 
-	public void setLoginStatus(String status) {
-		loginStatusLabel.setValue(status);
+	public void setLoginStatusLabel(String status) {
+    	if (status.isEmpty()) setLoginStatusLabel(STATUS_NOT_LOG_IN);
+    	else loginStatusLabel.setValue("Hello : " + status);
 	}
 
 	public String getLoginStatus() {
@@ -211,10 +212,18 @@ public class MyUI extends UI {
 			if(editionForm.isVisible()) setFormsToInvisible();
     		else {
 				setFormsToInvisible();
-				Optional<Customer> customer = DBHandler.getSingleCustomer((String) getSession().getAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE));
+
+				Object sessionAttribute = getSession().getAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE);
+				if(sessionAttribute == null) return;
+
+				String user_session_attribute = sessionAttribute.toString();
+				Optional<Customer> customer = DBHandler.getSingleCustomerViaContactMe(user_session_attribute);
 				if (customer.isPresent()) {
 					editionForm.setCustomer(customer.get());
-				}
+				} else {
+                    customer = DBHandler.getSingleCustomerViaName(user_session_attribute);
+                    if(customer.isPresent()) editionForm.setCustomer(customer.get());
+                }
 			}
 		});
     	editMeButton.setVisible(false);
@@ -232,12 +241,12 @@ public class MyUI extends UI {
 
 	private void handleLogOutButton() {
         logOutButton.addClickListener(e->{
-        	mainGrid.select(null);
+			setFormsToInvisible();
         	getSession().setAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE, null);
         	registerButton.setVisible(true);
         	logInButton.setVisible(true);
         	logOutButton.setVisible(false);
-        	loginStatusLabel.setValue(LOGIN_STATUS);
+        	loginStatusLabel.setValue(STATUS_NOT_LOG_IN);
         	editMeButton.setVisible(false);
         });
         logOutButton.setVisible(false);
