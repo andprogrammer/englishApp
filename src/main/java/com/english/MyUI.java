@@ -7,6 +7,7 @@ import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.*;
+import com.vaadin.ui.PopupView.Content;
 import com.vaadin.ui.themes.ValoTheme;
 
 import javax.servlet.annotation.WebServlet;
@@ -25,6 +26,7 @@ import java.util.Optional;
 @Theme("mytheme")
 public class MyUI extends UI {
 
+	private final String supportEmail = new String("dekoderer@gmail.com");
 	private static final long serialVersionUID = 1L;
 
 	private final String STATUS_NOT_LOG_IN = "You're not logged in";
@@ -85,7 +87,24 @@ public class MyUI extends UI {
         mainGrid.setSizeFull();
         mainLayout.setExpandRatio(mainGrid, 1);
 
-        pageLayout.addComponents(toolbarLayout, mainLayout);
+		PopupView contactPopupView = new PopupView(new Content() {
+			@Override
+			public Component getPopupComponent() {
+				return new VerticalLayout() {
+					{
+						setSpacing(false);
+						addComponent(new Label(supportEmail));
+					}
+				};
+			}
+			@Override
+			public String getMinimizedValueAsHTML() {
+				return "contact";
+			}
+		});
+
+        pageLayout.addComponents(toolbarLayout, mainLayout, contactPopupView);
+        pageLayout.setComponentAlignment(contactPopupView, Alignment.TOP_CENTER);
 
         updateList();
 
@@ -115,8 +134,7 @@ public class MyUI extends UI {
     }
 
 	public void setLoginStatusLabel(String status) {
-    	if (status.isEmpty()) setLoginStatusLabel(STATUS_NOT_LOG_IN);
-    	else loginStatusLabel.setValue("Hello : " + status);
+		loginStatusLabel.setValue(status.isEmpty() ? STATUS_NOT_LOG_IN : "Hello : " + status);
 	}
 
 	public void setVisibleReigsterButton(boolean visible) {
