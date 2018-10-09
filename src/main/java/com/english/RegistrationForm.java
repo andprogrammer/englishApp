@@ -17,7 +17,7 @@ public class RegistrationForm extends CustomerForm {
 		buttonsHorizontalLayouts.setSpacing(true);
 
 		super.setTextFieldsPrompts();
-		addComponents(passwordTextField, confirmPasswordTextField, buttonsHorizontalLayouts);
+		addComponents(passwordLabel, passwordTextField, confirmPasswordLabel, confirmPasswordTextField, buttonsHorizontalLayouts);
 	}
 
 	protected boolean saveButtonClick() {

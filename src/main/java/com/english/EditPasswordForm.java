@@ -14,10 +14,12 @@ public class EditPasswordForm extends CustomerForm {
         HorizontalLayout buttonsHorizontalLayouts = new HorizontalLayout(saveButton, closeButton);
         buttonsHorizontalLayouts.setSpacing(true);
 
+        setLabelsInvisible();
+
         super.setTextFieldsPrompts();
         setTextFieldsInvisible();
 
-        addComponents(passwordTextField, confirmPasswordTextField, buttonsHorizontalLayouts);
+        addComponents(passwordLabel, passwordTextField, confirmPasswordLabel, confirmPasswordTextField, buttonsHorizontalLayouts);
     }
 
     private void setTextFieldsInvisible() {

@@ -13,6 +13,12 @@ public class CustomerForm extends FormLayout {
 	protected ComboBox englishLevelComboBox = new ComboBox();
 	protected TextField passwordTextField = new TextField();
 	protected TextField confirmPasswordTextField = new TextField();
+	protected Label nameLabel = new Label("name");
+	protected Label skypeLabel = new Label("skype");
+	protected Label contactLabel = new Label("contact");
+	protected Label englishLevelLabel = new Label("english level");
+	protected Label passwordLabel = new Label("password");
+	protected Label confirmPasswordLabel = new Label("confirm password");
 	protected Button saveButton = new Button("Save me");
 	protected Button closeButton = new Button("Close me");
 
@@ -33,7 +39,7 @@ public class CustomerForm extends FormLayout {
 		englishLevelComboBox.setNullSelectionAllowed(false);
 		
 		setSizeUndefined();
-		addComponents(nameTextField, skypeTextField, contactMeTextField, englishLevelComboBox);
+		addComponents(nameLabel, nameTextField, skypeLabel, skypeTextField, contactLabel, contactMeTextField, englishLevelLabel, englishLevelComboBox);
 	}
 
 	protected void initComponents() {
@@ -54,6 +60,13 @@ public class CustomerForm extends FormLayout {
 		customer.setContactMe(contactMeTextField.getValue());
 		customer.setEnglishLevel((int) englishLevelComboBox.getValue());
 		customer.setPassword(passwordTextField.getValue());
+	}
+
+	protected void setLabelsInvisible() {
+		nameLabel.setVisible(false);
+		skypeLabel.setVisible(false);
+		contactLabel.setVisible(false);
+		englishLevelLabel.setVisible(false);
 	}
 
 	protected boolean checkContracts() {
