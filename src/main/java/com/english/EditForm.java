@@ -7,11 +7,11 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 
-public class EditionForm extends CustomerForm { //TODO rename to EditProfileForm
+public class EditForm extends CustomerForm { //TODO rename to EditProfileForm
 
     protected Button editPasswordButton = new Button("Edit Password");
 
-    public EditionForm(MyUI myUI) {
+    public EditForm(MyUI myUI) {
         super();
         this.myUI = myUI;
 
