@@ -30,6 +30,7 @@ public class MyUI extends UI {
 	private final String STATUS_NOT_LOG_IN = "You're not logged in";
 	private CustomerForm customerForm = new CustomerForm();
 	private RegistrationForm registrationForm = new RegistrationForm(this);
+	public EditPasswordForm editPasswordForm = new EditPasswordForm(this);
 	private LogInForm logInForm = new LogInForm(this);
 	private EditionForm editionForm = new EditionForm(this);
 
@@ -42,7 +43,7 @@ public class MyUI extends UI {
 	private Label subtitleLabel = new Label("Improve your English skills");
 	private Button registerButton = new Button("Register me");
 	private Button logInButton = new Button("Log me");
-	private Button logOutButton = new Button("Log out me");
+	private Button logOutButton = new Button("Log out");
 	private Button clearFilterButton = new Button("Clear filteres");
 	private Button editMeButton = new Button("Edit me");
 
@@ -78,7 +79,7 @@ public class MyUI extends UI {
 
         mainGrid.setColumns("name", "skype", "contactMe", "englishLevel");
 
-        HorizontalLayout mainLayout = new HorizontalLayout(mainGrid, customerForm, registrationForm, logInForm, editionForm);
+        HorizontalLayout mainLayout = new HorizontalLayout(mainGrid, customerForm, registrationForm, logInForm, editionForm, editPasswordForm);
         mainLayout.setSpacing(true);
         mainLayout.setSizeFull();
         mainGrid.setSizeFull();
@@ -93,7 +94,7 @@ public class MyUI extends UI {
         setContent(pageLayout);
 
         mainGrid.addSelectionListener(event->{
-        	if(event.getSelected().isEmpty() || registrationForm.isVisible() || logInForm.isVisible() || editionForm.isVisible()) {
+        	if(event.getSelected().isEmpty() || registrationForm.isVisible() || logInForm.isVisible() || editionForm.isVisible() || editPasswordForm.isVisible()) {
         		customerForm.setVisible(false);
         	} else {
         		Customer customer = (Customer) event.getSelected().iterator().next();
@@ -110,19 +111,12 @@ public class MyUI extends UI {
 
 	private void initComponents() {
 		setLoginStatusLabel("");
-        customerForm.setVisible(false);
-        registrationForm.setVisible(false);
-        logInForm.setVisible(false);
-        editionForm.setVisible(false);
+		setFormsInvisible();
     }
 
 	public void setLoginStatusLabel(String status) {
     	if (status.isEmpty()) setLoginStatusLabel(STATUS_NOT_LOG_IN);
     	else loginStatusLabel.setValue("Hello : " + status);
-	}
-
-	public String getLoginStatus() {
-		return loginStatusLabel.getValue();
 	}
 
 	public void setVisibleReigsterButton(boolean visible) {
@@ -189,19 +183,20 @@ public class MyUI extends UI {
 		return null == englishLevelComboBox.getValue() ? "" : Integer.toString((Integer) englishLevelComboBox.getValue());
 	}
 
-	private void setFormsToInvisible() {
+	private void setFormsInvisible() {
 		mainGrid.select(null);
 		registrationForm.setVisible(false);
 		logInForm.setVisible(false);
 		customerForm.setVisible(false);
 		editionForm.setVisible(false);
+		editPasswordForm.setVisible(false);
 	}
 
 	private void handleRegisterButton() {
 		registerButton.addClickListener(e->{
-			if(registrationForm.isVisible()) setFormsToInvisible();
+			if(registrationForm.isVisible()) setFormsInvisible();
 			else {
-				setFormsToInvisible();
+				setFormsInvisible();
 				registrationForm.setCustomer(new Customer()); //this is handled in saveButtonClick()
 			}
         });
@@ -209,9 +204,9 @@ public class MyUI extends UI {
 
 	private void handleEditMeButton() {
     	editMeButton.addClickListener(e->{
-			if(editionForm.isVisible()) setFormsToInvisible();
+			if(editionForm.isVisible()) setFormsInvisible();
     		else {
-				setFormsToInvisible();
+				setFormsInvisible();
 
 				Object sessionAttribute = getSession().getAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE);
 				if(sessionAttribute == null) return;
@@ -231,9 +226,9 @@ public class MyUI extends UI {
 
 	private void handleLogInButton() {
         logInButton.addClickListener(e->{
-        	if(logInForm.isVisible()) setFormsToInvisible();
+        	if(logInForm.isVisible()) setFormsInvisible();
 			else {
-				setFormsToInvisible();
+				setFormsInvisible();
 				logInForm.showLogInFormOnButtonClick();
 			}
         });
@@ -241,7 +236,7 @@ public class MyUI extends UI {
 
 	private void handleLogOutButton() {
         logOutButton.addClickListener(e->{
-			setFormsToInvisible();
+			setFormsInvisible();
         	getSession().setAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE, null);
         	registerButton.setVisible(true);
         	logInButton.setVisible(true);

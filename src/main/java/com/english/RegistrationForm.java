@@ -27,6 +27,9 @@ public class RegistrationForm extends CustomerForm {
 			Notification.show("Email already in use", "", Notification.Type.HUMANIZED_MESSAGE);
 			return false;
 		}
+
+		//TODO check if name already exist in the system
+
 		if(checkContracts()) { 
 			return false;
 		}

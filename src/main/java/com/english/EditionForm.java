@@ -1,23 +1,46 @@
 package com.english;
 
+import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 
 
-public class EditionForm extends CustomerForm {
+public class EditionForm extends CustomerForm { //TODO rename to EditProfileForm
+
+    protected Button editPasswordButton = new Button("Edit Password");
 
     public EditionForm(MyUI myUI) {
         super();
         this.myUI = myUI;
 
-        super.initComponents();
+        initComponents();
         setSizeUndefined();
 
-        HorizontalLayout buttonsHorizontalLayouts = new HorizontalLayout(saveButton, closeButton);
-        buttonsHorizontalLayouts.setSpacing(true);
+        HorizontalLayout buttonsHorizontalLayout = new HorizontalLayout(saveButton, closeButton);
+        buttonsHorizontalLayout.setSpacing(true);
+
+        VerticalLayout buttonVerticalLayout = new VerticalLayout();
+        buttonVerticalLayout.addComponent(editPasswordButton);
+        buttonVerticalLayout.addComponent(buttonsHorizontalLayout);
+        buttonVerticalLayout.setSpacing(true);
 
         super.setTextFieldsPrompts();
-        addComponents(passwordTextField, confirmPasswordTextField, buttonsHorizontalLayouts);
+        addComponents(buttonVerticalLayout);
+    }
+
+    protected void initComponents() {
+        super.initComponents();
+        editPasswordButton.setStyleName(ValoTheme.BUTTON_DANGER);
+        editPasswordButton.addClickListener(f->editPasswordButtonClick());
+        myUI.editPasswordForm.setVisible(false);
+    }
+
+    private void editPasswordButtonClick() {
+        setVisible(false);
+        myUI.editPasswordForm.setVisible(true);
+        myUI.editPasswordForm.setCustomer(customer);
     }
 
     private boolean nameSameAsLoggedIn(String name) {   //session label ALWAYS set to customer name!
@@ -26,8 +49,14 @@ public class EditionForm extends CustomerForm {
         return false;
     }
 
+    protected boolean checkContracts() {
+        return Contract.isNull(nameTextField.getValue(), "name") ||
+                Contract.isNull(skypeTextField.getValue(), "skype") ||
+                Contract.isNull(contactMeTextField.getValue(), "contact me") ||
+                Contract.isNull(englishLevelComboBox.getValue(), "english level");
+    }
+
     protected boolean saveButtonClick() {
-        if (false == super.saveButtonClick()) return false;
         String name = this.nameTextField.getValue();
         String contactMe = this.contactMeTextField.getValue();
 

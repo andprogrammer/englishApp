@@ -80,7 +80,7 @@ public class CustomerForm extends FormLayout {
 		nameTextField.setInputPrompt("name");
 		skypeTextField.setInputPrompt("skype");
 		contactMeTextField.setInputPrompt("contact [e.g. mail]");
-		englishLevelComboBox.setInputPrompt("English level");
+		englishLevelComboBox.setInputPrompt("english level");
 		passwordTextField.setInputPrompt("password");
 		confirmPasswordTextField.setInputPrompt("confirm password");
 	}
@@ -98,7 +98,7 @@ public class CustomerForm extends FormLayout {
 		englishLevelComboBox.setValue(customer.getEnglishLevel());
 	}
 	
-	protected void clearRegistrationFields() {
+	protected void clearRegistrationFields() {//TODO rename clearInputFields
 		nameTextField.clear();
 		skypeTextField.clear();
 		contactMeTextField.clear();
