@@ -32,7 +32,7 @@ public class MyUI extends UI {
 	private RegistrationForm registrationForm = new RegistrationForm(this);
 	public EditPasswordForm editPasswordForm = new EditPasswordForm(this);
 	private LogInForm logInForm = new LogInForm(this);
-	private EditForm editionForm = new EditForm(this);
+	private EditProfileForm editionForm = new EditProfileForm(this);
 
 	private TextField nameTextField = new TextField();
 	private TextField skypeTextField = new TextField();

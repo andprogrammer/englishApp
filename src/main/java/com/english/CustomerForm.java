@@ -43,7 +43,7 @@ public class CustomerForm extends FormLayout {
 	}
 
 	protected void initComponents() {
-		clearRegistrationFields();
+		clearInputFields();
 		saveButton.setStyleName(ValoTheme.BUTTON_PRIMARY);
 		closeButton.setStyleName(ValoTheme.BUTTON_PRIMARY);
 		saveButton.addClickListener(e->saveButtonClick());
@@ -111,7 +111,7 @@ public class CustomerForm extends FormLayout {
 		englishLevelComboBox.setValue(customer.getEnglishLevel());
 	}
 	
-	protected void clearRegistrationFields() {//TODO rename clearInputFields
+	protected void clearInputFields() {
 		nameTextField.clear();
 		skypeTextField.clear();
 		contactMeTextField.clear();

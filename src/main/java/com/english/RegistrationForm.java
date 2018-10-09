@@ -23,12 +23,15 @@ public class RegistrationForm extends CustomerForm {
 	protected boolean saveButtonClick() {
 		if (false == super.saveButtonClick()) return false;
 
-		if(DBHandler.checkIfContactMeAlreadyExists(contactMeTextField.getValue())) {
-			Notification.show("Email already in use", "", Notification.Type.HUMANIZED_MESSAGE);
+		if(DBHandler.checkIfNameAlreadyExists(nameTextField.getValue())) {
+			Notification.show("This name is already in use", "Change name value", Notification.Type.HUMANIZED_MESSAGE);
 			return false;
 		}
 
-		//TODO check if name already exist in the system
+		if(DBHandler.checkIfContactMeAlreadyExists(contactMeTextField.getValue())) {
+			Notification.show("This contact is already in use", "Change contact value", Notification.Type.HUMANIZED_MESSAGE);
+			return false;
+		}
 
 		if(checkContracts()) { 
 			return false;
@@ -38,7 +41,7 @@ public class RegistrationForm extends CustomerForm {
 		customerService.save(customer);
 		myUI.updateList();
 		setVisible(false);
-		clearRegistrationFields();
+		clearInputFields();
 		return true;
 	}
 }

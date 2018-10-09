@@ -48,7 +48,7 @@ public class EditPasswordForm extends CustomerForm {
         customerService.update(customer);
         myUI.updateList();
         setVisible(false);
-        clearRegistrationFields();
+        clearInputFields();
         return true;
     }
 }
