@@ -175,7 +175,7 @@ public class MyUI extends UI {
 		englishLevelComboBox.addItem(5);
 		englishLevelComboBox.addItem(6);
 		englishLevelComboBox.addValueChangeListener(e->{
-			mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(getFilterEnglishLevel(), CustomerService.FILTER_TYPE.ENGLISH_LEVEL)));
+			mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(getEnglishLevel(), CustomerService.FILTER_TYPE.ENGLISH_LEVEL)));
 		});
 
         filteringLayout.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
@@ -197,7 +197,7 @@ public class MyUI extends UI {
 		englishLevelComboBox.setInputPrompt("english level");
 	}
 
-	private String getFilterEnglishLevel() {
+	private String getEnglishLevel() {
 		return null == englishLevelComboBox.getValue() ? "" : Integer.toString((Integer) englishLevelComboBox.getValue());
 	}
 
@@ -291,7 +291,7 @@ public class MyUI extends UI {
 		List<Customer> customersFilteredByName = customerService.findAll(nameTextField.getValue());
 		List<Customer> customersFilteredBySkype = customerService.findAll(skypeTextField.getValue());
 		List<Customer> customersFilteredByContactMe = customerService.findAll(contactMeTextField.getValue());
-		List<Customer> customersFilteredByEnglishLevel = customerService.findAll(getFilterEnglishLevel());
+		List<Customer> customersFilteredByEnglishLevel = customerService.findAll(getEnglishLevel());
 
 		customers.addAll(customersFilteredByName);
 		customers.addAll(customersFilteredBySkype);
