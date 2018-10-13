@@ -292,7 +292,7 @@ public class MyUI extends UI {
 		updateList();
 	}
 
-	public void updateList() {
+	public void updateList() {//TODO rename updateMainGridCustomerList
 		List<Customer> customers = customerService.getfilteredContacts(nameTextField.getValue(), skypeTextField.getValue(), contactMeTextField.getValue(), getEnglishLevel());
 		mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customers));
 	}

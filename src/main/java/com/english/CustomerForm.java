@@ -54,7 +54,7 @@ public class CustomerForm extends FormLayout {
 		return checkIfPasswordAndPasswordConfirmationAreTheSame();
 	}
 
-	void setCustomerValue() {
+	void setCustomerValue() {//TODO rename setCustomerValueFromInputPrompt
 		customer.setName(nameTextField.getValue());
 		customer.setSkype(skypeTextField.getValue());
 		customer.setContactMe(contactMeTextField.getValue());
@@ -109,6 +109,9 @@ public class CustomerForm extends FormLayout {
 		skypeTextField.setValue(customer.getSkype());
 		contactMeTextField.setValue(customer.getContactMe());
 		englishLevelComboBox.setValue(customer.getEnglishLevel());
+		String customerPassword = customer.getPassword();
+		passwordTextField.setValue(customerPassword);
+		confirmPasswordTextField.setValue(customerPassword);
 	}
 	
 	protected void clearInputFields() {
