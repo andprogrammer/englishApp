@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Objects;
 
 
 @Entity
@@ -81,5 +82,24 @@ public class Customer implements Serializable, Cloneable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Customer)) return false;
+		Customer customer = (Customer) o;
+		return id == customer.id &&
+				englishLevel == customer.englishLevel &&
+				Objects.equals(name, customer.name) &&
+				Objects.equals(skype, customer.skype) &&
+				Objects.equals(contactMe, customer.contactMe) &&
+				Objects.equals(password, customer.password);
+	}
+
+	@Override
+	public int hashCode() {
+
+		return Objects.hash(id, name, skype, contactMe, englishLevel, password);
 	}
 }

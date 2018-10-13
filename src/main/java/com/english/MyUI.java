@@ -11,7 +11,6 @@ import com.vaadin.ui.PopupView.Content;
 import com.vaadin.ui.themes.ValoTheme;
 
 import javax.servlet.annotation.WebServlet;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,14 +42,15 @@ public class MyUI extends UI {
 	private Label loginStatusLabel = new Label();
 	private Label descriptionLabel = new Label("Find a person with whom you would like to talk in English");
 	private Label subtitleLabel = new Label("Improve your English skills");
+	private Button searchButton = new Button("Search");
+	private Button clearFilterButton = new Button("Clear filteres");
 	private Button registerButton = new Button("Register me");
 	private Button logInButton = new Button("Log me");
 	private Button logOutButton = new Button("Log out");
-	private Button clearFilterButton = new Button("Clear filteres");
 	private Button editMeButton = new Button("Edit me");
 
-	ThemeResource letsSpeakEnglishResource = new ThemeResource("images/LetsSpeakEng.png");
-	Image letsSpeakEnglishImage = new Image("", letsSpeakEnglishResource);
+//	ThemeResource letsSpeakEnglishResource = new ThemeResource("images/LetsSpeakEng.png");
+//	Image letsSpeakEnglishImage = new Image("", letsSpeakEnglishResource);
 
 	ThemeResource skypeLogoResourse = new ThemeResource("images/SkypeLogo.png");
 	Image skypeLogoImage = new Image("", skypeLogoResourse);
@@ -155,28 +155,23 @@ public class MyUI extends UI {
 
 	private void handleTextFieldsFiltering() {
 		setFiltersInputPrompt();
+		setEnglishLevelItems();
 
-        nameTextField.addTextChangeListener(e->{
-        	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.NAME)));
-        });
-
-		skypeTextField.addTextChangeListener(e->{
-			mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.SKYPE)));
-		});
-
-        contactMeTextField.addTextChangeListener(e->{
-        	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.CONTACT_ME)));
-        });
-
-		englishLevelComboBox.addItem(1);
-		englishLevelComboBox.addItem(2);
-		englishLevelComboBox.addItem(3);
-		englishLevelComboBox.addItem(4);
-		englishLevelComboBox.addItem(5);
-		englishLevelComboBox.addItem(6);
-		englishLevelComboBox.addValueChangeListener(e->{
-			mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(getEnglishLevel(), CustomerService.FILTER_TYPE.ENGLISH_LEVEL)));
-		});
+//        nameTextField.addTextChangeListener(e->{
+//        	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.NAME)));
+//        });
+//
+//		skypeTextField.addTextChangeListener(e->{
+//			mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.SKYPE)));
+//		});
+//
+//        contactMeTextField.addTextChangeListener(e->{
+//        	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.CONTACT_ME)));
+//        });
+//
+//		englishLevelComboBox.addValueChangeListener(e->{
+//			mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(getEnglishLevel(), CustomerService.FILTER_TYPE.ENGLISH_LEVEL)));
+//		});
 
         filteringLayout.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
         filteringLayout.addComponents(nameTextField,
@@ -187,7 +182,7 @@ public class MyUI extends UI {
 
 	private void handleMainButtonsLayout() {
 		mainButtonsLayout.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-		mainButtonsLayout.addComponents(clearFilterButton, registerButton, logInButton, logOutButton, editMeButton);
+		mainButtonsLayout.addComponents(searchButton, clearFilterButton, registerButton, logInButton, logOutButton, editMeButton);
 	}
 
 	private void setFiltersInputPrompt() {
@@ -195,6 +190,15 @@ public class MyUI extends UI {
 		skypeTextField.setInputPrompt("skype");
 		contactMeTextField.setInputPrompt("contact");
 		englishLevelComboBox.setInputPrompt("english level");
+	}
+
+	private void setEnglishLevelItems() {
+		englishLevelComboBox.addItem(1);
+		englishLevelComboBox.addItem(2);
+		englishLevelComboBox.addItem(3);
+		englishLevelComboBox.addItem(4);
+		englishLevelComboBox.addItem(5);
+		englishLevelComboBox.addItem(6);
 	}
 
 	private String getEnglishLevel() {
@@ -208,6 +212,12 @@ public class MyUI extends UI {
 		customerForm.setVisible(false);
 		editionForm.setVisible(false);
 		editPasswordForm.setVisible(false);
+	}
+
+	private void handleSearchButton() { searchButton.addClickListener(e->updateList()); }
+
+	private void handleClearFilterButton() {
+		clearFilterButton.addClickListener(e->clearFilteringTextFields());
 	}
 
 	private void handleRegisterButton() {
@@ -265,15 +275,12 @@ public class MyUI extends UI {
         logOutButton.setVisible(false);
 	}
 
-	private void handleClearFilterButton() {
-		clearFilterButton.addClickListener(e->clearFilteringTextFields());
-	}
-
 	protected void handleButtons() {
+    	handleSearchButton();
+		handleClearFilterButton();
 		handleRegisterButton();
 		handleLogInButton();
 		handleLogOutButton();
-		handleClearFilterButton();
 		handleEditMeButton();
 	}
 
@@ -286,18 +293,7 @@ public class MyUI extends UI {
 	}
 
 	public void updateList() {
-		List<Customer> customers = new ArrayList<Customer>();
-
-		List<Customer> customersFilteredByName = customerService.findAll(nameTextField.getValue());
-		List<Customer> customersFilteredBySkype = customerService.findAll(skypeTextField.getValue());
-		List<Customer> customersFilteredByContactMe = customerService.findAll(contactMeTextField.getValue());
-		List<Customer> customersFilteredByEnglishLevel = customerService.findAll(getEnglishLevel());
-
-		customers.addAll(customersFilteredByName);
-		customers.addAll(customersFilteredBySkype);
-		customers.addAll(customersFilteredByContactMe);
-		customers.addAll(customersFilteredByEnglishLevel);
-
+		List<Customer> customers = customerService.getfilteredContacts(nameTextField.getValue(), skypeTextField.getValue(), contactMeTextField.getValue(), getEnglishLevel());
 		mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customers));
 	}
 

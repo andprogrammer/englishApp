@@ -101,6 +101,33 @@ public class CustomerService {
 		}
 	}
 
+	public List<Customer> getfilteredContacts(String filterName, String filterSkype, String filterContactMe, String filterEnglishLevel) {
+		List<Customer> filteredCustomers = new ArrayList<>();
+
+		if ((filterName == null || filterName.isEmpty()) &&
+				(filterSkype == null || filterSkype.isEmpty()) &&
+				(filterContactMe == null || filterContactMe.isEmpty()) &&
+				(filterEnglishLevel == null || filterEnglishLevel.isEmpty())) {
+			return contacts;
+		}
+		for (Customer contact : contacts) {
+			if (false == filterName.isEmpty() && false == contact.getName().toLowerCase().contains(filterName.toLowerCase())) {
+				continue;
+			}
+			if (false == filterSkype.isEmpty() && false == contact.getSkype().toLowerCase().contains(filterSkype.toLowerCase())) {
+				continue;
+			}
+			if (false == filterContactMe.isEmpty() && false == contact.getContactMe().toLowerCase().contains(filterContactMe.toLowerCase())) {
+				continue;
+			}
+			if (false == filterEnglishLevel.isEmpty() && false == String.valueOf(contact.getEnglishLevel()).toLowerCase().contains(filterEnglishLevel.toLowerCase())) {
+				continue;
+			}
+			filteredCustomers.add(contact);
+		}
+		return filteredCustomers;
+	}
+
 	public synchronized long count() {
 		return contacts.size();
 	}
