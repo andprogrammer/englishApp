@@ -106,7 +106,7 @@ public class MyUI extends UI {
         pageLayout.addComponents(toolbarLayout, mainLayout, contactPopupView);
         pageLayout.setComponentAlignment(contactPopupView, Alignment.TOP_CENTER);
 
-        updateList();
+        updateMainGridCustomerList();
 
         pageLayout.setMargin(true);
         pageLayout.setSpacing(true);
@@ -214,7 +214,7 @@ public class MyUI extends UI {
 		editPasswordForm.setVisible(false);
 	}
 
-	private void handleSearchButton() { searchButton.addClickListener(e->updateList()); }
+	private void handleSearchButton() { searchButton.addClickListener(e-> updateMainGridCustomerList()); }
 
 	private void handleClearFilterButton() {
 		clearFilterButton.addClickListener(e->clearFilteringTextFields());
@@ -289,10 +289,10 @@ public class MyUI extends UI {
 		skypeTextField.clear();
 		contactMeTextField.clear();
 		englishLevelComboBox.clear();
-		updateList();
+		updateMainGridCustomerList();
 	}
 
-	public void updateList() {//TODO rename updateMainGridCustomerList
+	public void updateMainGridCustomerList() {
 		List<Customer> customers = customerService.getfilteredContacts(nameTextField.getValue(), skypeTextField.getValue(), contactMeTextField.getValue(), getEnglishLevel());
 		mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customers));
 	}

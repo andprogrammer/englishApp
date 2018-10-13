@@ -33,7 +33,7 @@ public class EditPasswordForm extends CustomerForm {
         return Contract.isNull(passwordTextField.getValue(), "password");
     }
 
-    void setCustomerValue() {
+    void setCustomerValueBasedOnInputPrompt() {
         customer.setPassword(passwordTextField.getValue());
     }
 
@@ -43,10 +43,10 @@ public class EditPasswordForm extends CustomerForm {
         if(checkContracts()) {
             return false;
         }
-        setCustomerValue();
+        setCustomerValueBasedOnInputPrompt();
 
         customerService.update(customer);
-        myUI.updateList();
+        myUI.updateMainGridCustomerList();
         setVisible(false);
         clearInputFields();
         return true;

@@ -36,10 +36,10 @@ public class RegistrationForm extends CustomerForm {
 		if(checkContracts()) { 
 			return false;
 		}
-		setCustomerValue();
+		setCustomerValueBasedOnInputPrompt();
 		
 		customerService.save(customer);
-		myUI.updateList();
+		myUI.updateMainGridCustomerList();
 		setVisible(false);
 		clearInputFields();
 		return true;

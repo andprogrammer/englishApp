@@ -1,11 +1,8 @@
 package com.english;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.Notification;
+import com.vaadin.ui.*;
 import com.vaadin.ui.Notification.Type;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.ValoTheme;
 
 import java.util.Optional;
@@ -15,8 +12,10 @@ public class LogInForm extends FormLayout {
 
 	private static final long serialVersionUID = 1L;
 
+	private Label nameEmailLabel = new Label("name/email");
 	private TextField logInTextField = new TextField();
-	private TextField passwordTextField = new TextField();
+	private Label passwordLabel = new Label("password");
+	private PasswordField passwordTextField = new PasswordField();
 
 	private Button logInButton = new Button("Log me");
 	private Button closeButton = new Button("Close me");
@@ -30,12 +29,11 @@ public class LogInForm extends FormLayout {
 		initComponents();
 		setSizeUndefined();
 		setTextFieldsPrompt();
-		addComponents(logInTextField, passwordTextField, logInButton, closeButton);
+		addComponents(nameEmailLabel, logInTextField, passwordLabel, passwordTextField, logInButton, closeButton);
 	}
 
 	private void setTextFieldsPrompt() {
 		logInTextField.setInputPrompt("name/email");
-		passwordTextField.setInputPrompt("password");
 	}
 
 	private void initComponents() {

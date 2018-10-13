@@ -11,8 +11,8 @@ public class CustomerForm extends FormLayout {
 	protected TextField skypeTextField = new TextField();
 	protected TextField contactMeTextField = new TextField();
 	protected ComboBox englishLevelComboBox = new ComboBox();
-	protected TextField passwordTextField = new TextField();
-	protected TextField confirmPasswordTextField = new TextField();
+	protected PasswordField passwordTextField = new PasswordField();
+	protected PasswordField confirmPasswordTextField = new PasswordField();
 	protected Label nameLabel = new Label("name");
 	protected Label skypeLabel = new Label("skype");
 	protected Label contactLabel = new Label("contact");
@@ -54,7 +54,7 @@ public class CustomerForm extends FormLayout {
 		return checkIfPasswordAndPasswordConfirmationAreTheSame();
 	}
 
-	void setCustomerValue() {//TODO rename setCustomerValueFromInputPrompt
+	void setCustomerValueBasedOnInputPrompt() {
 		customer.setName(nameTextField.getValue());
 		customer.setSkype(skypeTextField.getValue());
 		customer.setContactMe(contactMeTextField.getValue());
@@ -94,8 +94,6 @@ public class CustomerForm extends FormLayout {
 		skypeTextField.setInputPrompt("skype");
 		contactMeTextField.setInputPrompt("contact [e.g. mail]");
 		englishLevelComboBox.setInputPrompt("english level");
-		passwordTextField.setInputPrompt("password");
-		confirmPasswordTextField.setInputPrompt("confirm password");
 	}
 
 	public void setCustomer(Customer customer) {

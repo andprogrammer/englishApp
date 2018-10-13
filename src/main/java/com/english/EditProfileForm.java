@@ -73,14 +73,14 @@ public class EditProfileForm extends CustomerForm {
         if(checkContracts()) {
             return false;
         }
-        setCustomerValue();
+        setCustomerValueBasedOnInputPrompt();
 
         getSession().setAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE, name);
         myUI.setLoginStatusLabel(name);
 
         customerService.update(customer);
         myUI.updateCustomers();
-        myUI.updateList();
+        myUI.updateMainGridCustomerList();
         setVisible(false);
         clearInputFields();
         return true;
