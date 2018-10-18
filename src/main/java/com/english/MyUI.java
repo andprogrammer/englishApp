@@ -41,7 +41,7 @@ public class MyUI extends UI {
 	private ComboBox englishLevelComboBox = new ComboBox();
 	private Label loginStatusLabel = new Label();
 	private Label descriptionLabel = new Label("Find a person with whom you would like to talk in English");
-	private Label subtitleLabel = new Label("Improve your English skills");
+	private Label subtitleLabel = new Label("Improve your English skills for free");
 	private Button searchButton = new Button("Search");
 	private Button clearFilterButton = new Button("Clear filteres");
 	private Button registerButton = new Button("Register me");
