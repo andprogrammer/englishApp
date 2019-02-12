@@ -1,8 +1,8 @@
 package com.english.tests;
 
-import com.english.Customer;
-import com.english.CustomerService;
-import com.english.DBHandler;
+import com.english.model.Customer;
+import com.english.service.CustomerService;
+import com.english.db.DBHandler;
 import org.junit.Test;
 
 import java.util.List;

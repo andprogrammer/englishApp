@@ -1,5 +1,9 @@
-package com.english;
+package com.english.forms;
 
+import com.english.db.DBHandler;
+import com.english.Application;
+import com.english.utils.SessionAttributes;
+import com.english.model.Customer;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Notification.Type;
@@ -20,11 +24,11 @@ public class LogInForm extends FormLayout {
 	private Button logInButton = new Button("Log me");
 	private Button closeButton = new Button("Close me");
 
-	private MyUI myUI;
+	private Application application;
 
 
-	public LogInForm(MyUI myUI) {
-		this.myUI = myUI;
+	public LogInForm(Application application) {
+		this.application = application;
 
 		initComponents();
 		setSizeUndefined();
@@ -59,10 +63,10 @@ public class LogInForm extends FormLayout {
 	}
 
 	protected void handleMainUIWhileLogInButtonClick() {
-		myUI.setVisibleReigsterButton(false);
-		myUI.setVisibleLogInButton(false);
-		myUI.setVisibleLogOutButton(true);
-		myUI.setVisibleEditMeButton(true);
+		application.setVisibleReigsterButton(false);
+		application.setVisibleLogInButton(false);
+		application.setVisibleLogOutButton(true);
+		application.setVisibleEditMeButton(true);
 	}
 
 	protected void handleLogInFormWhileLogInButtonClickSuccessfulCase(String logInInput) {
@@ -79,7 +83,7 @@ public class LogInForm extends FormLayout {
 
     private void handleSuccessfulLogIn(Optional<Customer> customer_optional) {
         getSession().setAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE, customer_optional.get().getName());
-        myUI.setLoginStatusLabel(customer_optional.get().getName());
+        application.setLoginStatusLabel(customer_optional.get().getName());
         handleMainUIWhileLogInButtonClick();
         clearTextFields();
         setVisible(false);

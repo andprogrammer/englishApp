@@ -1,5 +1,10 @@
 package com.english;
 
+import com.english.db.DBHandler;
+import com.english.forms.*;
+import com.english.model.Customer;
+import com.english.service.CustomerService;
+import com.english.utils.SessionAttributes;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.data.util.BeanItemContainer;
@@ -23,7 +28,7 @@ import java.util.Optional;
  * overridden to add component to the user interface and initialize non-component functionality.
  */
 @Theme("mytheme")
-public class MyUI extends UI {
+public class Application extends UI {
 
 	private final String supportEmail = new String("dekoderer@gmail.com");
 	private static final long serialVersionUID = 1L;
@@ -302,7 +307,7 @@ public class MyUI extends UI {
 	}
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
-    @VaadinServletConfiguration(ui = MyUI.class, productionMode = false)
+    @VaadinServletConfiguration(ui = Application.class, productionMode = false)
     public static class MyUIServlet extends VaadinServlet {
 
 		private static final long serialVersionUID = 1L;

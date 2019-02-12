@@ -1,5 +1,9 @@
-package com.english;
+package com.english.forms;
 
+import com.english.Application;
+import com.english.model.Customer;
+import com.english.service.CustomerService;
+import com.english.utils.Contract;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -24,7 +28,7 @@ public class CustomerForm extends FormLayout {
 
 	protected Customer customer;
 	protected CustomerService customerService = CustomerService.getInstance();
-	protected MyUI myUI;
+	protected Application application;
 
 	
 	public CustomerForm() {

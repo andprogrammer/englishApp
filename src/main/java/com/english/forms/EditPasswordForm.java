@@ -1,12 +1,14 @@
-package com.english;
+package com.english.forms;
 
+import com.english.Application;
+import com.english.utils.Contract;
 import com.vaadin.ui.HorizontalLayout;
 
 public class EditPasswordForm extends CustomerForm {
 
-    public EditPasswordForm(MyUI myUI) {
+    public EditPasswordForm(Application application) {
         super();
-        this.myUI = myUI;
+        this.application = application;
 
         super.initComponents();
         setSizeUndefined();
@@ -46,7 +48,7 @@ public class EditPasswordForm extends CustomerForm {
         setCustomerValueBasedOnInputPrompt();
 
         customerService.update(customer);
-        myUI.updateMainGridCustomerList();
+        application.updateMainGridCustomerList();
         setVisible(false);
         clearInputFields();
         return true;

@@ -1,14 +1,16 @@
-package com.english;
+package com.english.forms;
 
+import com.english.db.DBHandler;
+import com.english.Application;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
 
 
 public class RegistrationForm extends CustomerForm {
 
-	public RegistrationForm(MyUI myUI) {
+	public RegistrationForm(Application application) {
 		super();
-		this.myUI = myUI;
+		this.application = application;
 
 		super.initComponents();
 		setSizeUndefined();
@@ -39,7 +41,7 @@ public class RegistrationForm extends CustomerForm {
 		setCustomerValueBasedOnInputPrompt();
 		
 		customerService.save(customer);
-		myUI.updateMainGridCustomerList();
+		application.updateMainGridCustomerList();
 		setVisible(false);
 		clearInputFields();
 		return true;

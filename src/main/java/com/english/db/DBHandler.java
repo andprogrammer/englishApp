@@ -1,5 +1,7 @@
-package com.english;
+package com.english.db;
 
+import com.english.model.Customer;
+import com.english.utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
