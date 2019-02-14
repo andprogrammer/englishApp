@@ -1,6 +1,6 @@
-# English Application
+# Language accelerator
 
-This application allowed to find people from all over the World who want to improve their english skills. Just find an english partner with you want to talk and start talking via skype. There are lot of filters which allowed you to find a partner by english level, country, gender, skype, email or name.
+This application allowed to find people from all over the World who want to improve their language skills. Just find an language partner with you want to talk and start talking via skype. There are lot of filters which allowed you to find a partner by language level, country, gender, skype, email or name.
 
 ### Technologies
 - Vaadin
@@ -18,4 +18,4 @@ jetty:run
 http://localhost:8080/englishapp/
 ```
 
-Let's get fun!
+Let's talk!
