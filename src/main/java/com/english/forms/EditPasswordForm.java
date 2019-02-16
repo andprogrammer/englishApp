@@ -28,7 +28,7 @@ public class EditPasswordForm extends CustomerForm {
         nameTextField.setVisible(false);
         skypeTextField.setVisible(false);
         contactMeTextField.setVisible(false);
-        englishLevelComboBox.setVisible(false);
+        languageLevelComboBox.setVisible(false);
     }
 
     protected boolean checkContracts() {

@@ -64,7 +64,7 @@ public class CustomerService {
 				contactData = contact.getContactMe();
 				break;
 			case ENGLISH_LEVEL:
-				contactData = Integer.toString(contact.getEnglishLevel());
+				contactData = Integer.toString(contact.getLanguageLevel());
 				break;
 			default:
 				break;
@@ -104,13 +104,13 @@ public class CustomerService {
 		}
 	}
 
-	public List<Customer> getfilteredContacts(String filterName, String filterSkype, String filterContactMe, String filterEnglishLevel) {
+	public List<Customer> getfilteredContacts(String filterName, String filterSkype, String filterContactMe, String filterLanguageLevel) {
 		List<Customer> filteredCustomers = new ArrayList<>();
 
 		if ((filterName == null || filterName.isEmpty()) &&
 				(filterSkype == null || filterSkype.isEmpty()) &&
 				(filterContactMe == null || filterContactMe.isEmpty()) &&
-				(filterEnglishLevel == null || filterEnglishLevel.isEmpty())) {
+				(filterLanguageLevel == null || filterLanguageLevel.isEmpty())) {
 			return contacts;
 		}
 		for (Customer contact : contacts) {
@@ -123,7 +123,7 @@ public class CustomerService {
 			if (false == filterContactMe.isEmpty() && false == contact.getContactMe().toLowerCase().contains(filterContactMe.toLowerCase())) {
 				continue;
 			}
-			if (false == filterEnglishLevel.isEmpty() && false == String.valueOf(contact.getEnglishLevel()).toLowerCase().contains(filterEnglishLevel.toLowerCase())) {
+			if (false == filterLanguageLevel.isEmpty() && false == String.valueOf(contact.getLanguageLevel()).toLowerCase().contains(filterLanguageLevel.toLowerCase())) {
 				continue;
 			}
 			filteredCustomers.add(contact);

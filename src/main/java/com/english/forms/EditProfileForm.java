@@ -57,7 +57,7 @@ public class EditProfileForm extends CustomerForm {
         return Contract.isNull(nameTextField.getValue(), "name") ||
                 Contract.isNull(skypeTextField.getValue(), "skype") ||
                 Contract.isNull(contactMeTextField.getValue(), "contact me") ||
-                Contract.isNull(englishLevelComboBox.getValue(), "english level");
+                Contract.isNull(languageLevelComboBox.getValue(), "language level");
     }
 
     protected boolean saveButtonClick() {

@@ -14,13 +14,13 @@ public class CustomerForm extends FormLayout {
 	protected TextField nameTextField = new TextField();
 	protected TextField skypeTextField = new TextField();
 	protected TextField contactMeTextField = new TextField();
-	protected ComboBox englishLevelComboBox = new ComboBox();
+	protected ComboBox languageLevelComboBox = new ComboBox();
 	protected PasswordField passwordTextField = new PasswordField();
 	protected PasswordField confirmPasswordTextField = new PasswordField();
 	protected Label nameLabel = new Label("name");
 	protected Label skypeLabel = new Label("skype");
 	protected Label contactLabel = new Label("contact");
-	protected Label englishLevelLabel = new Label("english level");
+	protected Label languageLevelLabel = new Label("language level");
 	protected Label passwordLabel = new Label("password");
 	protected Label confirmPasswordLabel = new Label("confirm password");
 	protected Button saveButton = new Button("Save me");
@@ -34,16 +34,16 @@ public class CustomerForm extends FormLayout {
 	public CustomerForm() {
 		setTextFieldsPrompts();
 
-		englishLevelComboBox.addItem(1);
-		englishLevelComboBox.addItem(2);
-		englishLevelComboBox.addItem(3);
-		englishLevelComboBox.addItem(4);
-		englishLevelComboBox.addItem(5);
-		englishLevelComboBox.addItem(6);
-		englishLevelComboBox.setNullSelectionAllowed(false);
+		languageLevelComboBox.addItem(1);
+		languageLevelComboBox.addItem(2);
+		languageLevelComboBox.addItem(3);
+		languageLevelComboBox.addItem(4);
+		languageLevelComboBox.addItem(5);
+		languageLevelComboBox.addItem(6);
+		languageLevelComboBox.setNullSelectionAllowed(false);
 		
 		setSizeUndefined();
-		addComponents(nameLabel, nameTextField, skypeLabel, skypeTextField, contactLabel, contactMeTextField, englishLevelLabel, englishLevelComboBox);
+		addComponents(nameLabel, nameTextField, skypeLabel, skypeTextField, contactLabel, contactMeTextField, languageLevelLabel, languageLevelComboBox);
 	}
 
 	protected void initComponents() {
@@ -62,7 +62,7 @@ public class CustomerForm extends FormLayout {
 		customer.setName(nameTextField.getValue());
 		customer.setSkype(skypeTextField.getValue());
 		customer.setContactMe(contactMeTextField.getValue());
-		customer.setEnglishLevel((int) englishLevelComboBox.getValue());
+		customer.setLanguageLevel((int) languageLevelComboBox.getValue());
 		customer.setPassword(passwordTextField.getValue());
 	}
 
@@ -70,14 +70,14 @@ public class CustomerForm extends FormLayout {
 		nameLabel.setVisible(false);
 		skypeLabel.setVisible(false);
 		contactLabel.setVisible(false);
-		englishLevelLabel.setVisible(false);
+		languageLevelLabel.setVisible(false);
 	}
 
 	protected boolean checkContracts() {
 		return Contract.isNull(nameTextField.getValue(), "name") ||
 				Contract.isNull(skypeTextField.getValue(), "skype") ||
 				Contract.isNull(contactMeTextField.getValue(), "contact me") ||
-				Contract.isNull(englishLevelComboBox.getValue(), "english level") ||
+				Contract.isNull(languageLevelComboBox.getValue(), "language level") ||
 				Contract.isNull(passwordTextField.getValue(), "password");
 	}
 
@@ -97,7 +97,7 @@ public class CustomerForm extends FormLayout {
 		nameTextField.setInputPrompt("name");
 		skypeTextField.setInputPrompt("skype");
 		contactMeTextField.setInputPrompt("contact [e.g. mail]");
-		englishLevelComboBox.setInputPrompt("english level");
+		languageLevelComboBox.setInputPrompt("language level");
 	}
 
 	public void setCustomer(Customer customer) {
@@ -110,7 +110,7 @@ public class CustomerForm extends FormLayout {
 		nameTextField.setValue(customer.getName());
 		skypeTextField.setValue(customer.getSkype());
 		contactMeTextField.setValue(customer.getContactMe());
-		englishLevelComboBox.setValue(customer.getEnglishLevel());
+		languageLevelComboBox.setValue(customer.getLanguageLevel());
 		String customerPassword = customer.getPassword();
 		passwordTextField.setValue(customerPassword);
 		confirmPasswordTextField.setValue(customerPassword);
@@ -120,7 +120,7 @@ public class CustomerForm extends FormLayout {
 		nameTextField.clear();
 		skypeTextField.clear();
 		contactMeTextField.clear();
-		englishLevelComboBox.clear();
+		languageLevelComboBox.clear();
 		passwordTextField.clear();
 		confirmPasswordTextField.clear();//This field is not store in Customer and it is not refreshing value
 	}

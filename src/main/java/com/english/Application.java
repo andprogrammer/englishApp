@@ -43,16 +43,19 @@ public class Application extends UI {
 	private TextField nameTextField = new TextField();
 	private TextField skypeTextField = new TextField();
 	private TextField contactMeTextField = new TextField();
-	private ComboBox englishLevelComboBox = new ComboBox();
+	private ComboBox languageLevelComboBox = new ComboBox();
 	private Label loginStatusLabel = new Label();
-	private Label descriptionLabel = new Label("Find a person with whom you would like to talk in English");
-	private Label subtitleLabel = new Label("Improve your English skills for free");
+	private Label descriptionLabel = new Label("Let's talk");
+	private Label subtitleLabel = new Label("Improve your language skills for free");
 	private Button searchButton = new Button("Search");
 	private Button clearFilterButton = new Button("Clear filteres");
 	private Button registerButton = new Button("Register me");
 	private Button logInButton = new Button("Log me");
 	private Button logOutButton = new Button("Log out");
 	private Button editMeButton = new Button("Edit me");
+	private Button englishButton = new Button("English");
+	private Button espanolButton = new Button("Español");
+	private Button italianoButton = new Button("Italiano");
 
 //	ThemeResource letsSpeakEnglishResource = new ThemeResource("images/LetsSpeakEng.png");
 //	Image letsSpeakEnglishImage = new Image("", letsSpeakEnglishResource);
@@ -63,6 +66,7 @@ public class Application extends UI {
 	private Grid mainGrid = new Grid();
 	CssLayout filteringLayout = new CssLayout();
 	CssLayout mainButtonsLayout = new CssLayout();
+	CssLayout languageButtonsLayout = new CssLayout();
 
 	private CustomerService customerService = CustomerService.getInstance();
 
@@ -71,6 +75,7 @@ public class Application extends UI {
         initComponents();
         handleTextFieldsFiltering();
 		handleMainButtonsLayout();
+		handleLanguageButtonsLayout();
         handleButtons();
 
 		setStyleName("backgroundimage");
@@ -81,10 +86,10 @@ public class Application extends UI {
 
         VerticalLayout toolbarLayout = new VerticalLayout();
         toolbarLayout.setDefaultComponentAlignment(Alignment.TOP_CENTER);
-        toolbarLayout.addComponents(descriptionLabel, subtitleLabel, filteringLayout, mainButtonsLayout, skypeLogoImage, loginStatusLabel);
+        toolbarLayout.addComponents(descriptionLabel, subtitleLabel, filteringLayout, mainButtonsLayout, skypeLogoImage, languageButtonsLayout, loginStatusLabel);
         toolbarLayout.setSpacing(true);
 
-        mainGrid.setColumns("name", "skype", "contactMe", "englishLevel");
+        mainGrid.setColumns("name", "skype", "contactMe", "languageLevel");
 
         HorizontalLayout mainLayout = new HorizontalLayout(mainGrid, customerForm, registrationForm, logInForm, editionForm, editPasswordForm);
         mainLayout.setSpacing(true);
@@ -142,7 +147,7 @@ public class Application extends UI {
 		loginStatusLabel.setValue(status.isEmpty() ? STATUS_NOT_LOG_IN : "Hello : " + status);
 	}
 
-	public void setVisibleReigsterButton(boolean visible) {
+	public void setVisibleRegisterButton(boolean visible) {
 		registerButton.setVisible(visible);
 	}
 
@@ -160,7 +165,7 @@ public class Application extends UI {
 
 	private void handleTextFieldsFiltering() {
 		setFiltersInputPrompt();
-		setEnglishLevelItems();
+		setLanguageLevelItems();
 
 //        nameTextField.addTextChangeListener(e->{
 //        	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.NAME)));
@@ -174,15 +179,15 @@ public class Application extends UI {
 //        	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.CONTACT_ME)));
 //        });
 //
-//		englishLevelComboBox.addValueChangeListener(e->{
-//			mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(getEnglishLevel(), CustomerService.FILTER_TYPE.ENGLISH_LEVEL)));
+//		languageLevelComboBox.addValueChangeListener(e->{
+//			mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(getLanguageLevel(), CustomerService.FILTER_TYPE.ENGLISH_LEVEL)));
 //		});
 
         filteringLayout.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
         filteringLayout.addComponents(nameTextField,
 				skypeTextField,
 				contactMeTextField,
-				englishLevelComboBox);
+				languageLevelComboBox);
 	}
 
 	private void handleMainButtonsLayout() {
@@ -190,24 +195,29 @@ public class Application extends UI {
 		mainButtonsLayout.addComponents(searchButton, clearFilterButton, registerButton, logInButton, logOutButton, editMeButton);
 	}
 
+	private void handleLanguageButtonsLayout() {
+    	languageButtonsLayout.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+    	languageButtonsLayout.addComponents(englishButton, espanolButton, italianoButton);
+	}
+
 	private void setFiltersInputPrompt() {
 		nameTextField.setInputPrompt("name");
 		skypeTextField.setInputPrompt("skype");
 		contactMeTextField.setInputPrompt("contact");
-		englishLevelComboBox.setInputPrompt("english level");
+		languageLevelComboBox.setInputPrompt("language level");
 	}
 
-	private void setEnglishLevelItems() {
-		englishLevelComboBox.addItem(1);
-		englishLevelComboBox.addItem(2);
-		englishLevelComboBox.addItem(3);
-		englishLevelComboBox.addItem(4);
-		englishLevelComboBox.addItem(5);
-		englishLevelComboBox.addItem(6);
+	private void setLanguageLevelItems() {
+		languageLevelComboBox.addItem(1);
+		languageLevelComboBox.addItem(2);
+		languageLevelComboBox.addItem(3);
+		languageLevelComboBox.addItem(4);
+		languageLevelComboBox.addItem(5);
+		languageLevelComboBox.addItem(6);
 	}
 
-	private String getEnglishLevel() {
-		return null == englishLevelComboBox.getValue() ? "" : Integer.toString((Integer) englishLevelComboBox.getValue());
+	private String getLanguageLevel() {
+		return null == languageLevelComboBox.getValue() ? "" : Integer.toString((Integer) languageLevelComboBox.getValue());
 	}
 
 	private void setFormsInvisible() {
@@ -293,12 +303,12 @@ public class Application extends UI {
 		nameTextField.clear();
 		skypeTextField.clear();
 		contactMeTextField.clear();
-		englishLevelComboBox.clear();
+		languageLevelComboBox.clear();
 		updateMainGridCustomerList();
 	}
 
 	public void updateMainGridCustomerList() {
-		List<Customer> customers = customerService.getfilteredContacts(nameTextField.getValue(), skypeTextField.getValue(), contactMeTextField.getValue(), getEnglishLevel());
+		List<Customer> customers = customerService.getfilteredContacts(nameTextField.getValue(), skypeTextField.getValue(), contactMeTextField.getValue(), getLanguageLevel());
 		mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customers));
 	}
 

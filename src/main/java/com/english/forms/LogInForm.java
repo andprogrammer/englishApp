@@ -32,12 +32,7 @@ public class LogInForm extends FormLayout {
 
 		initComponents();
 		setSizeUndefined();
-		setTextFieldsPrompt();
 		addComponents(nameEmailLabel, logInTextField, passwordLabel, passwordTextField, logInButton, closeButton);
-	}
-
-	private void setTextFieldsPrompt() {
-		logInTextField.setInputPrompt("name/email");
 	}
 
 	private void initComponents() {
@@ -63,7 +58,7 @@ public class LogInForm extends FormLayout {
 	}
 
 	protected void handleMainUIWhileLogInButtonClick() {
-		application.setVisibleReigsterButton(false);
+		application.setVisibleRegisterButton(false);
 		application.setVisibleLogInButton(false);
 		application.setVisibleLogOutButton(true);
 		application.setVisibleEditMeButton(true);

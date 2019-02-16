@@ -17,11 +17,11 @@ public class Customer implements Serializable, Cloneable {
 	public Customer() {
     }
 
-	public Customer(String name, String skype, String contactMe, int englishLevel, String password) {
+	public Customer(String name, String skype, String contactMe, int languageLevel, String password) {
 	    this.name = name;
 		this.skype = skype;
 	    this.contactMe = contactMe;
-		this.englishLevel = englishLevel;
+		this.languageLevel = languageLevel;
 	    this.password = password;
     }
 
@@ -39,7 +39,7 @@ public class Customer implements Serializable, Cloneable {
 	private String contactMe="";
 
 	@Column(name="customer_english_level")
-	private int englishLevel=0;
+	private int languageLevel =0;
 
 	@Column(name="customer_password")
 	private String password="";
@@ -72,12 +72,12 @@ public class Customer implements Serializable, Cloneable {
 		this.contactMe = contactMe;
 	}
 
-	public int getEnglishLevel() {
-		return englishLevel;
+	public int getLanguageLevel() {
+		return languageLevel;
 	}
 
-	public void setEnglishLevel(int englishLevel) {
-		this.englishLevel = englishLevel;
+	public void setLanguageLevel(int languageLevel) {
+		this.languageLevel = languageLevel;
 	}
 
 	public void setPassword(String password) {
@@ -92,7 +92,7 @@ public class Customer implements Serializable, Cloneable {
 		if (!(o instanceof Customer)) return false;
 		Customer customer = (Customer) o;
 		return id == customer.id &&
-				englishLevel == customer.englishLevel &&
+				languageLevel == customer.languageLevel &&
 				Objects.equals(name, customer.name) &&
 				Objects.equals(skype, customer.skype) &&
 				Objects.equals(contactMe, customer.contactMe) &&
@@ -102,6 +102,6 @@ public class Customer implements Serializable, Cloneable {
 	@Override
 	public int hashCode() {
 
-		return Objects.hash(id, name, skype, contactMe, englishLevel, password);
+		return Objects.hash(id, name, skype, contactMe, languageLevel, password);
 	}
 }
