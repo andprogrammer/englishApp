@@ -1,9 +1,9 @@
 package com.english.forms;
 
-import com.english.Application;
 import com.english.db.DBHandler;
 import com.english.utils.Contract;
 import com.english.utils.SessionAttributes;
+import com.english.view.MainUI;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
@@ -15,9 +15,9 @@ public class EditProfileForm extends CustomerForm {
 
     protected Button editPasswordButton = new Button("Edit Password");
 
-    public EditProfileForm(Application application) {
+    public EditProfileForm(MainUI mainUI) {
         super();
-        this.application = application;
+        this.mainUI = mainUI;
 
         initComponents();
         setSizeUndefined();
@@ -38,13 +38,13 @@ public class EditProfileForm extends CustomerForm {
         super.initComponents();
         editPasswordButton.setStyleName(ValoTheme.BUTTON_DANGER);
         editPasswordButton.addClickListener(f -> editPasswordButtonClick());
-        application.editPasswordForm.setVisible(false);
+        mainUI.editPasswordForm.setVisible(false);
     }
 
     private void editPasswordButtonClick() {
         setVisible(false);
-        application.editPasswordForm.setVisible(true);
-        application.editPasswordForm.setCustomer(customer);
+        mainUI.editPasswordForm.setVisible(true);
+        mainUI.editPasswordForm.setCustomer(customer);
     }
 
     private boolean nameSameAsLoggedIn(String name) {   //session label ALWAYS set to customer name!
@@ -80,11 +80,11 @@ public class EditProfileForm extends CustomerForm {
         setCustomerValueBasedOnInputPrompt();
 
         getSession().setAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE, name);
-        application.setLoginStatusLabel(name);
+        mainUI.setLoginStatusLabel(name);
 
         customerService.update(customer);
-        application.updateCustomers();
-        application.updateMainGridCustomerList();
+        mainUI.updateCustomers();
+        mainUI.updateMainGridCustomerList();
         setVisible(false);
         clearInputFields();
         return true;
