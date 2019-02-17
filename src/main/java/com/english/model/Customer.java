@@ -12,96 +12,109 @@ import java.util.Objects;
 @Table(name = "customer")
 public class Customer implements Serializable, Cloneable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public Customer() {
+    public Customer() {
     }
 
-	public Customer(String name, String skype, String contactMe, int languageLevel, String password) {
-	    this.name = name;
-		this.skype = skype;
-	    this.contactMe = contactMe;
-		this.languageLevel = languageLevel;
-	    this.password = password;
+    public Customer(String name, String skype, String contactMe, String language, int languageLevel, String password) {
+        this.name = name;
+        this.skype = skype;
+        this.contactMe = contactMe;
+        this.language = language;
+        this.languageLevel = languageLevel;
+        this.password = password;
     }
 
-	@Id
-	@Column(name="id")
-	private int id;
+    @Id
+    @Column(name = "id")
+    private int id;
 
-	@Column(name="customer_name")
-	private String name="";
+    @Column(name = "customer_name")
+    private String name = "";
 
-	@Column(name="customer_skype")
-	private String skype="";
+    @Column(name = "customer_skype")
+    private String skype = "";
 
-	@Column(name="customer_contact_me")
-	private String contactMe="";
+    @Column(name = "customer_contact_me")
+    private String contactMe = "";
 
-	@Column(name="customer_english_level")
-	private int languageLevel =0;
+    @Column(name = "customer_language")
+    private String language = "";
 
-	@Column(name="customer_password")
-	private String password="";
+    @Column(name = "customer_language_level")
+    private int languageLevel = 0;
 
-	public int getId() {
-		return id;
-	}
+    @Column(name = "customer_password")
+    private String password = "";
 
-	public String getName() {
-		return name;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getSkype() {
-		return skype;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setSkype(String skype) {
-		this.skype = skype;
-	}
+    public String getSkype() {
+        return skype;
+    }
 
-	public String getContactMe() {
-		return contactMe;
-	}
+    public void setSkype(String skype) {
+        this.skype = skype;
+    }
 
-	public void setContactMe(String contactMe) {
-		this.contactMe = contactMe;
-	}
+    public String getContactMe() {
+        return contactMe;
+    }
 
-	public int getLanguageLevel() {
-		return languageLevel;
-	}
+    public void setContactMe(String contactMe) {
+        this.contactMe = contactMe;
+    }
 
-	public void setLanguageLevel(int languageLevel) {
-		this.languageLevel = languageLevel;
-	}
+    public String getLanguage() {
+        return language;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setLanguage(String language) {
+        this.language = language;
+    }
 
-	public String getPassword() { return password; }
+    public int getLanguageLevel() {
+        return languageLevel;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof Customer)) return false;
-		Customer customer = (Customer) o;
-		return id == customer.id &&
-				languageLevel == customer.languageLevel &&
-				Objects.equals(name, customer.name) &&
-				Objects.equals(skype, customer.skype) &&
-				Objects.equals(contactMe, customer.contactMe) &&
-				Objects.equals(password, customer.password);
-	}
+    public void setLanguageLevel(int languageLevel) {
+        this.languageLevel = languageLevel;
+    }
 
-	@Override
-	public int hashCode() {
+    public String getPassword() {
+        return password;
+    }
 
-		return Objects.hash(id, name, skype, contactMe, languageLevel, password);
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Customer)) return false;
+        Customer customer = (Customer) o;
+        return id == customer.id &&
+                languageLevel == customer.languageLevel &&
+                Objects.equals(name, customer.name) &&
+                Objects.equals(skype, customer.skype) &&
+                Objects.equals(contactMe, customer.contactMe) &&
+                Objects.equals(password, customer.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, skype, contactMe, languageLevel, password);
+    }
 }

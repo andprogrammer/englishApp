@@ -38,7 +38,7 @@ public class DBHandler {
             Session session = sf.openSession();
             session.beginTransaction();
 
-            switch(procedureType) {
+            switch (procedureType) {
                 case SAVE:
                     session.save(customer);
                     break;
@@ -64,6 +64,21 @@ public class DBHandler {
             SessionFactory sf = HibernateUtil.getSessionFactory();
             Session session = sf.openSession();
             List<Customer> customers = session.createSQLQuery("SELECT * FROM customer").addEntity(Customer.class).list();
+            LOGGER.log(Level.FINE, "Processing {0} customers from DB", customers.size());
+            session.close();
+            return customers;
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            e.getStackTrace();
+        }
+        return Collections.emptyList();
+    }
+
+    public static List<Customer> getAllCustomersFromDB(String language) {
+        try {
+            SessionFactory sf = HibernateUtil.getSessionFactory();
+            Session session = sf.openSession();
+            List<Customer> customers = session.createSQLQuery("SELECT * FROM customer WHERE customer_language='" + language + "'").addEntity(Customer.class).list();
             LOGGER.log(Level.FINE, "Processing {0} customers from DB", customers.size());
             session.close();
             return customers;
@@ -123,7 +138,7 @@ public class DBHandler {
             SessionFactory sf = HibernateUtil.getSessionFactory();
             Session session = sf.openSession();
             List<Customer> customers = session.createSQLQuery(query).addEntity(Customer.class).list();
-            if(customers.size() > 0) customer = customers.get(0);
+            if (customers.size() > 0) customer = customers.get(0);
             session.close();
         } catch (Exception e) {
             System.out.println(e.toString());

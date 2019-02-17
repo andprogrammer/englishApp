@@ -12,8 +12,7 @@ public class HibernateUtil {
     private static final SessionFactory sessionFactory = buildSessionFactory();
     private static final String HIBERNATE_CFG = "hibernate.cfg.xml";
 
-    private static SessionFactory buildSessionFactory()
-    {
+    private static SessionFactory buildSessionFactory() {
         Configuration cfg = new Configuration().addResource(HIBERNATE_CFG);
         cfg.addAnnotatedClass(Customer.class);
         cfg.configure();

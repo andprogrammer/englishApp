@@ -42,7 +42,7 @@ public class EditPasswordForm extends CustomerForm {
     protected boolean saveButtonClick() {
         if (false == super.saveButtonClick()) return false;
 
-        if(checkContracts()) {
+        if (checkContracts()) {
             return false;
         }
         setCustomerValueBasedOnInputPrompt();

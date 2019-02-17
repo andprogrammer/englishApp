@@ -1,9 +1,9 @@
 package com.english.forms;
 
-import com.english.db.DBHandler;
 import com.english.Application;
-import com.english.utils.SessionAttributes;
+import com.english.db.DBHandler;
 import com.english.utils.Contract;
+import com.english.utils.SessionAttributes;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
@@ -37,7 +37,7 @@ public class EditProfileForm extends CustomerForm {
     protected void initComponents() {
         super.initComponents();
         editPasswordButton.setStyleName(ValoTheme.BUTTON_DANGER);
-        editPasswordButton.addClickListener(f->editPasswordButtonClick());
+        editPasswordButton.addClickListener(f -> editPasswordButtonClick());
         application.editPasswordForm.setVisible(false);
     }
 
@@ -49,7 +49,7 @@ public class EditProfileForm extends CustomerForm {
 
     private boolean nameSameAsLoggedIn(String name) {   //session label ALWAYS set to customer name!
         Object sessionAttribute = getSession().getAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE);
-        if(sessionAttribute != null) return sessionAttribute.toString().toLowerCase().equals(name.toLowerCase());
+        if (sessionAttribute != null) return sessionAttribute.toString().toLowerCase().equals(name.toLowerCase());
         return false;
     }
 
@@ -64,17 +64,17 @@ public class EditProfileForm extends CustomerForm {
         String name = this.nameTextField.getValue();
         String contactMe = this.contactMeTextField.getValue();
 
-        if(DBHandler.checkIfNameAlreadyExists(name) && false == nameSameAsLoggedIn(name)) {
+        if (DBHandler.checkIfNameAlreadyExists(name) && false == nameSameAsLoggedIn(name)) {
             Notification.show("Name already in use", "", Notification.Type.HUMANIZED_MESSAGE);
             return false;
         }
 
-        if(DBHandler.checkIfContactMeAlreadyExists(contactMe) && false == customer.getContactMe().equals(contactMe)) {
+        if (DBHandler.checkIfContactMeAlreadyExists(contactMe) && false == customer.getContactMe().equals(contactMe)) {
             Notification.show("Contact already in use", "", Notification.Type.HUMANIZED_MESSAGE);
             return false;
         }
 
-        if(checkContracts()) {
+        if (checkContracts()) {
             return false;
         }
         setCustomerValueBasedOnInputPrompt();

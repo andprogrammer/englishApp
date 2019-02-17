@@ -19,6 +19,8 @@ import javax.servlet.annotation.WebServlet;
 import java.util.List;
 import java.util.Optional;
 
+import static com.english.Globals.*;
+
 
 /**
  * This UI is the application entry point. A UI may either represent a browser window
@@ -30,59 +32,56 @@ import java.util.Optional;
 @Theme("mytheme")
 public class Application extends UI {
 
-	private final String supportEmail = new String("dekoderer@gmail.com");
-	private static final long serialVersionUID = 1L;
+    private final String supportEmail = new String("dekoderer@gmail.com");
+    private static final long serialVersionUID = 1L;
 
-	private final String STATUS_NOT_LOG_IN = "You're not logged in";
-	private CustomerForm customerForm = new CustomerForm();
-	private RegistrationForm registrationForm = new RegistrationForm(this);
-	public EditPasswordForm editPasswordForm = new EditPasswordForm(this);
-	private LogInForm logInForm = new LogInForm(this);
-	private EditProfileForm editionForm = new EditProfileForm(this);
+    private final String STATUS_NOT_LOG_IN = "You're not logged in";
+    private CustomerForm customerForm = new CustomerForm();
+    private RegistrationForm registrationForm = new RegistrationForm(this);
+    public EditPasswordForm editPasswordForm = new EditPasswordForm(this);
+    private LogInForm logInForm = new LogInForm(this);
+    private EditProfileForm editionForm = new EditProfileForm(this);
 
-	private TextField nameTextField = new TextField();
-	private TextField skypeTextField = new TextField();
-	private TextField contactMeTextField = new TextField();
-	private ComboBox languageLevelComboBox = new ComboBox();
-	private Label loginStatusLabel = new Label();
-	private Label descriptionLabel = new Label("Let's talk");
-	private Label subtitleLabel = new Label("Improve your language skills for free");
-	private Button searchButton = new Button("Search");
-	private Button clearFilterButton = new Button("Clear filteres");
-	private Button registerButton = new Button("Register me");
-	private Button logInButton = new Button("Log me");
-	private Button logOutButton = new Button("Log out");
-	private Button editMeButton = new Button("Edit me");
-	private Button englishButton = new Button("English");
-	private Button espanolButton = new Button("Español");
-	private Button italianoButton = new Button("Italiano");
+    private TextField nameTextField = new TextField();
+    private TextField skypeTextField = new TextField();
+    private TextField contactMeTextField = new TextField();
+    private ComboBox languageComboBox = new ComboBox();
+    private ComboBox languageLevelComboBox = new ComboBox();
+    private Label loginStatusLabel = new Label();
+    private Label descriptionLabel = new Label("Let's talk");
+    private Label subtitleLabel = new Label("Improve your language skills for free");
+    private Button searchButton = new Button("Search");
+    private Button clearFilterButton = new Button("Clear filters");
+    private Button registerButton = new Button("Register me");
+    private Button logInButton = new Button("Log me");
+    private Button logOutButton = new Button("Log out");
+    private Button editMeButton = new Button("Edit me");
 
 //	ThemeResource letsSpeakEnglishResource = new ThemeResource("images/LetsSpeakEng.png");
 //	Image letsSpeakEnglishImage = new Image("", letsSpeakEnglishResource);
 
-	ThemeResource skypeLogoResourse = new ThemeResource("images/SkypeLogo.png");
-	Image skypeLogoImage = new Image("", skypeLogoResourse);
+    ThemeResource skypeLogoResourse = new ThemeResource("images/SkypeLogo.png");
+    Image skypeLogoImage = new Image("", skypeLogoResourse);
 
-	private Grid mainGrid = new Grid();
-	CssLayout filteringLayout = new CssLayout();
-	CssLayout mainButtonsLayout = new CssLayout();
-	CssLayout languageButtonsLayout = new CssLayout();
+    private Grid mainGrid = new Grid();
+    CssLayout filteringLayout = new CssLayout();
+    CssLayout mainButtonsLayout = new CssLayout();
+    CssLayout languageButtonsLayout = new CssLayout();
 
-	private CustomerService customerService = CustomerService.getInstance();
+    private CustomerService customerService = CustomerService.getInstance();
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         initComponents();
         handleTextFieldsFiltering();
-		handleMainButtonsLayout();
-		handleLanguageButtonsLayout();
+        handleMainButtonsLayout();
         handleButtons();
 
-		setStyleName("backgroundimage");
+        setStyleName("backgroundimage");
 
         final VerticalLayout pageLayout = new VerticalLayout();
 
-		setMainLabelsStyle();
+        setMainLabelsStyle();
 
         VerticalLayout toolbarLayout = new VerticalLayout();
         toolbarLayout.setDefaultComponentAlignment(Alignment.TOP_CENTER);
@@ -97,21 +96,25 @@ public class Application extends UI {
         mainGrid.setSizeFull();
         mainLayout.setExpandRatio(mainGrid, 1);
 
-		PopupView contactPopupView = new PopupView(new Content() {
-			@Override
-			public Component getPopupComponent() {
-				return new VerticalLayout() {
-					{
-						setSpacing(false);
-						addComponent(new Label(supportEmail));
-					}
-				};
-			}
-			@Override
-			public String getMinimizedValueAsHTML() {
-				return "contact";
-			}
-		});
+        languageComboBox.setNullSelectionAllowed(false);
+        languageComboBox.setValue(ENGLISH);
+
+        PopupView contactPopupView = new PopupView(new Content() {
+            @Override
+            public Component getPopupComponent() {
+                return new VerticalLayout() {
+                    {
+                        setSpacing(false);
+                        addComponent(new Label(supportEmail));
+                    }
+                };
+            }
+
+            @Override
+            public String getMinimizedValueAsHTML() {
+                return "contact";
+            }
+        });
 
         pageLayout.addComponents(toolbarLayout, mainLayout, contactPopupView);
         pageLayout.setComponentAlignment(contactPopupView, Alignment.TOP_CENTER);
@@ -122,50 +125,51 @@ public class Application extends UI {
         pageLayout.setSpacing(true);
         setContent(pageLayout);
 
-        mainGrid.addSelectionListener(event->{
-        	if(event.getSelected().isEmpty() || registrationForm.isVisible() || logInForm.isVisible() || editionForm.isVisible() || editPasswordForm.isVisible()) {
-        		customerForm.setVisible(false);
-        	} else {
-        		Customer customer = (Customer) event.getSelected().iterator().next();
-        		customerForm.setCustomer(customer);
-        	}
+        mainGrid.addSelectionListener(event -> {
+            if (event.getSelected().isEmpty() || registrationForm.isVisible() || logInForm.isVisible() || editionForm.isVisible() || editPasswordForm.isVisible()) {
+                customerForm.setVisible(false);
+            } else {
+                Customer customer = (Customer) event.getSelected().iterator().next();
+                customerForm.setCustomer(customer);
+            }
         });
     }
 
-	private void setMainLabelsStyle() {
-		descriptionLabel.setStyleName("mainLabel");
-		subtitleLabel.setStyleName("subtitleLabel");
-		loginStatusLabel.setStyleName("loginStatusLabel");
-	}
-
-	private void initComponents() {
-		setLoginStatusLabel("");
-		setFormsInvisible();
+    private void setMainLabelsStyle() {
+        descriptionLabel.setStyleName("mainLabel");
+        subtitleLabel.setStyleName("subtitleLabel");
+        loginStatusLabel.setStyleName("loginStatusLabel");
     }
 
-	public void setLoginStatusLabel(String status) {
-		loginStatusLabel.setValue(status.isEmpty() ? STATUS_NOT_LOG_IN : "Hello : " + status);
-	}
+    private void initComponents() {
+        setLoginStatusLabel("");
+        setFormsInvisible();
+    }
 
-	public void setVisibleRegisterButton(boolean visible) {
-		registerButton.setVisible(visible);
-	}
+    public void setLoginStatusLabel(String status) {
+        loginStatusLabel.setValue(status.isEmpty() ? STATUS_NOT_LOG_IN : "Hello : " + status);
+    }
 
-	public void setVisibleEditMeButton(boolean visible) {
-    	editMeButton.setVisible(visible);
-	}
+    public void setVisibleRegisterButton(boolean visible) {
+        registerButton.setVisible(visible);
+    }
 
-	public void setVisibleLogInButton(boolean visible) {
-		logInButton.setVisible(visible);
-	}
+    public void setVisibleEditMeButton(boolean visible) {
+        editMeButton.setVisible(visible);
+    }
 
-	public void setVisibleLogOutButton(boolean visible) {
-		logOutButton.setVisible(visible);
-	}
+    public void setVisibleLogInButton(boolean visible) {
+        logInButton.setVisible(visible);
+    }
 
-	private void handleTextFieldsFiltering() {
-		setFiltersInputPrompt();
-		setLanguageLevelItems();
+    public void setVisibleLogOutButton(boolean visible) {
+        logOutButton.setVisible(visible);
+    }
+
+    private void handleTextFieldsFiltering() {
+        setFiltersInputPrompt();
+        setLanguageLevelItems();
+        setLanguageItems();
 
 //        nameTextField.addTextChangeListener(e->{
 //        	mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(e.getText(), CustomerService.FILTER_TYPE.NAME)));
@@ -180,146 +184,164 @@ public class Application extends UI {
 //        });
 //
 //		languageLevelComboBox.addValueChangeListener(e->{
-//			mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(getLanguageLevel(), CustomerService.FILTER_TYPE.ENGLISH_LEVEL)));
+//			mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(getLanguageLevel(), CustomerService.FILTER_TYPE.LANGUAGE_LEVEL)));
+//		});
+
+//        languageComboBox.addValueChangeListener(e->{
+//			mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customerService.findBy(getLanguage(), CustomerService.FILTER_TYPE.LANGUAGE_LEVEL)));
 //		});
 
         filteringLayout.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
         filteringLayout.addComponents(nameTextField,
-				skypeTextField,
-				contactMeTextField,
-				languageLevelComboBox);
-	}
+                skypeTextField,
+                contactMeTextField,
+                languageComboBox,
+                languageLevelComboBox);
+    }
 
-	private void handleMainButtonsLayout() {
-		mainButtonsLayout.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-		mainButtonsLayout.addComponents(searchButton, clearFilterButton, registerButton, logInButton, logOutButton, editMeButton);
-	}
+    private void handleMainButtonsLayout() {
+        mainButtonsLayout.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+        mainButtonsLayout.addComponents(searchButton, clearFilterButton, registerButton, logInButton, logOutButton, editMeButton);
+    }
 
-	private void handleLanguageButtonsLayout() {
-    	languageButtonsLayout.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-    	languageButtonsLayout.addComponents(englishButton, espanolButton, italianoButton);
-	}
+    private void setFiltersInputPrompt() {
+        nameTextField.setInputPrompt("name");
+        skypeTextField.setInputPrompt("skype");
+        contactMeTextField.setInputPrompt("contact");
+        languageLevelComboBox.setInputPrompt("language level");
+        languageComboBox.setInputPrompt("language");
+    }
 
-	private void setFiltersInputPrompt() {
-		nameTextField.setInputPrompt("name");
-		skypeTextField.setInputPrompt("skype");
-		contactMeTextField.setInputPrompt("contact");
-		languageLevelComboBox.setInputPrompt("language level");
-	}
+    private void setLanguageLevelItems() {
+        languageLevelComboBox.addItem(1);
+        languageLevelComboBox.addItem(2);
+        languageLevelComboBox.addItem(3);
+        languageLevelComboBox.addItem(4);
+        languageLevelComboBox.addItem(5);
+        languageLevelComboBox.addItem(6);
+    }
 
-	private void setLanguageLevelItems() {
-		languageLevelComboBox.addItem(1);
-		languageLevelComboBox.addItem(2);
-		languageLevelComboBox.addItem(3);
-		languageLevelComboBox.addItem(4);
-		languageLevelComboBox.addItem(5);
-		languageLevelComboBox.addItem(6);
-	}
+    private void setLanguageItems() {
+        languageComboBox.addItem(ENGLISH);
+        languageComboBox.addItem(SPANISH);
+        languageComboBox.addItem(ITALIAN);
+    }
 
-	private String getLanguageLevel() {
-		return null == languageLevelComboBox.getValue() ? "" : Integer.toString((Integer) languageLevelComboBox.getValue());
-	}
+    private String getLanguageLevel() {
+        return null == languageLevelComboBox.getValue() ? "" : Integer.toString((Integer) languageLevelComboBox.getValue());
+    }
 
-	private void setFormsInvisible() {
-		mainGrid.select(null);
-		registrationForm.setVisible(false);
-		logInForm.setVisible(false);
-		customerForm.setVisible(false);
-		editionForm.setVisible(false);
-		editPasswordForm.setVisible(false);
-	}
+    private String getLanguage() {
+        return null == languageComboBox.getValue() ? "" : (String) languageComboBox.getValue();
+    }
 
-	private void handleSearchButton() { searchButton.addClickListener(e-> updateMainGridCustomerList()); }
+    private void setFormsInvisible() {
+        mainGrid.select(null);
+        registrationForm.setVisible(false);
+        logInForm.setVisible(false);
+        customerForm.setVisible(false);
+        editionForm.setVisible(false);
+        editPasswordForm.setVisible(false);
+    }
 
-	private void handleClearFilterButton() {
-		clearFilterButton.addClickListener(e->clearFilteringTextFields());
-	}
+    private void handleSearchButton() {
+        searchButton.addClickListener(e -> updateMainGridCustomerList());
+    }
 
-	private void handleRegisterButton() {
-		registerButton.addClickListener(e->{
-			if(registrationForm.isVisible()) setFormsInvisible();
-			else {
-				setFormsInvisible();
-				registrationForm.setCustomer(new Customer()); //this is handled in saveButtonClick()
-			}
+    private void handleClearFilterButton() {
+        clearFilterButton.addClickListener(e -> clearFilteringTextFields());
+    }
+
+    private void handleRegisterButton() {
+        registerButton.addClickListener(e -> {
+            if (registrationForm.isVisible()) setFormsInvisible();
+            else {
+                setFormsInvisible();
+                registrationForm.setCustomer(new Customer()); //this is handled in saveButtonClick()
+            }
         });
-	}
+    }
 
-	private void handleEditMeButton() {
-    	editMeButton.addClickListener(e->{
-			if(editionForm.isVisible()) setFormsInvisible();
-    		else {
-				setFormsInvisible();
+    private void handleEditMeButton() {
+        editMeButton.addClickListener(e -> {
+            if (editionForm.isVisible()) setFormsInvisible();
+            else {
+                setFormsInvisible();
 
-				Object sessionAttribute = getSession().getAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE);
-				if(sessionAttribute == null) return;
+                Object sessionAttribute = getSession().getAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE);
+                if (sessionAttribute == null) return;
 
-				String user_session_attribute = sessionAttribute.toString();
-				Optional<Customer> customer = DBHandler.getSingleCustomerViaContactMe(user_session_attribute);
-				if (customer.isPresent()) {
-					editionForm.setCustomer(customer.get());
-				} else {
+                String user_session_attribute = sessionAttribute.toString();
+                Optional<Customer> customer = DBHandler.getSingleCustomerViaContactMe(user_session_attribute);
+                if (customer.isPresent()) {
+                    editionForm.setCustomer(customer.get());
+                } else {
                     customer = DBHandler.getSingleCustomerViaName(user_session_attribute);
-                    if(customer.isPresent()) editionForm.setCustomer(customer.get());
+                    if (customer.isPresent()) editionForm.setCustomer(customer.get());
                 }
-			}
-		});
-    	editMeButton.setVisible(false);
-	}
-
-	private void handleLogInButton() {
-        logInButton.addClickListener(e->{
-        	if(logInForm.isVisible()) setFormsInvisible();
-			else {
-				setFormsInvisible();
-				logInForm.showLogInFormOnButtonClick();
-			}
+            }
         });
-	}
+        editMeButton.setVisible(false);
+    }
 
-	private void handleLogOutButton() {
-        logOutButton.addClickListener(e->{
-			setFormsInvisible();
-        	getSession().setAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE, null);
-        	registerButton.setVisible(true);
-        	logInButton.setVisible(true);
-        	logOutButton.setVisible(false);
-        	loginStatusLabel.setValue(STATUS_NOT_LOG_IN);
-        	editMeButton.setVisible(false);
+    private void handleLogInButton() {
+        logInButton.addClickListener(e -> {
+            if (logInForm.isVisible()) setFormsInvisible();
+            else {
+                setFormsInvisible();
+                logInForm.showLogInFormOnButtonClick();
+            }
+        });
+    }
+
+    private void handleLogOutButton() {
+        logOutButton.addClickListener(e -> {
+            setFormsInvisible();
+            getSession().setAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE, null);
+            registerButton.setVisible(true);
+            logInButton.setVisible(true);
+            logOutButton.setVisible(false);
+            loginStatusLabel.setValue(STATUS_NOT_LOG_IN);
+            editMeButton.setVisible(false);
         });
         logOutButton.setVisible(false);
-	}
+    }
 
-	protected void handleButtons() {
-    	handleSearchButton();
-		handleClearFilterButton();
-		handleRegisterButton();
-		handleLogInButton();
-		handleLogOutButton();
-		handleEditMeButton();
-	}
+    protected void handleButtons() {
+        handleSearchButton();
+        handleClearFilterButton();
+        handleRegisterButton();
+        handleLogInButton();
+        handleLogOutButton();
+        handleEditMeButton();
+    }
 
-	protected void clearFilteringTextFields() {
-		nameTextField.clear();
-		skypeTextField.clear();
-		contactMeTextField.clear();
-		languageLevelComboBox.clear();
-		updateMainGridCustomerList();
-	}
+    protected void clearInputFields() {
+        nameTextField.clear();
+        skypeTextField.clear();
+        contactMeTextField.clear();
+        languageComboBox.setValue(ENGLISH);
+        languageLevelComboBox.clear();
+    }
 
-	public void updateMainGridCustomerList() {
-		List<Customer> customers = customerService.getfilteredContacts(nameTextField.getValue(), skypeTextField.getValue(), contactMeTextField.getValue(), getLanguageLevel());
-		mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customers));
-	}
+    protected void clearFilteringTextFields() {
+        clearInputFields();
+        updateMainGridCustomerList();
+    }
 
-	public void updateCustomers() {
-    	customerService.updateCustomersFromDB();
-	}
+    public void updateMainGridCustomerList() {
+        List<Customer> customers = customerService.getFilteredContacts(nameTextField.getValue(), skypeTextField.getValue(), contactMeTextField.getValue(), getLanguageLevel(), getLanguage());
+        mainGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customers));
+    }
+
+    public void updateCustomers() {
+        customerService.updateCustomersFromDB();
+    }
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
     @VaadinServletConfiguration(ui = Application.class, productionMode = false)
     public static class MyUIServlet extends VaadinServlet {
 
-		private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
     }
 }

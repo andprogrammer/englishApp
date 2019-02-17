@@ -1,24 +1,25 @@
 package com.english.tests;
 
+import com.english.db.DBHandler;
 import com.english.model.Customer;
 import com.english.service.CustomerService;
-import com.english.db.DBHandler;
 import org.junit.Test;
 
 import java.util.List;
 import java.util.Optional;
 
+import static com.english.Globals.ENGLISH;
 import static org.junit.Assert.assertEquals;
 
 public class CustomerServiceTestSuite {
 
     protected CustomerService customerService = CustomerService.getInstance();
-    //TODO add setup()
+
     @Test
     public void testSaveDelete() {
         List<Customer> allCustomers = customerService.findAll(null);
         int numOfCustomers = allCustomers.size();
-        Customer customer = new Customer("Jack", "skysparrow", "sparrow@gmail.com", 5, "pass");
+        Customer customer = new Customer("Jack", "skysparrow", "sparrow@gmail.com", ENGLISH, 5, "pass");
         customerService.save(customer);
         assertEquals(numOfCustomers + 1, customerService.findAll(null).size());
 
@@ -31,7 +32,7 @@ public class CustomerServiceTestSuite {
 
     @Test
     public void testUpdate() {
-        Customer customer = new Customer("Jack", "skysparrow", "sparrow@gmail.com", 5, "pass");
+        Customer customer = new Customer("Jack", "skysparrow", "sparrow@gmail.com", ENGLISH, 5, "pass");
         customerService.save(customer);
 
         String name = "Quentin";
@@ -45,7 +46,7 @@ public class CustomerServiceTestSuite {
         }
 
         Optional<Customer> result = DBHandler.getSingleCustomerViaContactMe(customer.getContactMe());
-        if(result.isPresent()){
+        if (result.isPresent()) {
             assertEquals(result.get().getName(), name);
             assertEquals(result.get().getSkype(), skype);
             customerService.delete(tempObject.get());
