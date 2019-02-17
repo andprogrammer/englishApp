@@ -35,7 +35,7 @@ public class Application extends UI {
     private final String supportEmail = new String("dekoderer@gmail.com");
     private static final long serialVersionUID = 1L;
 
-    private final String STATUS_NOT_LOG_IN = "You're not logged in";
+    private final String STATUS_NOT_LOG_IN = "You are not logged in";
     private CustomerForm customerForm = new CustomerForm();
     private RegistrationForm registrationForm = new RegistrationForm(this);
     public EditPasswordForm editPasswordForm = new EditPasswordForm(this);
